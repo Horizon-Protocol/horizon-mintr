@@ -22,7 +22,7 @@ const L2Banner: React.FC<L2BannerProps> = ({ setCurrentPage, snxBalance, walletD
 		<ContainerBanner onClick={() => setCurrentPage(PAGES_BY_KEY.L2ONBOARDING)}>
 			<StyledPMedium>
 				This wallet is eligible to participate in the Optimistic Ethereum L2 Testnet Trial - Try it
-				out now and earn L2 SNX rewards!
+				out now and earn L2 HZN rewards!
 			</StyledPMedium>
 			<DiagonalArrow />
 		</ContainerBanner>

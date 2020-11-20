@@ -65,7 +65,7 @@ const Action = ({
 									mintAmount,
 									SNXPrice,
 								})}
-								{' SNX'}
+								{' HZN'}
 							</Subtext>
 						</InfoCol>
 						<InfoCol>

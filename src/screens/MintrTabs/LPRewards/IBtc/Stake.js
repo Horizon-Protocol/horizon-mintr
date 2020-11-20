@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
-import snxJSConnector from '../../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../../helpers/hznJSConnector';
 
 import {
 	bigNumberFormatter,
@@ -30,16 +30,16 @@ const Stake = ({ walletDetails, goBack }) => {
 	const {
 		iBtc2RewardsContract,
 		iBtcRewardsContract,
-		snxJS: { Exchanger, Synthetix },
-	} = snxJSConnector;
+		hznJS: { Exchanger, Synthetix },
+	} = hznJSConnector;
 
 	const fetchData = useCallback(async () => {
-		if (!snxJSConnector.initialized) return;
+		if (!hznJSConnector.initialized) return;
 		try {
 			const {
-				snxJS: { iBTC, Exchanger },
+				hznJS: { iBTC, Exchanger },
 				iBtc2RewardsContract,
-			} = snxJSConnector;
+			} = hznJSConnector;
 			const [iBTCBalance, iBTCStaked, rewards, settlementOwing, rewardsOld] = await Promise.all([
 				iBTC.balanceOf(currentWallet),
 				iBtc2RewardsContract.balanceOf(currentWallet),
@@ -64,7 +64,7 @@ const Stake = ({ walletDetails, goBack }) => {
 			console.log(e);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentWallet, snxJSConnector.initialized]);
+	}, [currentWallet, hznJSConnector.initialized]);
 
 	useEffect(() => {
 		fetchData();
@@ -72,7 +72,7 @@ const Stake = ({ walletDetails, goBack }) => {
 
 	useEffect(() => {
 		if (!currentWallet) return;
-		const { iBtc2RewardsContract } = snxJSConnector;
+		const { iBtc2RewardsContract } = hznJSConnector;
 
 		iBtc2RewardsContract.on('Staked', user => {
 			if (user === currentWallet) {
@@ -111,7 +111,7 @@ const Stake = ({ walletDetails, goBack }) => {
 		});
 
 		return () => {
-			if (snxJSConnector.initialized) {
+			if (hznJSConnector.initialized) {
 				iBtc2RewardsContract.removeAllListeners('Staked');
 				iBtc2RewardsContract.removeAllListeners('Withdrawn');
 				iBtc2RewardsContract.removeAllListeners('RewardPaid');
@@ -154,7 +154,7 @@ const Stake = ({ walletDetails, goBack }) => {
 				/>
 				<DataBox
 					heading={t('lpRewards.shared.data.rewardsAvailable')}
-					body={`${balances ? formatCurrency(balances.rewards) : 0} SNX`}
+					body={`${balances ? formatCurrency(balances.rewards) : 0} HZN`}
 				/>
 			</BoxRow>
 			<ButtonBlock>
@@ -184,7 +184,7 @@ const Stake = ({ walletDetails, goBack }) => {
 							setCurrentScenario({
 								action: 'claim',
 								label: t('lpRewards.shared.actions.claiming'),
-								amount: `${balances && formatCurrency(balances.rewards)} SNX`,
+								amount: `${balances && formatCurrency(balances.rewards)} HZN`,
 								contractFunction: transactionSettings =>
 									iBtc2RewardsContract.getReward(transactionSettings),
 								contractFunctionEstimate: () => iBtc2RewardsContract.estimate.getReward(),
@@ -223,7 +223,7 @@ const Stake = ({ walletDetails, goBack }) => {
 								label: t('lpRewards.shared.actions.exiting'),
 								amount: `${balances && formatCurrency(balances.iBTCStaked)} iBTC & ${
 									balances && formatCurrency(balances.rewards)
-								} SNX`,
+								} HZN`,
 								contractFunction: transactionSettings =>
 									iBtc2RewardsContract.exit(transactionSettings),
 								contractFunctionEstimate: () => iBtc2RewardsContract.estimate.exit(),
@@ -241,7 +241,7 @@ const Stake = ({ walletDetails, goBack }) => {
 								setCurrentScenario({
 									action: 'claim',
 									label: t('lpRewards.shared.actions.claiming'),
-									amount: `${balances && formatCurrency(balances.rewardsOld)} SNX`,
+									amount: `${balances && formatCurrency(balances.rewardsOld)} HZN`,
 									contractFunction: transactionSettings =>
 										iBtcRewardsContract.getReward(transactionSettings),
 									contractFunctionEstimate: () => iBtcRewardsContract.estimate.getReward(),

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
 import { useTranslation } from 'react-i18next';
 
-import snxJSConnector, { connectToWallet } from '../../helpers/snxJSConnector';
+import hznJSConnector, { connectToWallet } from '../../helpers/hznJSConnector';
 
 import { setCurrentPage } from '../../ducks/ui';
 import { updateWalletStatus, getWalletDetails } from '../../ducks/wallet';
@@ -40,9 +40,9 @@ const onWalletClick = ({ wallet, derivationPath, updateWalletStatus, setCurrentP
 		if (walletStatus && walletStatus.unlocked && walletStatus.currentWallet) {
 			if (walletStatus.walletType === SUPPORTED_WALLETS_MAP.METAMASK) {
 				onMetamaskAccountChange(async () => {
-					const address = await snxJSConnector.signer.getNextAddresses();
-					const signer = new snxJSConnector.signers[SUPPORTED_WALLETS_MAP.METAMASK]({});
-					snxJSConnector.setContractSettings({
+					const address = await hznJSConnector.signer.getNextAddresses();
+					const signer = new hznJSConnector.signers[SUPPORTED_WALLETS_MAP.METAMASK]({});
+					hznJSConnector.setContractSettings({
 						networkId: walletStatus.networkId,
 						signer,
 					});
@@ -122,7 +122,7 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
 			<OnboardingContainer>
 				<Header>
 					<Logo />
-					<LanguageButtonWrapper>
+					{/* <LanguageButtonWrapper>
 						<RoundButton onClick={() => setFlagVisibility(true)}>
 							<Globe />
 						</RoundButton>
@@ -131,7 +131,7 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
 							setIsVisible={setFlagVisibility}
 							position={{ right: 0 }}
 						/>
-					</LanguageButtonWrapper>
+					</LanguageButtonWrapper> */}
 				</Header>
 				<OnBoardingCarousel
 					pageIndex={pageIndex}
@@ -185,7 +185,7 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
 						<ButtonTertiaryLabel>{t('button.whatIsSynthetix')}</ButtonTertiaryLabel>
 					</Link>
 					<ExternalLink
-						href={`https://github.com/Synthetixio/synthetix-mintr/releases/tag/v${process.env.REACT_APP_VERSION}`}
+						href={`https://github.com/Phoenix/synthetix-mintr/releases/tag/v${process.env.REACT_APP_VERSION}`}
 					>
 						<VersionLabel>v{process.env.REACT_APP_VERSION}</VersionLabel>
 					</ExternalLink>

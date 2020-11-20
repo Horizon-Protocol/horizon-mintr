@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import snxJSConnector from '../../helpers/snxJSConnector';
+import hznJSConnector from '../../helpers/hznJSConnector';
 import { getEtherscanTxLink } from 'helpers/explorers';
 
 import { hideTransaction } from '../../ducks/transactions';
@@ -30,7 +30,7 @@ const TransactionNotification = ({ transaction, walletDetails, hideTransaction }
 
 	useEffect(() => {
 		const getTransactionTicket = async () => {
-			const status = await snxJSConnector.utils.waitForTransaction(transaction.hash);
+			const status = await hznJSConnector.utils.waitForTransaction(transaction.hash);
 			setStatus(status ? 'success' : 'error');
 			return () => setStatus(null);
 		};

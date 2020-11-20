@@ -12,7 +12,7 @@ import { CRYPTO_CURRENCY_TO_KEY } from '../../constants/currency';
 
 const Charts = ({ walletBalances: { crypto }, debtData, totalEscrow = 0 }) => {
 	const { t } = useTranslation();
-	const snxBalance = (crypto && crypto[CRYPTO_CURRENCY_TO_KEY.SNX]) || 0;
+	const snxBalance = (crypto && crypto[CRYPTO_CURRENCY_TO_KEY.HZN]) || 0;
 	const snxLocked =
 		snxBalance &&
 		debtData &&
@@ -60,7 +60,7 @@ const Charts = ({ walletBalances: { crypto }, debtData, totalEscrow = 0 }) => {
 			<BoxInner>
 				<BoxHeading>
 					<H6 style={{ textTransform: 'uppercase' }}>{t('dashboard.holdings.title')}</H6>
-					<H6>{formatCurrency(snxBalance) || 0} SNX</H6>
+					<H6>{formatCurrency(snxBalance) || 0} HZN</H6>
 				</BoxHeading>
 				{chartData.map((data, i) => {
 					return <BarChart key={i} data={data} />;

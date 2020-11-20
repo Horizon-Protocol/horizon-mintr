@@ -1,7 +1,7 @@
 import React, { useContext, useState, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 
-import snxJSConnector from '../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../helpers/hznJSConnector';
 import { SliderContext } from '../../../components/ScreenSlider';
 
 import { getCurrentGasPrice } from '../../../ducks/network';
@@ -33,8 +33,8 @@ const TokenSaleVesting = ({
 		const vest = async () => {
 			if (!hasLoaded) return;
 			const {
-				snxJS: { SynthetixEscrow },
-			} = snxJSConnector;
+				hznJS: { SynthetixEscrow },
+			} = hznJSConnector;
 			try {
 				const transaction = await SynthetixEscrow.vest({
 					gasPrice: currentGasPrice.formattedPrice,

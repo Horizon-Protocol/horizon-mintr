@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
-import snxJSConnector from '../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../helpers/hznJSConnector';
 import { addBufferToGasLimit } from '../../../helpers/networkHelper';
 import { bigNumberFormatter } from '../../../helpers/formatters';
 
@@ -30,8 +30,8 @@ const RewardEscrow = ({ onPageChange, walletDetails: { currentWallet } }) => {
 	const fetchVestingData = useCallback(async () => {
 		if (!currentWallet) return;
 		const {
-			snxJS: { RewardEscrow },
-		} = snxJSConnector;
+			hznJS: { RewardEscrow },
+		} = hznJSConnector;
 		try {
 			let schedule = [];
 
@@ -76,8 +76,8 @@ const RewardEscrow = ({ onPageChange, walletDetails: { currentWallet } }) => {
 		setError(null);
 		setFetchingGasLimit(true);
 		const {
-			snxJS: { RewardEscrow },
-		} = snxJSConnector;
+			hznJS: { RewardEscrow },
+		} = hznJSConnector;
 		try {
 			const gasEstimate = await RewardEscrow.contract.estimate.vest();
 			setFetchingGasLimit(false);
@@ -98,8 +98,8 @@ const RewardEscrow = ({ onPageChange, walletDetails: { currentWallet } }) => {
 	useEffect(() => {
 		if (!currentWallet) return;
 		const {
-			snxJS: { RewardEscrow },
-		} = snxJSConnector;
+			hznJS: { RewardEscrow },
+		} = hznJSConnector;
 
 		RewardEscrow.contract.on('Vested', beneficiary => {
 			if (currentWallet === beneficiary) {
@@ -108,7 +108,7 @@ const RewardEscrow = ({ onPageChange, walletDetails: { currentWallet } }) => {
 			}
 		});
 		return () => {
-			if (snxJSConnector.initialized) {
+			if (hznJSConnector.initialized) {
 				RewardEscrow.contract.removeAllListeners('Vested');
 			}
 		};

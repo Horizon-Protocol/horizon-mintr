@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import snxJSConnector from '../../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../../helpers/hznJSConnector';
 import { getWalletDetails } from '../../../../ducks/wallet';
 
 import { bigNumberFormatter } from '../../../../helpers/formatters';
@@ -19,8 +19,8 @@ const UniPool = ({ goBack, walletDetails }) => {
 	const { currentWallet } = walletDetails;
 
 	const fetchAllowance = useCallback(async () => {
-		if (!snxJSConnector.initialized) return;
-		const { balancerpoolContract, balancerSNXRewardsContract } = snxJSConnector;
+		if (!hznJSConnector.initialized) return;
+		const { balancerpoolContract, balancerSNXRewardsContract } = hznJSConnector;
 		try {
 			setIsLoading(true);
 			const allowance = await balancerpoolContract.allowance(
@@ -35,7 +35,7 @@ const UniPool = ({ goBack, walletDetails }) => {
 			setAllowance(true);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentWallet, snxJSConnector.initialized]);
+	}, [currentWallet, hznJSConnector.initialized]);
 
 	useEffect(() => {
 		fetchAllowance();
@@ -44,7 +44,7 @@ const UniPool = ({ goBack, walletDetails }) => {
 
 	useEffect(() => {
 		if (!currentWallet) return;
-		const { balancerpoolContract, balancerSNXRewardsContract } = snxJSConnector;
+		const { balancerpoolContract, balancerSNXRewardsContract } = hznJSConnector;
 
 		balancerpoolContract.on('Approval', (owner, spender) => {
 			if (owner === currentWallet && spender === balancerSNXRewardsContract.address) {
@@ -53,7 +53,7 @@ const UniPool = ({ goBack, walletDetails }) => {
 		});
 
 		return () => {
-			if (snxJSConnector.initialized) {
+			if (hznJSConnector.initialized) {
 				balancerpoolContract.removeAllListeners('Approval');
 			}
 		};

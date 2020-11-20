@@ -8,7 +8,7 @@ import { getRates, Rates } from 'ducks/rates';
 import { utils } from 'ethers';
 import { addBufferToGasLimit } from 'helpers/networkHelper';
 import { formatCurrency } from 'helpers/formatters';
-import snxJSConnector from 'helpers/snxJSConnector';
+import hznJSConnector from 'helpers/hznJSConnector';
 import useOneInch, { ethTokenAddress, sUSDTokenAddress } from 'hooks/useOneInch';
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -39,7 +39,7 @@ export const OneInchCard = ({
 	const baseCurrencyKey = CRYPTO_CURRENCY_TO_KEY.ETH;
 	const quoteCurrencyKey = CRYPTO_CURRENCY_TO_KEY.sUSD;
 
-	const { signer } = snxJSConnector;
+	const { signer } = hznJSConnector;
 	const { swap, oneInchContract } = useOneInch(signer);
 	const { networkId } = walletDetails;
 	const {

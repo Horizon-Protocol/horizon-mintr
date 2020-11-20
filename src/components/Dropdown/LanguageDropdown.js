@@ -5,7 +5,8 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import { PLarge } from '../Typography';
 import i18n from 'i18next';
 
-const SUPPORTED_LANGUAGES = ['en', 'fr', 'es', 'ru', 'zh-cn', 'zh-tw', 'ko'];
+//const SUPPORTED_LANGUAGES = ['en', 'fr', 'es', 'ru', 'zh-cn', 'zh-tw', 'ko'];
+const SUPPORTED_LANGUAGES = ['en'];
 
 const codeToLang = code => {
 	switch (code) {
@@ -29,6 +30,7 @@ const codeToLang = code => {
 };
 
 const LanguageDropdown = ({ setIsVisible, isVisible, position }) => {
+	if (SUPPORTED_LANGUAGES.length < 2) return null;
 	if (!isVisible) return null;
 	return (
 		<OutsideClickHandler onOutsideClick={() => setIsVisible(false)}>

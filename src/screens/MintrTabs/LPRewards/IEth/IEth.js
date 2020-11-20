@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import snxJSConnector from '../../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../../helpers/hznJSConnector';
 import { getWalletDetails } from '../../../../ducks/wallet';
 
 import { bigNumberFormatter } from '../../../../helpers/formatters';
@@ -19,11 +19,11 @@ const IEth = ({ goBack, walletDetails }) => {
 	const { currentWallet } = walletDetails;
 
 	const fetchAllowance = useCallback(async () => {
-		if (!snxJSConnector.initialized) return;
+		if (!hznJSConnector.initialized) return;
 		const {
-			snxJS: { iETH },
+			hznJS: { iETH },
 			iEthRewardsContract,
-		} = snxJSConnector;
+		} = hznJSConnector;
 		try {
 			setIsLoading(true);
 			const allowance = await iETH.allowance(currentWallet, iEthRewardsContract.address);
@@ -35,7 +35,7 @@ const IEth = ({ goBack, walletDetails }) => {
 			setAllowance(true);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentWallet, snxJSConnector.initialized]);
+	}, [currentWallet, hznJSConnector.initialized]);
 
 	useEffect(() => {
 		fetchAllowance();
@@ -45,9 +45,9 @@ const IEth = ({ goBack, walletDetails }) => {
 	useEffect(() => {
 		if (!currentWallet) return;
 		const {
-			snxJS: { iETH },
+			hznJS: { iETH },
 			iEthRewardsContract,
-		} = snxJSConnector;
+		} = hznJSConnector;
 
 		iETH.contract.on('Approval', (owner, spender) => {
 			if (owner === currentWallet && spender === iEthRewardsContract.address) {
@@ -56,7 +56,7 @@ const IEth = ({ goBack, walletDetails }) => {
 		});
 
 		return () => {
-			if (snxJSConnector.initialized) {
+			if (hznJSConnector.initialized) {
 				iETH.contract.removeAllListeners('Approval');
 			}
 		};

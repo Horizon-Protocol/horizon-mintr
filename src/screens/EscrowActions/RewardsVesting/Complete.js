@@ -20,7 +20,7 @@ const Success = ({ t, onDestroy, vestAmount }) => {
 				<Details>
 					<Box>
 						<DataHeaderLarge>{t('escrow.complete.actionDescription')}</DataHeaderLarge>
-						<Amount>{formatCurrency(vestAmount)} SNX</Amount>
+						<Amount>{formatCurrency(vestAmount)} HZN</Amount>
 					</Box>
 				</Details>
 			</Top>

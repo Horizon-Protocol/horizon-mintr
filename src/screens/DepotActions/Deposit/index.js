@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 
-import snxJSConnector from '../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../helpers/hznJSConnector';
 import { formatCurrency, bigNumberFormatter } from '../../../helpers/formatters';
 import { SliderContext } from '../../../components/ScreenSlider';
 import errorMapper from '../../../helpers/errorMapper';
@@ -31,8 +31,8 @@ const useGetGasEstimate = (
 		if (!depositAmount) return;
 		const getGasEstimate = async () => {
 			const {
-				snxJS: { Depot },
-			} = snxJSConnector;
+				hznJS: { Depot },
+			} = hznJSConnector;
 			setError(null);
 			let gasEstimate = 0;
 			try {
@@ -41,7 +41,7 @@ const useGetGasEstimate = (
 				if (!Number(depositAmount)) throw new Error('input.error.invalidAmount');
 				setFetchingGasLimit(true);
 				gasEstimate = await Depot.contract.estimate.depositSynths(
-					snxJSConnector.utils.parseEther(depositAmount.toString())
+					hznJSConnector.utils.parseEther(depositAmount.toString())
 				);
 				setFetchingGasLimit(false);
 				setGasLimit(addBufferToGasLimit(gasEstimate));
@@ -84,8 +84,8 @@ const Deposit = ({
 
 	const fetchAllowance = useCallback(async () => {
 		try {
-			const sUSD = snxJSConnector.snxJS.sUSD;
-			const Depot = snxJSConnector.snxJS.Depot;
+			const sUSD = hznJSConnector.hznJS.sUSD;
+			const Depot = hznJSConnector.hznJS.Depot;
 			const allowance = await sUSD.allowance(currentWallet, Depot.contract.address);
 			setAllowance(bigNumberFormatter(allowance));
 		} catch (e) {
@@ -99,8 +99,8 @@ const Deposit = ({
 
 	useEffect(() => {
 		if (!currentWallet) return;
-		const sUSD = snxJSConnector.snxJS.sUSD;
-		const depotAddress = snxJSConnector.snxJS.Depot.contract.address;
+		const sUSD = hznJSConnector.hznJS.sUSD;
+		const depotAddress = hznJSConnector.hznJS.Depot.contract.address;
 		sUSD.contract.on('Approval', (owner, spender) => {
 			if (owner === currentWallet && spender === depotAddress) {
 				fetchAllowance();
@@ -111,12 +111,12 @@ const Deposit = ({
 
 	const onDeposit = async () => {
 		const {
-			snxJS: { Depot },
-		} = snxJSConnector;
+			hznJS: { Depot },
+		} = hznJSConnector;
 		try {
 			handleNext(1);
 			const transaction = await Depot.depositSynths(
-				snxJSConnector.utils.parseEther(depositAmount.toString()),
+				hznJSConnector.utils.parseEther(depositAmount.toString()),
 				{
 					gasPrice: currentGasPrice.formattedPrice,
 					gasLimit,
@@ -142,9 +142,9 @@ const Deposit = ({
 	};
 
 	const onUnlock = async () => {
-		const { parseEther } = snxJSConnector.utils;
-		const depotAddress = snxJSConnector.snxJS.Depot.contract.address;
-		const sUSDContract = snxJSConnector.snxJS.sUSD;
+		const { parseEther } = hznJSConnector.utils;
+		const depotAddress = hznJSConnector.hznJS.Depot.contract.address;
+		const sUSDContract = hznJSConnector.hznJS.sUSD;
 		try {
 			const gasEstimate = await sUSDContract.contract.estimate.approve(
 				depotAddress,

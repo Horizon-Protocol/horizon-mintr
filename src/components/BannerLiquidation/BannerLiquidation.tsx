@@ -21,7 +21,7 @@ const Banner: FC<PropsFromRedux> = ({ debtStatus }) => {
 	return (
 		<ContainerBanner>
 			<StyledPMedium>
-				Attention: your staked SNX may be liquidated if you don't bring your C-Ratio above the
+				Attention: your staked HZN may be liquidated if you don't bring your C-Ratio above the
 				liquidation ratio within {liquidationDelay / 3600} hours. Click{' '}
 				<Link href="https://blog.synthetix.io/liquidation-faqs" target="_blank">
 					here

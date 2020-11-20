@@ -51,11 +51,11 @@ const GAS_NOW_URL = 'https://www.gasnow.org/api/v3/gas/price?utm_source=mintr';
 
 export const SUPPORTED_WALLETS_MAP = {
 	METAMASK: 'Metamask',
-	TREZOR: 'Trezor',
+	// TREZOR: 'Trezor',
 	LEDGER: 'Ledger',
-	COINBASE: 'Coinbase',
-	WALLET_CONNECT: 'WalletConnect',
-	PORTIS: 'Portis',
+	// COINBASE: 'Coinbase',
+	// WALLET_CONNECT: 'WalletConnect',
+	// PORTIS: 'Portis',
 };
 
 export const OVM_RPC_URL = 'https://goerli.optimism.io';

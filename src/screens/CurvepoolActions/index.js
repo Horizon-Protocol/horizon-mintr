@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import snxJSConnector from '../../helpers/snxJSConnector';
+import hznJSConnector from '../../helpers/hznJSConnector';
 import Slider, { SliderContext } from '../../components/ScreenSlider';
 
 import Confirmation from './Confirmation';
@@ -26,7 +26,7 @@ const SliderController = ({
 	const { handleNext, hasLoaded } = useContext(SliderContext);
 	const { walletType, networkName } = walletDetails;
 	useEffect(() => {
-		const { curvepoolContract, oldCurvepoolContract } = snxJSConnector;
+		const { curvepoolContract, oldCurvepoolContract } = hznJSConnector;
 		const contract = action === 'exit-old' ? oldCurvepoolContract : curvepoolContract;
 		const run = async () => {
 			if (!hasLoaded) return;

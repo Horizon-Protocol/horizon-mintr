@@ -19,7 +19,7 @@ import Tooltip from 'components/Tooltip';
 import { FlexDivCentered } from 'styles/common';
 import { H1, PageTitle, Subtext, DataLarge, PMedium } from 'components/Typography';
 
-import snxJSConnector from 'helpers/snxJSConnector';
+import hznJSConnector from 'helpers/hznJSConnector';
 import { formatCurrency } from 'helpers/formatters';
 
 const POOLS_MAJOR = [
@@ -73,7 +73,7 @@ const LPRewards = ({ currentTheme }) => {
 	const goBack = () => setCurrentPool(null);
 
 	useEffect(() => {
-		const { curvepoolContract, iEthRewardsContract, iBtc2RewardsContract } = snxJSConnector;
+		const { curvepoolContract, iEthRewardsContract, iBtc2RewardsContract } = hznJSConnector;
 
 		const getRewardsAmount = async () => {
 			try {
@@ -133,7 +133,7 @@ const LPRewards = ({ currentTheme }) => {
 						return (
 							<ButtonRow key={`pool-${i}`}>
 								{pools.map(({ title, name, image, contract }, i) => {
-									const distribution = distributions[snxJSConnector[contract].address] || 0;
+									const distribution = distributions[hznJSConnector[contract].address] || 0;
 									return (
 										<Button key={`button-${i}`} onClick={() => setCurrentPool(name)}>
 											<ButtonContainer>
@@ -143,7 +143,7 @@ const LPRewards = ({ currentTheme }) => {
 												</ButtonHeading>
 												<StyledSubtext>{t('lpRewards.shared.info.weeklyRewards')}:</StyledSubtext>
 												{!POOLS_COMPLETED.includes(name) ? (
-													<StyledDataLarge>{formatCurrency(distribution, 0)} SNX</StyledDataLarge>
+													<StyledDataLarge>{formatCurrency(distribution, 0)} HZN</StyledDataLarge>
 												) : (
 													<CompletedLabel>
 														<CompletedLabelHeading>

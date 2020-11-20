@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import snxJSConnector from '../../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../../helpers/hznJSConnector';
 import { getWalletDetails } from '../../../../ducks/wallet';
 
 import { bigNumberFormatter } from '../../../../helpers/formatters';
@@ -19,8 +19,8 @@ const CurvePool = ({ goBack, walletDetails }) => {
 	const { currentWallet } = walletDetails;
 
 	const fetchAllowance = useCallback(async () => {
-		if (!snxJSConnector.initialized) return;
-		const { curveSBTCContract, sBTCRewardsContract } = snxJSConnector;
+		if (!hznJSConnector.initialized) return;
+		const { curveSBTCContract, sBTCRewardsContract } = hznJSConnector;
 		try {
 			setIsLoading(true);
 			const allowance = await curveSBTCContract.allowance(
@@ -35,7 +35,7 @@ const CurvePool = ({ goBack, walletDetails }) => {
 			setAllowance(true);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentWallet, snxJSConnector.initialized]);
+	}, [currentWallet, hznJSConnector.initialized]);
 
 	useEffect(() => {
 		fetchAllowance();
@@ -44,7 +44,7 @@ const CurvePool = ({ goBack, walletDetails }) => {
 
 	useEffect(() => {
 		if (!currentWallet) return;
-		const { curveSBTCContract, sBTCRewardsContract } = snxJSConnector;
+		const { curveSBTCContract, sBTCRewardsContract } = hznJSConnector;
 
 		curveSBTCContract.on('Approval', (owner, spender) => {
 			if (owner === currentWallet && spender === sBTCRewardsContract.address) {
@@ -53,7 +53,7 @@ const CurvePool = ({ goBack, walletDetails }) => {
 		});
 
 		return () => {
-			if (snxJSConnector.initialized) {
+			if (hznJSConnector.initialized) {
 				curveSBTCContract.removeAllListeners('Approval');
 			}
 		};

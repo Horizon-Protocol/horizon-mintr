@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
-import snxJSConnector from '../../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../../helpers/hznJSConnector';
 
 import {
 	bigNumberFormatter,
@@ -30,16 +30,16 @@ const Stake = ({ walletDetails, goBack }) => {
 	const {
 		iEthRewardsContract,
 		iEth4RewardsContract,
-		snxJS: { Exchanger, Synthetix },
-	} = snxJSConnector;
+		hznJS: { Exchanger, Synthetix },
+	} = hznJSConnector;
 
 	const fetchData = useCallback(async () => {
-		if (!snxJSConnector.initialized) return;
+		if (!hznJSConnector.initialized) return;
 		try {
 			const {
-				snxJS: { iETH, Exchanger },
+				hznJS: { iETH, Exchanger },
 				iEthRewardsContract,
-			} = snxJSConnector;
+			} = hznJSConnector;
 			const [iETHBalance, iETHStaked, rewards, settlementOwing, rewardsOld] = await Promise.all([
 				iETH.balanceOf(currentWallet),
 				iEthRewardsContract.balanceOf(currentWallet),
@@ -64,7 +64,7 @@ const Stake = ({ walletDetails, goBack }) => {
 			console.log(e);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentWallet, snxJSConnector.initialized]);
+	}, [currentWallet, hznJSConnector.initialized]);
 
 	useEffect(() => {
 		fetchData();
@@ -72,7 +72,7 @@ const Stake = ({ walletDetails, goBack }) => {
 
 	useEffect(() => {
 		if (!currentWallet) return;
-		const { iEthRewardsContract } = snxJSConnector;
+		const { iEthRewardsContract } = hznJSConnector;
 
 		iEthRewardsContract.on('Staked', user => {
 			if (user === currentWallet) {
@@ -111,7 +111,7 @@ const Stake = ({ walletDetails, goBack }) => {
 		});
 
 		return () => {
-			if (snxJSConnector.initialized) {
+			if (hznJSConnector.initialized) {
 				iEthRewardsContract.removeAllListeners('Staked');
 				iEthRewardsContract.removeAllListeners('Withdrawn');
 				iEth4RewardsContract.removeAllListeners('RewardPaid');
@@ -154,12 +154,12 @@ const Stake = ({ walletDetails, goBack }) => {
 				/>
 				<DataBox
 					heading={t('lpRewards.shared.data.rewardsAvailable')}
-					body={`${balances ? formatCurrency(balances.rewards) : 0} SNX`}
+					body={`${balances ? formatCurrency(balances.rewards) : 0} HZN`}
 				/>
 				{balances && balances.rewardsOld ? (
 					<DataBox
 						heading={t('lpRewards.shared.data.rewardsAvailableOldContract')}
-						body={`${formatCurrency(balances.rewardsOld)} SNX`}
+						body={`${formatCurrency(balances.rewardsOld)} HZN`}
 					/>
 				) : null}
 			</BoxRow>
@@ -190,7 +190,7 @@ const Stake = ({ walletDetails, goBack }) => {
 							setCurrentScenario({
 								action: 'claim',
 								label: t('lpRewards.shared.actions.claiming'),
-								amount: `${balances && formatCurrency(balances.rewards)} SNX`,
+								amount: `${balances && formatCurrency(balances.rewards)} HZN`,
 								contractFunction: transactionSettings =>
 									iEthRewardsContract.getReward(transactionSettings),
 								contractFunctionEstimate: () => iEthRewardsContract.estimate.getReward(),
@@ -229,7 +229,7 @@ const Stake = ({ walletDetails, goBack }) => {
 								label: t('lpRewards.shared.actions.exiting'),
 								amount: `${balances && formatCurrency(balances.iETHStaked)} iETH & ${
 									balances && formatCurrency(balances.rewards)
-								} SNX`,
+								} HZN`,
 								contractFunction: transactionSettings =>
 									iEthRewardsContract.exit(transactionSettings),
 								contractFunctionEstimate: () => iEthRewardsContract.estimate.exit(),
@@ -247,7 +247,7 @@ const Stake = ({ walletDetails, goBack }) => {
 								setCurrentScenario({
 									action: 'claim',
 									label: t('lpRewards.shared.actions.claiming'),
-									amount: `${balances && formatCurrency(balances.rewardsOld)} SNX`,
+									amount: `${balances && formatCurrency(balances.rewardsOld)} HZN`,
 									contractFunction: transactionSettings =>
 										iEth4RewardsContract.getReward(transactionSettings),
 									contractFunctionEstimate: () => iEth4RewardsContract.estimate.getReward(),

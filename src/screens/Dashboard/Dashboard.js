@@ -94,7 +94,7 @@ const Dashboard = ({
 						</LiquidationContainer>
 					</PricesContainer>
 					<PricesContainer>
-						{['SNX', 'ETH'].map(asset => {
+						{['HZN', 'ETH'].map(asset => {
 							return (
 								<Asset key={asset}>
 									<CurrencyIcon src={`/images/currencies/${asset}.svg`} />

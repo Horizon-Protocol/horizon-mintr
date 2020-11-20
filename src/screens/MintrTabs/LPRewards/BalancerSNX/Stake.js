@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
-import snxJSConnector from '../../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../../helpers/hznJSConnector';
 
 import { bigNumberFormatter, formatCurrency } from '../../../../helpers/formatters';
 import TransactionPriceIndicator from '../../../../components/TransactionPriceIndicator';
@@ -36,16 +36,16 @@ const TRANSACTION_DETAILS = {
 
 const Stake = ({ walletDetails, goBack }) => {
 	const { t } = useTranslation();
-	const { balancerSNXRewardsContract } = snxJSConnector;
+	const { balancerSNXRewardsContract } = hznJSConnector;
 	const [balances, setBalances] = useState(null);
 	const [gasLimit, setGasLimit] = useState(TRANSACTION_DETAILS.stake.gasLimit);
 	const [currentScenario, setCurrentScenario] = useState({});
 	const { currentWallet } = walletDetails;
 
 	const fetchData = useCallback(async () => {
-		if (!snxJSConnector.initialized) return;
+		if (!hznJSConnector.initialized) return;
 		try {
-			const { balancerpoolContract, balancerSNXRewardsContract } = snxJSConnector;
+			const { balancerpoolContract, balancerSNXRewardsContract } = hznJSConnector;
 			const [balHeld, balStaked, rewards] = await Promise.all([
 				balancerpoolContract.balanceOf(currentWallet),
 				balancerSNXRewardsContract.balanceOf(currentWallet),
@@ -62,7 +62,7 @@ const Stake = ({ walletDetails, goBack }) => {
 			console.log(e);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentWallet, snxJSConnector.initialized]);
+	}, [currentWallet, hznJSConnector.initialized]);
 
 	useEffect(() => {
 		fetchData();
@@ -70,7 +70,7 @@ const Stake = ({ walletDetails, goBack }) => {
 
 	useEffect(() => {
 		if (!currentWallet) return;
-		const { balancerSNXRewardsContract } = snxJSConnector;
+		const { balancerSNXRewardsContract } = hznJSConnector;
 
 		balancerSNXRewardsContract.on('Staked', user => {
 			if (user === currentWallet) {
@@ -91,7 +91,7 @@ const Stake = ({ walletDetails, goBack }) => {
 		});
 
 		return () => {
-			if (snxJSConnector.initialized) {
+			if (hznJSConnector.initialized) {
 				balancerSNXRewardsContract.removeAllListeners('Staked');
 				balancerSNXRewardsContract.removeAllListeners('Withdrawn');
 				balancerSNXRewardsContract.removeAllListeners('RewardPaid');
@@ -131,7 +131,7 @@ const Stake = ({ walletDetails, goBack }) => {
 				/>
 				<DataBox
 					heading={t('lpRewards.shared.data.rewardsAvailable')}
-					body={`${balances ? formatCurrency(balances.rewards) : 0} SNX`}
+					body={`${balances ? formatCurrency(balances.rewards) : 0} HZN`}
 				/>
 			</BoxRow>
 			<ButtonBlock>
@@ -160,7 +160,7 @@ const Stake = ({ walletDetails, goBack }) => {
 								contract: 'balancerSNXRewardsContract',
 								action: 'claim',
 								label: t('lpRewards.shared.actions.claiming'),
-								amount: `${balances && formatCurrency(balances.rewards)} SNX`,
+								amount: `${balances && formatCurrency(balances.rewards)} HZN`,
 								...TRANSACTION_DETAILS['claim'],
 							})
 						}
@@ -195,7 +195,7 @@ const Stake = ({ walletDetails, goBack }) => {
 								label: t('lpRewards.shared.actions.exiting'),
 								amount: `${balances && formatCurrency(balances.balStaked, 2)} BPT & ${
 									balances && formatCurrency(balances.rewards)
-								} SNX`,
+								} HZN`,
 								...TRANSACTION_DETAILS['exit'],
 							})
 						}

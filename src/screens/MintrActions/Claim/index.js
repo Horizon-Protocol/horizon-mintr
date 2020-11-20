@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { connect } from 'react-redux';
 import { addSeconds, formatDistanceToNow } from 'date-fns';
-import snxJSConnector from '../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../helpers/hznJSConnector';
 
 import { SliderContext } from '../../../components/ScreenSlider';
 import { setCurrentTab, getCurrentTheme } from '../../../ducks/ui';
@@ -50,10 +50,10 @@ const useGetFeeData = walletAddress => {
 					feesAreClaimable,
 					feesAvailable,
 				] = await Promise.all([
-					snxJSConnector.snxJS.FeePool.feePeriodDuration(),
-					snxJSConnector.snxJS.FeePool.recentFeePeriods(FEE_PERIOD),
-					snxJSConnector.snxJS.FeePool.isFeesClaimable(walletAddress),
-					snxJSConnector.snxJS.FeePool.feesAvailable(walletAddress),
+					hznJSConnector.hznJS.FeePool.feePeriodDuration(),
+					hznJSConnector.hznJS.FeePool.recentFeePeriods(FEE_PERIOD),
+					hznJSConnector.hznJS.FeePool.isFeesClaimable(walletAddress),
+					hznJSConnector.hznJS.FeePool.feesAvailable(walletAddress),
 				]);
 
 				const closeIn = getFeePeriodCountdown(recentFeePeriods, feePeriodDuration);
@@ -81,8 +81,8 @@ const useGetGasEstimate = (setFetchingGasLimit, setGasLimit) => {
 			setError(null);
 			try {
 				const {
-					snxJS: { FeePool },
-				} = snxJSConnector;
+					hznJS: { FeePool },
+				} = hznJSConnector;
 				setFetchingGasLimit(true);
 				const gasEstimate = await FeePool.contract.estimate.claimFees();
 				setFetchingGasLimit(false);
@@ -123,8 +123,8 @@ const Claim = ({
 	const onClaim = async () => {
 		try {
 			const {
-				snxJS: { FeePool },
-			} = snxJSConnector;
+				hznJS: { FeePool },
+			} = hznJSConnector;
 			handleNext(1);
 			const transaction = await FeePool.claimFees({
 				gasPrice: currentGasPrice.formattedPrice,

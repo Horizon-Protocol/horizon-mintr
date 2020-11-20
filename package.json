@@ -1,9 +1,9 @@
 {
-	"name": "synthetix-mintr",
+	"name": "horizon-mintr",
 	"version": "2.33.1",
 	"private": true,
 	"license": "MIT",
-	"author": "Synthetix",
+	"author": "Horizon",
 	"dependencies": {
 		"@eth-optimism/watcher": "0.0.1-alpha.3",
 		"@material-ui/core": "^4.9.14",
@@ -70,8 +70,8 @@
 	},
 	"scripts": {
 		"clean-install": "rm ./package-lock.json && rm -rf node_modules/* && npm i",
-		"start": "REACT_APP_VERSION=$npm_package_version react-scripts --max-old-space-size=4096 start",
-		"build": "REACT_APP_VERSION=$npm_package_version react-scripts --max-old-space-size=4096 build",
+		"start": "react-scripts --max-old-space-size=4096 start",
+		"build": "react-scripts --max-old-space-size=4096 build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"tsc": "tsc --noemit",

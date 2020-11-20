@@ -129,7 +129,7 @@ const Action = ({
 							<Fragment>
 								<PLarge>{t('mintrActions.burn.action.transferrable.title')}</PLarge>
 								<Input
-									singleSynth={'SNX'}
+									singleSynth={'HZN'}
 									onChange={e => setTransferableAmount(e.target.value)}
 									value={transferableAmount}
 									placeholder="0.00"

@@ -8,7 +8,7 @@ import { getCurrentGasPrice } from '../../../../ducks/network';
 
 import { TOKEN_ALLOWANCE_LIMIT } from '../../../../constants/network';
 
-import snxJSConnector from '../../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../../helpers/hznJSConnector';
 
 import { PageTitle, PLarge } from '../../../../components/Typography';
 import { ButtonPrimary, ButtonTertiary } from '../../../../components/Button';
@@ -18,8 +18,8 @@ const SetAllowance = ({ createTransaction, goBack, currentGasPrice }) => {
 	const [error, setError] = useState(null);
 
 	const onUnlock = async () => {
-		const { parseEther } = snxJSConnector.utils;
-		const { uniswapV1Contract, unipoolSETHContract } = snxJSConnector;
+		const { parseEther } = hznJSConnector.utils;
+		const { uniswapV1Contract, unipoolSETHContract } = hznJSConnector;
 		try {
 			setError(null);
 

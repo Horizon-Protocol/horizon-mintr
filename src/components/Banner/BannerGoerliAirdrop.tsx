@@ -8,7 +8,7 @@ import { fontFamilies } from 'styles/themes';
 import { RootState } from 'ducks/types';
 import { getSNXBalance } from 'ducks/balances';
 import { getCurrentWallet, getCurrentNetworkId } from 'ducks/wallet';
-import snxJSConnector from 'helpers/snxJSConnector';
+import hznJSConnector from 'helpers/hznJSConnector';
 import { INFURA_JSON_RPC_URLS } from 'helpers/networkHelper';
 
 const GOERLI_NETWORK_ID = 5;
@@ -30,8 +30,8 @@ const L2Banner: FC<L2BannerProps> = ({ setCurrentPage, snxBalance, walletAddress
 			if (networkId === GOERLI_NETWORK_ID) return;
 			try {
 				const {
-					snxJS: { contractSettings },
-				} = snxJSConnector;
+					hznJS: { contractSettings },
+				} = hznJSConnector;
 				const goerliProvider = new providers.JsonRpcProvider(
 					INFURA_JSON_RPC_URLS[GOERLI_NETWORK_ID]
 				);

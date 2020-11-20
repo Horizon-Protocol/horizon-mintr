@@ -6,7 +6,7 @@ import { PAGES_BY_KEY } from 'constants/ui';
 import { connect } from 'react-redux';
 import { bigNumberFormatter } from 'helpers/formatters';
 import { getWalletDetails } from 'ducks/wallet';
-import snxJSConnector from '../../helpers/snxJSConnector';
+import hznJSConnector from '../../helpers/hznJSConnector';
 import Spinner from '../../components/Spinner';
 import { getWalletBalancesWithRates } from 'ducks/balances';
 import { getDebtStatusData } from 'ducks/debtStatus';
@@ -37,7 +37,7 @@ export const L2Onboarding: React.FC<L2OnboardingProps> = ({
 	const [l2TransactionHash, setL2TransactionHash] = useState(null);
 
 	const validateAvailableBalance = useCallback(async () => {
-		const sUSDBalanceBN = await snxJSConnector.snxJS.sUSD.balanceOf(currentWallet);
+		const sUSDBalanceBN = await hznJSConnector.hznJS.sUSD.balanceOf(currentWallet);
 		const sUSDBalanceNB = bigNumberFormatter(sUSDBalanceBN);
 		setSUSDBalance(sUSDBalanceNB);
 

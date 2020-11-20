@@ -5,7 +5,7 @@ import Action from './Action';
 import Confirmation from './Confirmation';
 import Complete from './Complete';
 
-import snxJSConnector from '../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../helpers/hznJSConnector';
 import { addBufferToGasLimit } from '../../../helpers/networkHelper';
 
 import { SliderContext } from '../../../components/ScreenSlider';
@@ -29,14 +29,14 @@ const useGetWalletSynths = (walletAddress, setBaseSynth) => {
 			try {
 				let walletSynths = [];
 
-				const synthList = snxJSConnector.synths
+				const synthList = hznJSConnector.synths
 					.filter(({ name, asset }) => {
 						return name !== 'sUSD' && asset;
 					})
 					.map(({ name }) => name);
 
 				const balanceResults = await Promise.all(
-					synthList.map(synth => snxJSConnector.snxJS[synth].balanceOf(walletAddress))
+					synthList.map(synth => hznJSConnector.hznJS[synth].balanceOf(walletAddress))
 				);
 
 				balanceResults.forEach((synthBalance, index) => {
@@ -49,7 +49,7 @@ const useGetWalletSynths = (walletAddress, setBaseSynth) => {
 						});
 				});
 
-				const exchangeRatesResults = await snxJSConnector.snxJS.ExchangeRates.ratesForCurrencies(
+				const exchangeRatesResults = await hznJSConnector.hznJS.ExchangeRates.ratesForCurrencies(
 					walletSynths.map(({ name }) => bytesFormatter(name))
 				);
 
@@ -94,8 +94,8 @@ const useGetGasEstimate = (
 				const amountToExchange =
 					baseAmount === baseSynth.balance
 						? baseSynth.rawBalance
-						: snxJSConnector.utils.parseEther(baseAmount.toString());
-				gasEstimate = await snxJSConnector.snxJS.Synthetix.contract.estimate.exchange(
+						: hznJSConnector.utils.parseEther(baseAmount.toString());
+				gasEstimate = await hznJSConnector.hznJS.Synthetix.contract.estimate.exchange(
 					bytesFormatter(baseSynth.name),
 					amountToExchange,
 					bytesFormatter('sUSD')
@@ -155,7 +155,7 @@ const Trade = ({
 	const getMaxSecsLeftInWaitingPeriod = useCallback(async () => {
 		if (!baseSynth || !baseAmount) return;
 		try {
-			const maxSecsLeftInWaitingPeriod = await snxJSConnector.snxJS.Exchanger.maxSecsLeftInWaitingPeriod(
+			const maxSecsLeftInWaitingPeriod = await hznJSConnector.hznJS.Exchanger.maxSecsLeftInWaitingPeriod(
 				currentWallet,
 				bytesFormatter(baseSynth.name)
 			);
@@ -175,8 +175,8 @@ const Trade = ({
 			if (!baseSynth) return;
 			try {
 				const {
-					snxJS: { Exchanger },
-				} = snxJSConnector;
+					hznJS: { Exchanger },
+				} = hznJSConnector;
 				const feeRateForExchange = await Exchanger.feeRateForExchange(
 					bytesFormatter(baseSynth.name),
 					bytesFormatter('sUSD')
@@ -194,9 +194,9 @@ const Trade = ({
 			const amountToExchange =
 				baseAmount === baseSynth.balance
 					? baseSynth.rawBalance
-					: snxJSConnector.utils.parseEther(baseAmount.toString());
+					: hznJSConnector.utils.parseEther(baseAmount.toString());
 			handleNext(1);
-			const transaction = await snxJSConnector.snxJS.Synthetix.exchange(
+			const transaction = await hznJSConnector.hznJS.Synthetix.exchange(
 				bytesFormatter(baseSynth.name),
 				amountToExchange,
 				bytesFormatter('sUSD'),

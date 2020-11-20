@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import snxJSConnector from '../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../helpers/hznJSConnector';
 
 import { formatCurrency } from '../../../helpers/formatters';
 import { SliderContext } from '../../../components/ScreenSlider';
@@ -20,8 +20,8 @@ const useGetGasEstimate = (setFetchingGasLimit, setGasLimit) => {
 	const [error, setError] = useState(null);
 	useEffect(() => {
 		const {
-			snxJS: { Depot },
-		} = snxJSConnector;
+			hznJS: { Depot },
+		} = hznJSConnector;
 		const getGasEstimate = async () => {
 			setError(null);
 			try {
@@ -60,7 +60,7 @@ const Withdraw = ({
 	const onWithdraw = async () => {
 		try {
 			handleNext(1);
-			const transaction = await snxJSConnector.snxJS.Depot.withdrawMyDepositedSynths({
+			const transaction = await hznJSConnector.hznJS.Depot.withdrawMyDepositedSynths({
 				gasPrice: currentGasPrice.formattedPrice,
 				gasLimit,
 			});

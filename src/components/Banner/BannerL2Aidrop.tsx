@@ -8,7 +8,7 @@ const L2Banner: FC = () => {
 			<ContainerBanner>
 				<StyledPMedium>
 					This wallet is eligible to participate in the Optimistic Ethereum L2 testnet trial — try
-					it out now and earn L2 SNX rewards!
+					it out now and earn L2 HZN rewards!
 				</StyledPMedium>
 				<DiagonalArrow />
 			</ContainerBanner>

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 
-import snxJSConnector from '../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../helpers/hznJSConnector';
 import { addBufferToGasLimit } from '../../../helpers/networkHelper';
 import { formatCurrency, bigNumberFormatter } from '../../../helpers/formatters';
 
@@ -84,8 +84,8 @@ const useGetGasEstimateError = (setFetchingGasLimit, setGasLimit) => {
 	useEffect(() => {
 		const getGasEstimate = async () => {
 			const {
-				snxJS: { SynthetixEscrow },
-			} = snxJSConnector;
+				hznJS: { SynthetixEscrow },
+			} = hznJSConnector;
 			setError(null);
 			setFetchingGasLimit(true);
 			try {
@@ -109,8 +109,8 @@ const useGetVestingData = walletAddress => {
 	const [data, setData] = useState({});
 	useEffect(() => {
 		const {
-			snxJS: { EscrowChecker },
-		} = snxJSConnector;
+			hznJS: { EscrowChecker },
+		} = hznJSConnector;
 		const getVestingData = async () => {
 			try {
 				setData({ loading: true });
@@ -200,7 +200,7 @@ const VestingSchedule = ({ state }) => {
 			<H5>{t('escrow.tokenSale.table.title')}</H5>
 			<TableHeader>
 				<TableHeaderMedium>{t('escrow.tokenSale.table.date')}</TableHeaderMedium>
-				<TableHeaderMedium>SNX {t('escrow.tokenSale.table.quantity')}</TableHeaderMedium>
+				<TableHeaderMedium>HZN {t('escrow.tokenSale.table.quantity')}</TableHeaderMedium>
 			</TableHeader>
 			<TableWrapper>
 				<Table cellSpacing="0">
@@ -212,7 +212,7 @@ const VestingSchedule = ({ state }) => {
 					<DataHeaderLarge style={{ textTransform: 'uppercase' }}>
 						{t('escrow.tokenSale.total')}
 					</DataHeaderLarge>
-					<DataMegaEscrow>{totalVesting ? formatCurrency(totalVesting) : '--'} SNX</DataMegaEscrow>
+					<DataMegaEscrow>{totalVesting ? formatCurrency(totalVesting) : '--'} HZN</DataMegaEscrow>
 				</DataBlock>
 			</RightBlock>
 		</ScheduleWrapper>

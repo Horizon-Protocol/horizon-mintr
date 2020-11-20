@@ -139,7 +139,7 @@ export const getWalletBalancesWithRates = createSelector(
 export const getTotalSynthsBalance = (state: RootState) => getBalanceState(state).totalSynths;
 
 export const getSNXBalance = (state: RootState) =>
-	getBalanceState(state)?.crypto?.[CRYPTO_CURRENCY_TO_KEY.SNX];
+	getBalanceState(state)?.crypto?.[CRYPTO_CURRENCY_TO_KEY.HZN];
 
 function* fetchBalances() {
 	const currentWallet = yield select(getCurrentWallet);

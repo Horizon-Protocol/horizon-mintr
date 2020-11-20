@@ -1,4 +1,4 @@
-import { setSigner } from '../helpers/snxJSConnector';
+import { setSigner } from '../helpers/hznJSConnector';
 import { getAddress } from '../helpers/formatters';
 
 const UPDATE_WALLET_STATUS = 'WALLET/UPDATE_WALLET_STATUS';

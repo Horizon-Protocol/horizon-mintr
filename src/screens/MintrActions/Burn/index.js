@@ -6,7 +6,7 @@ import Action from './Action';
 import Confirmation from './Confirmation';
 import Complete from './Complete';
 
-import snxJSConnector from '../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../helpers/hznJSConnector';
 import { addBufferToGasLimit } from '../../../helpers/networkHelper';
 
 import { SliderContext } from '../../../components/ScreenSlider';
@@ -23,18 +23,18 @@ import { fetchDebtStatusRequest } from 'ducks/debtStatus';
 
 const useGetDebtData = (walletAddress, sUSDBytes) => {
 	const [data, setData] = useState({});
-	const SNXBytes = bytesFormatter('SNX');
+	const SNXBytes = bytesFormatter('HZN');
 	useEffect(() => {
 		const getDebtData = async () => {
 			try {
 				const results = await Promise.all([
-					snxJSConnector.snxJS.Synthetix.debtBalanceOf(walletAddress, sUSDBytes),
-					snxJSConnector.snxJS.sUSD.balanceOf(walletAddress),
-					snxJSConnector.snxJS.SynthetixState.issuanceRatio(),
-					snxJSConnector.snxJS.ExchangeRates.rateForCurrency(SNXBytes),
-					snxJSConnector.snxJS.RewardEscrow.totalEscrowedAccountBalance(walletAddress),
-					snxJSConnector.snxJS.SynthetixEscrow.balanceOf(walletAddress),
-					snxJSConnector.snxJS.Synthetix.maxIssuableSynths(walletAddress),
+					hznJSConnector.hznJS.Synthetix.debtBalanceOf(walletAddress, sUSDBytes),
+					hznJSConnector.hznJS.sUSD.balanceOf(walletAddress),
+					hznJSConnector.hznJS.SynthetixState.issuanceRatio(),
+					hznJSConnector.hznJS.ExchangeRates.rateForCurrency(SNXBytes),
+					hznJSConnector.hznJS.RewardEscrow.totalEscrowedAccountBalance(walletAddress),
+					hznJSConnector.hznJS.SynthetixEscrow.balanceOf(walletAddress),
+					hznJSConnector.hznJS.Synthetix.maxIssuableSynths(walletAddress),
 				]);
 				const [
 					debt,
@@ -104,9 +104,9 @@ const useGetGasEstimate = (
 					amountToBurn =
 						burnAmount === maxBurnAmount
 							? maxBurnAmountBN
-							: snxJSConnector.utils.parseEther(burnAmount.toString());
+							: hznJSConnector.utils.parseEther(burnAmount.toString());
 				} else amountToBurn = 0;
-				gasEstimate = await snxJSConnector.snxJS.Synthetix.contract.estimate.burnSynths(
+				gasEstimate = await hznJSConnector.hznJS.Synthetix.contract.estimate.burnSynths(
 					amountToBurn
 				);
 				setGasLimit(addBufferToGasLimit(gasEstimate));
@@ -154,8 +154,8 @@ const Burn = ({
 
 	const getMaxSecsLeftInWaitingPeriod = useCallback(async () => {
 		const {
-			snxJS: { Exchanger },
-		} = snxJSConnector;
+			hznJS: { Exchanger },
+		} = hznJSConnector;
 		try {
 			const maxSecsLeftInWaitingPeriod = await Exchanger.maxSecsLeftInWaitingPeriod(
 				currentWallet,
@@ -170,8 +170,8 @@ const Burn = ({
 
 	const getIssuanceDelay = useCallback(async () => {
 		const {
-			snxJS: { Issuer },
-		} = snxJSConnector;
+			hznJS: { Issuer },
+		} = hznJSConnector;
 		try {
 			const [canBurnSynths, lastIssueEvent, minimumStakeTime] = await Promise.all([
 				Issuer.canBurnSynths(currentWallet),
@@ -211,8 +211,8 @@ const Burn = ({
 
 	const onBurn = async ({ burnToTarget = false }) => {
 		const {
-			snxJS: { Synthetix, Issuer },
-		} = snxJSConnector;
+			hznJS: { Synthetix, Issuer },
+		} = hznJSConnector;
 		try {
 			if (await Synthetix.isWaitingPeriod(bytesFormatter('sUSD')))
 				throw new Error('Waiting period for sUSD is still ongoing');
@@ -234,7 +234,7 @@ const Burn = ({
 				const amountToBurn =
 					burnAmount === maxBurnAmount
 						? maxBurnAmountBN
-						: snxJSConnector.utils.parseEther(burnAmount.toString());
+						: hznJSConnector.utils.parseEther(burnAmount.toString());
 				transaction = await Synthetix.burnSynths(amountToBurn, {
 					gasPrice: currentGasPrice.formattedPrice,
 					gasLimit,

@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import snxJSConnector from '../../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../../helpers/hznJSConnector';
 import { getWalletDetails } from '../../../../ducks/wallet';
 
 import { bigNumberFormatter } from '../../../../helpers/formatters';
@@ -19,11 +19,11 @@ const IBtc = ({ goBack, walletDetails }) => {
 	const { currentWallet } = walletDetails;
 
 	const fetchAllowance = useCallback(async () => {
-		if (!snxJSConnector.initialized) return;
+		if (!hznJSConnector.initialized) return;
 		const {
-			snxJS: { iBTC },
+			hznJS: { iBTC },
 			iBtc2RewardsContract,
-		} = snxJSConnector;
+		} = hznJSConnector;
 		try {
 			setIsLoading(true);
 			const allowance = await iBTC.allowance(currentWallet, iBtc2RewardsContract.address);
@@ -35,7 +35,7 @@ const IBtc = ({ goBack, walletDetails }) => {
 			setAllowance(true);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentWallet, snxJSConnector.initialized]);
+	}, [currentWallet, hznJSConnector.initialized]);
 
 	useEffect(() => {
 		fetchAllowance();
@@ -45,9 +45,9 @@ const IBtc = ({ goBack, walletDetails }) => {
 	useEffect(() => {
 		if (!currentWallet) return;
 		const {
-			snxJS: { iBTC },
+			hznJS: { iBTC },
 			iBtc2RewardsContract,
-		} = snxJSConnector;
+		} = hznJSConnector;
 
 		iBTC.contract.on('Approval', (owner, spender) => {
 			if (owner === currentWallet && spender === iBtc2RewardsContract.address) {
@@ -56,7 +56,7 @@ const IBtc = ({ goBack, walletDetails }) => {
 		});
 
 		return () => {
-			if (snxJSConnector.initialized) {
+			if (hznJSConnector.initialized) {
 				iBTC.contract.removeAllListeners('Approval');
 			}
 		};

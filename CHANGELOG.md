@@ -16,7 +16,7 @@
 ### Added
 
 - Debt tracker page. You can now track you debt over time, and see the variations between your actual and issued debt. This page also allows you to see all the synths you are currently holding in your wallet.
-- SNX/USDC Balancer pool added. You can now stake your BPT tokens and get weekly SNX rewards.
+- HZN/USDC Balancer pool added. You can now stake your BPT tokens and get weekly HZN rewards.
 
 ### Changed
 

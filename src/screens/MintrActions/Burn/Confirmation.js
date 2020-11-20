@@ -45,7 +45,7 @@ const Confirmation = ({
 							<DataHeaderLarge>
 								{t('mintrActions.burn.confirmation.subActionDescription')}
 							</DataHeaderLarge>
-							<Amount>{formatCurrency(transferableAmount)} SNX</Amount>
+							<Amount>{formatCurrency(transferableAmount)} HZN</Amount>
 						</Box>
 					</Details>
 				</Top>

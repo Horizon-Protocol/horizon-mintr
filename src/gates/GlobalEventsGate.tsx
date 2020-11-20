@@ -20,8 +20,8 @@ const GlobalEventsGate: FC<PropsFromRedux> = ({ currentWallet, setSystemUpgradin
 	useEffect(() => {
 		// const {
 		// 	//@ts-ignore
-		// 	snxJS: { SystemStatus, ExchangeRates },
-		// } = snxJSConnector;
+		// 	hznJS: { SystemStatus, ExchangeRates },
+		// } = hznJSConnector;
 		// SystemStatus.contract.on(SYSTEM_STATUS_EVENTS.SYSTEM_SUSPENDED, (reason: number) => {
 		// 	setSystemUpgrading({ reason: true });
 		// });

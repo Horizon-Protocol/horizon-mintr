@@ -53,7 +53,7 @@ const Confirmation = ({
 									mintAmount,
 									SNXPrice,
 								})}
-								{' SNX'}
+								{' HZN'}
 							</Amount>
 						</Box>
 					</Details>

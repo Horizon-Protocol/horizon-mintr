@@ -5,7 +5,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import orderBy from 'lodash/orderBy';
 import last from 'lodash/last';
 import snxData from 'synthetix-data';
-import snxJSConnector from 'helpers/snxJSConnector';
+import hznJSConnector from 'helpers/hznJSConnector';
 
 import Tooltip from 'components/Tooltip';
 import { SlidePage, SliderContent } from 'components/ScreenSlider';
@@ -31,14 +31,14 @@ const Track = ({ onDestroy, currentWallet, balances: { totalSynths }, sUSDRate, 
 
 	useEffect(() => {
 		if (!currentWallet) return;
-		const { snxJS } = snxJSConnector;
+		const { hznJS } = hznJSConnector;
 		const fetchEvents = async () => {
 			try {
 				const [burnEvents, mintEvents, debtHistory, currentDebt] = await Promise.all([
 					snxData.snx.burned({ account: currentWallet, max: 1000 }),
 					snxData.snx.issued({ account: currentWallet, max: 1000 }),
 					snxData.snx.debtSnapshot({ account: currentWallet, max: 1000 }),
-					snxJS.Synthetix.debtBalanceOf(currentWallet, bytesFormatter('sUSD')),
+					hznJS.Synthetix.debtBalanceOf(currentWallet, bytesFormatter('sUSD')),
 				]);
 
 				const burnEventsMap = burnEvents.map(event => {

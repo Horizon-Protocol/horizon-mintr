@@ -19,7 +19,7 @@ import { formatCurrency } from '../../helpers/formatters';
 import { FlexDivCentered } from '../../styles/common';
 import { Info } from '../../components/Icons';
 
-const TABLE_COLUMNS = ['SNX', 'sUSD', 'ETH', 'Synths', 'Debt'];
+const TABLE_COLUMNS = ['HZN', 'sUSD', 'ETH', 'Synths', 'Debt'];
 const AGGREGATED_COLUMNS = ['Synths', 'Debt'];
 
 const renderTooltip = (tooltip, t, mode) => {
@@ -55,7 +55,7 @@ const mapBalanceData = (waitingForData, walletBalancesWithRates, rates, debtData
 			name: AGGREGATED_COLUMNS.includes(column)
 				? `dashboard.table.${column.toLowerCase()}`
 				: column,
-			icon: AGGREGATED_COLUMNS.includes(column) ? 'SNX' : column,
+			icon: AGGREGATED_COLUMNS.includes(column) ? 'HZN' : column,
 			...getBalance(column, balances, debtData, rates),
 		};
 	});

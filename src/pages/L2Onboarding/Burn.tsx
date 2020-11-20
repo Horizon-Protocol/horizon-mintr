@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { getWalletDetails } from 'ducks/wallet';
 import { getCurrentGasPrice } from 'ducks/network';
 import { bigNumberFormatter, bytesFormatter, secondsToTime } from 'helpers/formatters';
-import snxJSConnector from 'helpers/snxJSConnector';
+import hznJSConnector from 'helpers/hznJSConnector';
 import GasIndicator from 'components/L2Onboarding/GasIndicator';
 import ErrorMessage from '../../components/ErrorMessage';
 import { addSeconds, differenceInSeconds } from 'date-fns';
@@ -32,17 +32,17 @@ interface BurnProps {
 
 const useGetDebtData = (walletAddress, sUSDBytes) => {
 	const [data, setData] = useState({});
-	const SNXBytes = bytesFormatter('SNX');
+	const SNXBytes = bytesFormatter('HZN');
 	useEffect(() => {
 		const getDebtData = async () => {
 			try {
 				const results = await Promise.all([
-					snxJSConnector.snxJS.Synthetix.debtBalanceOf(walletAddress, sUSDBytes),
-					snxJSConnector.snxJS.SynthetixState.issuanceRatio(),
-					snxJSConnector.snxJS.ExchangeRates.rateForCurrency(SNXBytes),
-					snxJSConnector.snxJS.RewardEscrow.totalEscrowedAccountBalance(walletAddress),
-					snxJSConnector.snxJS.SynthetixEscrow.balanceOf(walletAddress),
-					snxJSConnector.snxJS.Synthetix.maxIssuableSynths(walletAddress),
+					hznJSConnector.hznJS.Synthetix.debtBalanceOf(walletAddress, sUSDBytes),
+					hznJSConnector.hznJS.SynthetixState.issuanceRatio(),
+					hznJSConnector.hznJS.ExchangeRates.rateForCurrency(SNXBytes),
+					hznJSConnector.hznJS.RewardEscrow.totalEscrowedAccountBalance(walletAddress),
+					hznJSConnector.hznJS.SynthetixEscrow.balanceOf(walletAddress),
+					hznJSConnector.hznJS.Synthetix.maxIssuableSynths(walletAddress),
 				]);
 				const [
 					debt,
@@ -108,7 +108,7 @@ const Burn: React.FC<BurnProps> = ({
 					if (issuanceDelay) throw new Error('Waiting period to burn is still ongoing');
 					if (burnAmount > sUSDBalance) throw new Error('input.error.notEnoughToBurn');
 					setFetchingGasLimit(true);
-					const gasEstimate = await snxJSConnector.snxJS.Synthetix.contract.estimate.burnSynths(
+					const gasEstimate = await hznJSConnector.hznJS.Synthetix.contract.estimate.burnSynths(
 						debtData.debtBalanceBN
 					);
 					setGasLimit(addBufferToGasLimit(gasEstimate));
@@ -134,8 +134,8 @@ const Burn: React.FC<BurnProps> = ({
 
 	const getMaxSecsLeftInWaitingPeriod = useCallback(async () => {
 		const {
-			snxJS: { Exchanger },
-		} = snxJSConnector;
+			hznJS: { Exchanger },
+		} = hznJSConnector;
 		try {
 			const maxSecsLeftInWaitingPeriod = await Exchanger.maxSecsLeftInWaitingPeriod(
 				currentWallet,
@@ -150,8 +150,8 @@ const Burn: React.FC<BurnProps> = ({
 
 	const getIssuanceDelay = useCallback(async () => {
 		const {
-			snxJS: { Issuer },
-		} = snxJSConnector;
+			hznJS: { Issuer },
+		} = hznJSConnector;
 		try {
 			const [canBurnSynths, lastIssueEvent, minimumStakeTime] = await Promise.all([
 				Issuer.canBurnSynths(currentWallet),
@@ -186,8 +186,8 @@ const Burn: React.FC<BurnProps> = ({
 	const onBurn = async () => {
 		setIsBurning(true);
 		const {
-			snxJS: { Synthetix, Issuer },
-		} = snxJSConnector;
+			hznJS: { Synthetix, Issuer },
+		} = hznJSConnector;
 		try {
 			if (await Synthetix.isWaitingPeriod(bytesFormatter('sUSD')))
 				throw new Error('Waiting period for sUSD is still ongoing');
@@ -260,7 +260,7 @@ const Burn: React.FC<BurnProps> = ({
 			<Stepper activeIndex={0} />
 			<HeaderIcon
 				title="Burn all L1 debt"
-				subtext="To begin migrating your SNX, first you’ll need to burn enough sUSD to cover your debt and unlock your staked SNX. "
+				subtext="To begin migrating your HZN, first you’ll need to burn enough sUSD to cover your debt and unlock your staked HZN. "
 				icon={<BurnIcon />}
 			/>
 			<ContainerStats>
@@ -273,7 +273,7 @@ const Burn: React.FC<BurnProps> = ({
 				<StatBox
 					multiple
 					subtext={'UNLOCKING:'}
-					tokenName="SNX"
+					tokenName="HZN"
 					content={`${
 						Math.max((debtData.debtBalance - debtEscrow) / issuanceRatio / SNXPrice, 0) ?? 0
 					}`}

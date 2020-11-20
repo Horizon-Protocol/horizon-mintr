@@ -8,7 +8,7 @@ import uniq from 'lodash/uniq';
 import { getWalletDetails } from '../../ducks/wallet';
 import { getCurrentGasPrice } from '../../ducks/network';
 
-import snxJSConnector from '../../helpers/snxJSConnector';
+import hznJSConnector from '../../helpers/hznJSConnector';
 import { parseBytes32String } from '../../helpers/formatters';
 
 import ModalContainer from './ModalContainer';
@@ -35,8 +35,8 @@ const DelegateModal = ({ walletDetails: { currentWallet }, currentGasPrice }) =>
 
 	const getApprovedAddresses = useCallback(async () => {
 		const {
-			snxJS: { DelegateApprovals, contractSettings },
-		} = snxJSConnector;
+			hznJS: { DelegateApprovals, contractSettings },
+		} = hznJSConnector;
 		const filter = {
 			fromBlock: 0,
 			toBlock: 9e9,
@@ -76,8 +76,8 @@ const DelegateModal = ({ walletDetails: { currentWallet }, currentGasPrice }) =>
 	useEffect(() => {
 		if (!currentWallet) return;
 		const {
-			snxJS: { DelegateApprovals },
-		} = snxJSConnector;
+			hznJS: { DelegateApprovals },
+		} = hznJSConnector;
 		DelegateApprovals.contract.on('Approval', (authoriser, delegate, action) => {
 			if (authoriser === currentWallet && parseBytes32String(action) === APPROVE_ALL_ACTION) {
 				getApprovedAddresses();
@@ -89,7 +89,7 @@ const DelegateModal = ({ walletDetails: { currentWallet }, currentGasPrice }) =>
 			}
 		});
 		return () => {
-			if (snxJSConnector.initialized) {
+			if (hznJSConnector.initialized) {
 				DelegateApprovals.contract.removeAllListeners('Approval');
 				DelegateApprovals.contract.removeAllListeners('WithdrawApproval');
 			}
@@ -99,8 +99,8 @@ const DelegateModal = ({ walletDetails: { currentWallet }, currentGasPrice }) =>
 
 	const onSubmit = async () => {
 		const {
-			snxJS: { DelegateApprovals },
-		} = snxJSConnector;
+			hznJS: { DelegateApprovals },
+		} = hznJSConnector;
 		try {
 			const gasEstimate = await DelegateApprovals.contract.estimate.approveAllDelegatePowers(
 				newAddress
@@ -116,8 +116,8 @@ const DelegateModal = ({ walletDetails: { currentWallet }, currentGasPrice }) =>
 
 	const onRemove = async addr => {
 		const {
-			snxJS: { DelegateApprovals },
-		} = snxJSConnector;
+			hznJS: { DelegateApprovals },
+		} = hznJSConnector;
 		try {
 			const gasEstimate = await DelegateApprovals.contract.estimate.removeAllDelegatePowers(addr);
 			await DelegateApprovals.removeAllDelegatePowers(addr, {

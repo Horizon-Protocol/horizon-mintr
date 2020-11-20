@@ -1,5 +1,5 @@
 import numbro from 'numbro';
-import snxJSConnector from '../helpers/snxJSConnector';
+import hznJSConnector from '../helpers/hznJSConnector';
 
 export const formatCurrency = (value, decimals = 2) => {
 	if (!value) return 0;
@@ -19,15 +19,15 @@ function str_pad_left(string, pad, length) {
 	return (new Array(length + 1).join(pad) + string).slice(-length);
 }
 
-export const bytesFormatter = input => snxJSConnector.ethersUtils.formatBytes32String(input);
+export const bytesFormatter = input => hznJSConnector.ethersUtils.formatBytes32String(input);
 
-export const bigNumberFormatter = value => Number(snxJSConnector.utils.formatEther(value));
+export const bigNumberFormatter = value => Number(hznJSConnector.utils.formatEther(value));
 
-export const bigNumberToStringFormatter = value => snxJSConnector.utils.formatEther(value);
+export const bigNumberToStringFormatter = value => hznJSConnector.utils.formatEther(value);
 
-export const parseBytes32String = input => snxJSConnector.ethersUtils.parseBytes32String(input);
+export const parseBytes32String = input => hznJSConnector.ethersUtils.parseBytes32String(input);
 
-export const getAddress = addr => snxJSConnector.ethersUtils.getAddress(addr);
+export const getAddress = addr => hznJSConnector.ethersUtils.getAddress(addr);
 
 export const secondsToTime = seconds => {
 	const hours = Math.floor(seconds / 3600);

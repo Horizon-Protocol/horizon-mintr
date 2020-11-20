@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled, { keyframes } from 'styled-components';
-import snxJSConnector from '../../helpers/snxJSConnector';
+import hznJSConnector from '../../helpers/hznJSConnector';
 import { useTranslation, Trans } from 'react-i18next';
 
 import { bigNumberFormatter, formatCurrency } from '../../helpers/formatters';
@@ -49,7 +49,7 @@ const useGetWallets = (paginatorIndex, derivationPath, availableWallets, updateW
 		setIsLoading(true);
 		const getWallets = async () => {
 			try {
-				const results = await snxJSConnector.signer.getNextAddresses(walletIndex, WALLET_PAGE_SIZE);
+				const results = await hznJSConnector.signer.getNextAddresses(walletIndex, WALLET_PAGE_SIZE);
 				if (!results) throw new Error('Could not get addresses from wallet');
 				const nextWallets = results.map(address => {
 					return {
@@ -65,9 +65,9 @@ const useGetWallets = (paginatorIndex, derivationPath, availableWallets, updateW
 
 				const getBalanceForWallet = async wallet => {
 					return {
-						snxBalance: await snxJSConnector.snxJS.Synthetix.collateral(wallet.address),
-						sUSDBalance: await snxJSConnector.snxJS.sUSD.balanceOf(wallet.address),
-						ethBalance: await snxJSConnector.provider.getBalance(wallet.address),
+						snxBalance: await hznJSConnector.hznJS.Synthetix.collateral(wallet.address),
+						sUSDBalance: await hznJSConnector.hznJS.sUSD.balanceOf(wallet.address),
+						ethBalance: await hznJSConnector.provider.getBalance(wallet.address),
 					};
 				};
 
@@ -212,7 +212,7 @@ const WalletConnection = ({
 									<List cellSpacing={0}>
 										<ListHead>
 											<ListHeaderRow>
-												{['Address', 'SNX', 'sUSD', 'ETH', ''].map((headerElement, i) => {
+												{['Address', 'HZN', 'sUSD', 'ETH', ''].map((headerElement, i) => {
 													return (
 														<ListHeaderCell
 															style={{ textAlign: i > 0 ? 'right' : 'left' }}
@@ -237,7 +237,7 @@ const WalletConnection = ({
 															onClick={() => {
 																const walletIndex = walletPaginatorIndex * WALLET_PAGE_SIZE + i;
 																if (isHardwareWallet) {
-																	snxJSConnector.signer.setAddressIndex(walletIndex);
+																	hznJSConnector.signer.setAddressIndex(walletIndex);
 																}
 																updateWalletStatus({ currentWallet: wallet.address });
 																setCurrentPage(PAGES_BY_KEY.MAIN);

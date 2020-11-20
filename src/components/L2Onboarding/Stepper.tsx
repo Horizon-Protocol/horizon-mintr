@@ -12,7 +12,7 @@ export const Stepper: React.FC<StepperProps> = ({ activeIndex }) => {
 			title: '1. BURN DEBT',
 		},
 		{
-			title: '2: DEPOSIT SNX',
+			title: '2: DEPOSIT HZN',
 		},
 		{
 			title: '3: MIGRATION',

@@ -1,4 +1,4 @@
-import snxJSConnector from 'helpers/snxJSConnector';
+import hznJSConnector from 'helpers/hznJSConnector';
 
 import { CRYPTO_CURRENCY_TO_KEY } from 'constants/currency';
 import { bigNumberFormatter, bytesFormatter, parseBytes32String } from 'helpers/formatters';
@@ -7,14 +7,14 @@ const DEFAULT_SUSD_RATE = 1;
 
 export const getDebtStatus = async (walletAddress: string) => {
 	const {
-		snxJS: {
+		hznJS: {
 			SystemSettings,
 			Synthetix,
 			Liquidations,
 			SynthetixState,
 			contractSettings: { networkId },
 		},
-	} = snxJSConnector as any;
+	} = hznJSConnector as any;
 	const debtBalanceBN = await Synthetix.debtBalanceOf(walletAddress, bytesFormatter('sUSD'));
 
 	const IssuanceRatioContract = networkId === 5 ? SystemSettings : SynthetixState;
@@ -45,8 +45,8 @@ export const getDebtStatus = async (walletAddress: string) => {
 
 export const getEscrowData = async (walletAddress: string) => {
 	const {
-		snxJS: { RewardEscrow, SynthetixEscrow },
-	} = snxJSConnector as any;
+		hznJS: { RewardEscrow, SynthetixEscrow },
+	} = hznJSConnector as any;
 	const results = await Promise.all([
 		RewardEscrow.totalEscrowedAccountBalance(walletAddress),
 		SynthetixEscrow.balanceOf(walletAddress),
@@ -59,7 +59,7 @@ export const getEscrowData = async (walletAddress: string) => {
 };
 
 const fetchCurveSUSDRate = async () => {
-	const { curveSUSDSwapContract, utils } = snxJSConnector as any;
+	const { curveSUSDSwapContract, utils } = hznJSConnector as any;
 	const usdcContractNumber = 1;
 	const susdContractNumber = 3;
 	const susdAmount = 10000;
@@ -82,17 +82,17 @@ const fetchCurveSUSDRate = async () => {
 export const getExchangeRates = async () => {
 	const {
 		synthSummaryUtilContract,
-		snxJS: { ExchangeRates },
-	} = snxJSConnector as any;
+		hznJS: { ExchangeRates },
+	} = hznJSConnector as any;
 
 	const [synthsRates, snxRate, curveSUSDRate] = await Promise.all([
 		synthSummaryUtilContract.synthsRates(),
-		ExchangeRates.rateForCurrency(bytesFormatter(CRYPTO_CURRENCY_TO_KEY.SNX)),
+		ExchangeRates.rateForCurrency(bytesFormatter(CRYPTO_CURRENCY_TO_KEY.HZN)),
 		fetchCurveSUSDRate(),
 	]);
 
 	let exchangeRates = {
-		[CRYPTO_CURRENCY_TO_KEY.SNX]: snxRate / 1e18,
+		[CRYPTO_CURRENCY_TO_KEY.HZN]: snxRate / 1e18,
 	};
 	const [keys, rates] = synthsRates;
 	keys.forEach((key: string, i: number) => {
@@ -113,9 +113,9 @@ export const getExchangeRates = async () => {
 export const getBalances = async (walletAddress: string) => {
 	const {
 		synthSummaryUtilContract,
-		snxJS: { Synthetix },
+		hznJS: { Synthetix },
 		provider,
-	} = snxJSConnector as any;
+	} = hznJSConnector as any;
 	const [
 		synthBalanceResults,
 		totalSynthsBalanceResults,
@@ -146,7 +146,7 @@ export const getBalances = async (walletAddress: string) => {
 	const sUSDBalance = synths.find((synth: any) => synth.name === CRYPTO_CURRENCY_TO_KEY.sUSD);
 	const cryptoToArray = [
 		{
-			name: CRYPTO_CURRENCY_TO_KEY.SNX,
+			name: CRYPTO_CURRENCY_TO_KEY.HZN,
 			balance: bigNumberFormatter(snxBalanceResults),
 			balanceBN: snxBalanceResults,
 		},
@@ -159,7 +159,7 @@ export const getBalances = async (walletAddress: string) => {
 	const all = synths.concat(cryptoToArray);
 	return {
 		crypto: {
-			[CRYPTO_CURRENCY_TO_KEY.SNX]: bigNumberFormatter(snxBalanceResults),
+			[CRYPTO_CURRENCY_TO_KEY.HZN]: bigNumberFormatter(snxBalanceResults),
 			[CRYPTO_CURRENCY_TO_KEY.ETH]: bigNumberFormatter(ethBalanceResults),
 			[CRYPTO_CURRENCY_TO_KEY.sUSD]: sUSDBalance ? sUSDBalance.balance : 0,
 		},

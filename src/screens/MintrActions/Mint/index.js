@@ -5,7 +5,7 @@ import Action from './Action';
 import Confirmation from './Confirmation';
 import Complete from './Complete';
 
-import snxJSConnector from '../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../helpers/hznJSConnector';
 import { addBufferToGasLimit } from '../../../helpers/networkHelper';
 import { SliderContext } from '../../../components/ScreenSlider';
 import { bytesFormatter, bigNumberFormatter, formatCurrency } from '../../../helpers/formatters';
@@ -18,24 +18,24 @@ import { fetchDebtStatusRequest } from 'ducks/debtStatus';
 import { useNotifyContext } from 'contexts/NotifyContext';
 import { notifyHandler } from 'helpers/notifyHelper';
 
-const useGetIssuanceData = (walletAddress, sUSDBytes) => {
+const useGetIssuanceData = (walletAddress, hUSDBytes) => {
 	const [data, setData] = useState({});
-	const SNXBytes = bytesFormatter('SNX');
+	const HZNBytes = bytesFormatter('HZN');
 	useEffect(() => {
 		const getIssuanceData = async () => {
 			try {
 				const results = await Promise.all([
-					snxJSConnector.snxJS.Synthetix.maxIssuableSynths(walletAddress, sUSDBytes),
-					snxJSConnector.snxJS.Synthetix.debtBalanceOf(walletAddress, sUSDBytes),
-					snxJSConnector.snxJS.SynthetixState.issuanceRatio(),
-					snxJSConnector.snxJS.ExchangeRates.rateForCurrency(SNXBytes),
-					snxJSConnector.snxJS.Synthetix.collateral(walletAddress),
+					hznJSConnector.hznJS.Synthetix.maxIssuableSynths(walletAddress, hUSDBytes),
+					hznJSConnector.hznJS.Synthetix.debtBalanceOf(walletAddress, hUSDBytes),
+					hznJSConnector.hznJS.SynthetixState.issuanceRatio(),
+					hznJSConnector.hznJS.ExchangeRates.rateForCurrency(HZNBytes),
+					hznJSConnector.hznJS.Synthetix.collateral(walletAddress),
 				]);
-				const [maxIssuableSynths, debtBalance, issuanceRatio, SNXPrice, snxBalance] = results.map(
+				const [maxIssuableHassets, debtBalance, issuanceRatio, HZNPrice, hznBalance] = results.map(
 					bigNumberFormatter
 				);
-				const issuableSynths = Math.max(0, maxIssuableSynths - debtBalance);
-				setData({ issuableSynths, debtBalance, issuanceRatio, SNXPrice, snxBalance });
+				const issuableHassets = Math.max(0, maxIssuableHassets - debtBalance);
+				setData({ issuableHassets, debtBalance, issuanceRatio, HZNPrice, hznBalance });
 			} catch (e) {
 				console.log(e);
 			}
@@ -46,7 +46,7 @@ const useGetIssuanceData = (walletAddress, sUSDBytes) => {
 	return data;
 };
 
-const useGetGasEstimate = (mintAmount, issuableSynths, setFetchingGasLimit, setGasLimit) => {
+const useGetGasEstimate = (mintAmount, issuableHassets, setFetchingGasLimit, setGasLimit) => {
 	const { t } = useTranslation();
 	const [error, setError] = useState(null);
 	useEffect(() => {
@@ -57,16 +57,16 @@ const useGetGasEstimate = (mintAmount, issuableSynths, setFetchingGasLimit, setG
 			let gasEstimate;
 			try {
 				const {
-					snxJS: { Synthetix },
-				} = snxJSConnector;
+					hznJS: { Horizon },
+				} = hznJSConnector;
 				if (!parseFloat(mintAmount)) throw new Error('input.error.invalidAmount');
-				if (mintAmount <= 0 || mintAmount > issuableSynths)
+				if (mintAmount <= 0 || mintAmount > issuableHassets)
 					throw new Error('input.error.notEnoughToMint');
-				if (mintAmount === issuableSynths) {
-					gasEstimate = await Synthetix.contract.estimate.issueMaxSynths();
+				if (mintAmount === issuableHassets) {
+					gasEstimate = await Horizon.contract.estimate.issueMaxSynths();
 				} else {
-					gasEstimate = await Synthetix.contract.estimate.issueSynths(
-						snxJSConnector.utils.parseEther(mintAmount.toString())
+					gasEstimate = await Horizon.contract.estimate.issueSynths(
+						hznJSConnector.utils.parseEther(mintAmount.toString())
 					);
 				}
 				setFetchingGasLimit(false);
@@ -99,15 +99,15 @@ const Mint = ({
 	const [gasLimit, setGasLimit] = useState(0);
 	const { notify } = useNotifyContext();
 
-	const sUSDBytes = bytesFormatter('sUSD');
-	const { issuableSynths, issuanceRatio, SNXPrice, debtBalance, snxBalance } = useGetIssuanceData(
+	const hUSDBytes = bytesFormatter('hUSD');
+	const { issuableHassets, issuanceRatio, HZNPrice, debtBalance, hznBalance } = useGetIssuanceData(
 		currentWallet,
-		sUSDBytes
+		hUSDBytes
 	);
 
 	const gasEstimateError = useGetGasEstimate(
 		mintAmount,
-		issuableSynths,
+		issuableHassets,
 		setFetchingGasLimit,
 		setGasLimit
 	);
@@ -119,15 +119,15 @@ const Mint = ({
 		};
 		try {
 			const {
-				snxJS: { Synthetix },
-			} = snxJSConnector;
+				hznJS: { Horizon },
+			} = hznJSConnector;
 			handleNext(1);
 			let transaction;
-			if (mintAmount === issuableSynths) {
-				transaction = await Synthetix.issueMaxSynths(transactionSettings);
+			if (mintAmount === issuableHassets) {
+				transaction = await Horizon.issueMaxSynths(transactionSettings);
 			} else {
-				transaction = await Synthetix.issueSynths(
-					snxJSConnector.utils.parseEther(mintAmount.toString()),
+				transaction = await Horizon.issueSynths(
+					hznJSConnector.utils.parseEther(mintAmount.toString()),
 					transactionSettings
 				);
 			}
@@ -136,7 +136,7 @@ const Mint = ({
 					fetchDebtStatusRequest();
 					fetchBalancesRequest();
 				};
-				const message = `Minted ${formatCurrency(mintAmount)} sUSD`;
+				const message = `Minted ${formatCurrency(mintAmount)} hUSD`;
 				setTransactionInfo({ transactionHash: transaction.hash });
 				notifyHandler(notify, transaction.hash, networkId, refetch, message);
 
@@ -157,20 +157,20 @@ const Mint = ({
 	const props = {
 		onDestroy,
 		onMint,
-		issuableSynths,
+		issuableHassets,
 		goBack: handlePrev,
 		walletType,
 		networkName,
 		mintAmount,
 		setMintAmount,
 		issuanceRatio,
-		SNXPrice,
+		HZNPrice,
 		...transactionInfo,
 		isFetchingGasLimit,
 		gasLimit,
 		gasEstimateError,
 		debtBalance,
-		snxBalance,
+		hznBalance,
 	};
 
 	return [Action, Confirmation, Complete].map((SlideContent, i) => (

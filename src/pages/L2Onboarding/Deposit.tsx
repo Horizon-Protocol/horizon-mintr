@@ -10,7 +10,7 @@ import { getWalletBalances } from 'ducks/balances';
 import { CTAButton } from 'components/L2Onboarding/component/CTAButton';
 // import GasIndicator from 'components/L2Onboarding/GasIndicator';
 import ErrorMessage from '../../components/ErrorMessage';
-import snxJSConnector from 'helpers/snxJSConnector';
+import hznJSConnector from 'helpers/hznJSConnector';
 import { TOKEN_ALLOWANCE_LIMIT } from 'constants/network';
 import { getCurrentGasPrice } from 'ducks/network';
 import { addBufferToGasLimit, formatGasPrice } from 'helpers/networkHelper';
@@ -43,7 +43,7 @@ export const Deposit: React.FC<DepositProps> = ({
 	walletBalances,
 	currentGasPrice,
 }) => {
-	const snxBalance = (walletBalances && walletBalances.crypto['SNX']) || 0;
+	const snxBalance = (walletBalances && walletBalances.crypto['HZN']) || 0;
 
 	const [isWaitingForAllowance, setIsWaitingForAllowance] = useState(false);
 	const [gasLimit, setGasLimit] = useState(0);
@@ -70,8 +70,8 @@ export const Deposit: React.FC<DepositProps> = ({
 		setTxPending(true);
 		const {
 			utils,
-			snxJS: { SynthetixBridgeToOptimism, Synthetix },
-		} = snxJSConnector;
+			hznJS: { SynthetixBridgeToOptimism, Synthetix },
+		} = hznJSConnector;
 
 		try {
 			const tx = await Synthetix.contract.approve(
@@ -97,8 +97,8 @@ export const Deposit: React.FC<DepositProps> = ({
 		setTxPending(true);
 		const {
 			utils,
-			snxJS: { SynthetixBridgeToOptimism },
-		} = snxJSConnector;
+			hznJS: { SynthetixBridgeToOptimism },
+		} = hznJSConnector;
 		try {
 			const snxBalanceBN = utils.parseEther(snxBalance.toString());
 			const tx = await SynthetixBridgeToOptimism.contract.deposit(snxBalanceBN, {
@@ -118,9 +118,9 @@ export const Deposit: React.FC<DepositProps> = ({
 
 	useEffect(() => {
 		const {
-			snxJS: { SynthetixBridgeToOptimism, Synthetix },
+			hznJS: { SynthetixBridgeToOptimism, Synthetix },
 			utils,
-		} = snxJSConnector;
+		} = hznJSConnector;
 		const getGasEstimate = async () => {
 			setGasEstimateError(null);
 			try {
@@ -148,8 +148,8 @@ export const Deposit: React.FC<DepositProps> = ({
 
 	const fetchAllowance = async () => {
 		const {
-			snxJS: { Synthetix, SynthetixBridgeToOptimism },
-		} = snxJSConnector;
+			hznJS: { Synthetix, SynthetixBridgeToOptimism },
+		} = hznJSConnector;
 		try {
 			const allowance = await Synthetix.allowance(
 				currentWallet,
@@ -180,12 +180,12 @@ export const Deposit: React.FC<DepositProps> = ({
 		<PageContainer>
 			<Stepper activeIndex={1} />
 			<HeaderIcon
-				title="Deposit all SNX"
-				subtext="This migrates your SNX from Goerli testnet Layer 1 to Layer 2 testnet. If you complete this step, it will not affect your L1 SNX on mainnet."
+				title="Deposit all HZN"
+				subtext="This migrates your HZN from Goerli testnet Layer 1 to Layer 2 testnet. If you complete this step, it will not affect your L1 HZN on mainnet."
 				icon={<SendIcon />}
 			/>
 			<ContainerStats>
-				<StatBox multiple subtext={'DEPOSITING:'} tokenName="SNX" content={snxBalance.toString()} />
+				<StatBox multiple subtext={'DEPOSITING:'} tokenName="HZN" content={snxBalance.toString()} />
 			</ContainerStats>
 			{gasEstimateError && (
 				<ContainerStats style={{ margin: 0 }}>

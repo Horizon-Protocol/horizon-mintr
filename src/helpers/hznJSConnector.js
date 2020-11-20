@@ -27,17 +27,18 @@ import {
 	iBtc2Rewards,
 } from './contracts';
 
-let snxJSConnector = {
+let hznJSConnector = {
 	initialized: false,
 	signers: SynthetixJs.signers,
 	setContractSettings: function (contractSettings) {
 		this.initialized = true;
-		this.snxJS = new SynthetixJs(contractSettings);
-		this.synths = this.snxJS.contractSettings.synths;
-		this.signer = this.snxJS.contractSettings.signer;
-		this.provider = this.snxJS.contractSettings.provider;
-		this.utils = this.snxJS.utils;
-		this.ethersUtils = this.snxJS.ethers.utils;
+		//this.hznJS = new HorizonJs(contractSettings);
+		this.hznJS = new SynthetixJs(contractSettings);
+		this.synths = this.hznJS.contractSettings.synths;
+		this.signer = this.hznJS.contractSettings.signer;
+		this.provider = this.hznJS.contractSettings.provider;
+		this.utils = this.hznJS.utils;
+		this.ethersUtils = this.hznJS.ethers.utils;
 		if (this.signer) {
 			this.uniswapV1Contract = new ethers.Contract(uniswapV1.address, uniswapV1.abi, this.signer);
 			this.uniswapV2Contract = new ethers.Contract(uniswapV2.address, uniswapV2.abi, this.signer);
@@ -113,7 +114,7 @@ const connectToMetamask = async (networkId, networkName) => {
 		unlocked: false,
 	};
 	try {
-		const accounts = await snxJSConnector.signer.getNextAddresses();
+		const accounts = await hznJSConnector.signer.getNextAddresses();
 		if (accounts && accounts.length > 0) {
 			return {
 				...walletState,
@@ -145,7 +146,7 @@ const connectToCoinbase = async (networkId, networkName) => {
 		unlocked: false,
 	};
 	try {
-		const accounts = await snxJSConnector.signer.getNextAddresses();
+		const accounts = await hznJSConnector.signer.getNextAddresses();
 		if (accounts && accounts.length > 0) {
 			return {
 				...walletState,
@@ -186,8 +187,8 @@ const connectToWalletConnect = async (networkId, networkName) => {
 		unlocked: false,
 	};
 	try {
-		await snxJSConnector.signer.provider._web3Provider.enable();
-		const accounts = await snxJSConnector.signer.getNextAddresses();
+		await hznJSConnector.signer.provider._web3Provider.enable();
+		const accounts = await hznJSConnector.signer.getNextAddresses();
 		if (accounts && accounts.length > 0) {
 			return {
 				...walletState,
@@ -213,7 +214,7 @@ const connectToPortis = async (networkId, networkName) => {
 		unlocked: false,
 	};
 	try {
-		const accounts = await snxJSConnector.signer.getNextAddresses();
+		const accounts = await hznJSConnector.signer.getNextAddresses();
 		if (accounts && accounts.length > 0) {
 			return {
 				...walletState,
@@ -272,11 +273,11 @@ const getSignerConfig = ({ type, networkId, derivationPath, networkName }) => {
 };
 
 export const setSigner = ({ type, networkId, derivationPath, networkName }) => {
-	const signer = new snxJSConnector.signers[type](
+	const signer = new hznJSConnector.signers[type](
 		getSignerConfig({ type, networkId, derivationPath, networkName })
 	);
 
-	snxJSConnector.setContractSettings({
+	hznJSConnector.setContractSettings({
 		networkId,
 		signer,
 		provider: signer.provider,
@@ -314,4 +315,4 @@ export const connectToWallet = async ({ wallet, derivationPath }) => {
 export const getProvider = ({ networkId }) =>
 	new providers.InfuraProvider(NETWORK_NAMES[networkId].toLowerCase(), INFURA_PROJECT_ID);
 
-export default snxJSConnector;
+export default hznJSConnector;

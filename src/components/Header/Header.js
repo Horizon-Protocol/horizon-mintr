@@ -37,7 +37,7 @@ const Header = ({ walletDetails, setCurrentPage }) => {
 				<RoundButton as="a" href={LINKS.Support} target="_blank">
 					<SupportBubble />
 				</RoundButton>
-				<LanguageButtonWrapper>
+				{/* <LanguageButtonWrapper>
 					<RoundButton onClick={() => setFlagVisibility(true)}>
 						<Globe />
 					</RoundButton>
@@ -46,7 +46,7 @@ const Header = ({ walletDetails, setCurrentPage }) => {
 						setIsVisible={setFlagVisibility}
 						position={{ left: 0 }}
 					/>
-				</LanguageButtonWrapper>
+				</LanguageButtonWrapper> */}
 				<ThemeSwitcher
 					onLabel={t('dashboard.header.onLabel')}
 					offLabel={t('dashboard.header.offLabel')}

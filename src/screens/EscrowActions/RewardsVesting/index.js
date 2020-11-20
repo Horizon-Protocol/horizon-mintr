@@ -1,7 +1,7 @@
 import React, { useContext, useState, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 
-import snxJSConnector from '../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../helpers/hznJSConnector';
 import { SliderContext } from '../../../components/ScreenSlider';
 
 import { fetchEscrowRequest } from 'ducks/escrow';
@@ -33,8 +33,8 @@ const RewardsVesting = ({
 		const vest = async () => {
 			if (!hasLoaded) return;
 			const {
-				snxJS: { RewardEscrow },
-			} = snxJSConnector;
+				hznJS: { RewardEscrow },
+			} = hznJSConnector;
 			try {
 				const transaction = await RewardEscrow.vest({
 					gasPrice: currentGasPrice.formattedPrice,

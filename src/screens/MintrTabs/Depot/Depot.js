@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import isEmpty from 'lodash/isEmpty';
 import sumBy from 'lodash/sumBy';
 
-import snxJSConnector from '../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../helpers/hznJSConnector';
 import { formatCurrency, bigNumberFormatter } from '../../../helpers/formatters';
 import { setCurrentTab } from '../../../ducks/ui';
 import { getWalletDetails } from '../../../ducks/wallet';
@@ -55,9 +55,9 @@ const Depot = ({
 			try {
 				setIsFetchingOnChainDepotData(true);
 				const results = await Promise.all([
-					snxJSConnector.snxJS.Depot.totalSellableDeposits(),
-					snxJSConnector.snxJS.Depot.minimumDepositAmount(),
-					snxJSConnector.snxJS.sUSD.balanceOf(currentWallet),
+					hznJSConnector.hznJS.Depot.totalSellableDeposits(),
+					hznJSConnector.hznJS.Depot.minimumDepositAmount(),
+					hznJSConnector.hznJS.sUSD.balanceOf(currentWallet),
 				]);
 				const [totalSellableDeposits, minimumDepositAmount, sUSDBalance] = results.map(
 					bigNumberFormatter
@@ -182,7 +182,7 @@ const Depot = ({
 							{t('depot.buttons.more')}
 						</ButtonTertiary>
 						<ButtonTertiary
-							href={getEtherscanAddressLink(networkId, snxJSConnector.snxJS.Depot.contract.address)}
+							href={getEtherscanAddressLink(networkId, hznJSConnector.hznJS.Depot.contract.address)}
 							as="a"
 							target="_blank"
 						>

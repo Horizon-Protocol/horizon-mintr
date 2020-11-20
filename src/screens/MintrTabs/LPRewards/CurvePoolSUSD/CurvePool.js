@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import snxJSConnector from '../../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../../helpers/hznJSConnector';
 import { getWalletDetails } from '../../../../ducks/wallet';
 
 import { bigNumberFormatter } from '../../../../helpers/formatters';
@@ -19,8 +19,8 @@ const CurvePool = ({ goBack, walletDetails }) => {
 	const { currentWallet } = walletDetails;
 
 	const fetchAllowance = useCallback(async () => {
-		if (!snxJSConnector.initialized) return;
-		const { curveLPTokenContract, curvepoolContract } = snxJSConnector;
+		if (!hznJSConnector.initialized) return;
+		const { curveLPTokenContract, curvepoolContract } = hznJSConnector;
 		try {
 			setIsLoading(true);
 			const allowance = await curveLPTokenContract.allowance(
@@ -35,7 +35,7 @@ const CurvePool = ({ goBack, walletDetails }) => {
 			setAllowance(true);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentWallet, snxJSConnector.initialized]);
+	}, [currentWallet, hznJSConnector.initialized]);
 
 	useEffect(() => {
 		fetchAllowance();
@@ -44,7 +44,7 @@ const CurvePool = ({ goBack, walletDetails }) => {
 
 	useEffect(() => {
 		if (!currentWallet) return;
-		const { curveLPTokenContract, curvepoolContract } = snxJSConnector;
+		const { curveLPTokenContract, curvepoolContract } = hznJSConnector;
 
 		curveLPTokenContract.on('Approval', (owner, spender) => {
 			if (owner === currentWallet && spender === curvepoolContract.address) {
@@ -53,7 +53,7 @@ const CurvePool = ({ goBack, walletDetails }) => {
 		});
 
 		return () => {
-			if (snxJSConnector.initialized) {
+			if (hznJSConnector.initialized) {
 				curveLPTokenContract.removeAllListeners('Approval');
 			}
 		};

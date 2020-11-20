@@ -48,7 +48,7 @@ const Action = ({
 							<DataHeaderLarge>{t('mintrActions.send.action.available')}</DataHeaderLarge>
 							<Amount>
 								{formatCurrency(
-									CRYPTO_CURRENCY_TO_KEY.SNX === (currentCurrency?.name ?? '')
+									CRYPTO_CURRENCY_TO_KEY.HZN === (currentCurrency?.name ?? '')
 										? debtStatusData?.transferable ?? 0
 										: currentCurrency?.balance ?? 0
 								)}{' '}
@@ -71,7 +71,7 @@ const Action = ({
 							rightComponent={
 								<ButtonMax
 									onClick={() => {
-										if (CRYPTO_CURRENCY_TO_KEY.SNX === currentCurrency.name) {
+										if (CRYPTO_CURRENCY_TO_KEY.HZN === currentCurrency.name) {
 											setSendAmount(debtStatusData ? debtStatusData.transferable : 0);
 										} else {
 											setSendAmount((currentCurrency && currentCurrency.balance) || 0);

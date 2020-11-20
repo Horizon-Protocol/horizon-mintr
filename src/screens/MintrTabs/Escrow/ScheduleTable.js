@@ -38,7 +38,7 @@ const VestingTable = ({ loading, totalEscrowed, totalVested, canVest, schedule }
 			<H5>{t('escrow.staking.table.title')}</H5>
 			<TableHeader>
 				<TableHeaderMedium>{t('escrow.staking.table.date')}</TableHeaderMedium>
-				<TableHeaderMedium>SNX {t('escrow.staking.table.quantity')}</TableHeaderMedium>
+				<TableHeaderMedium>HZN {t('escrow.staking.table.quantity')}</TableHeaderMedium>
 			</TableHeader>
 			<StyledTableWrapper>
 				<Table cellSpacing="0">
@@ -66,19 +66,19 @@ const VestingTable = ({ loading, totalEscrowed, totalVested, canVest, schedule }
 						<DataHeaderLarge style={{ textTransform: 'uppercase' }}>
 							{t('escrow.staking.available')}
 						</DataHeaderLarge>
-						<DataMegaEscrow>{canVest && formatCurrency(canVest)} SNX</DataMegaEscrow>
+						<DataMegaEscrow>{canVest && formatCurrency(canVest)} HZN</DataMegaEscrow>
 					</DataBlock>
 					<DataBlock>
 						<DataHeaderLarge style={{ textTransform: 'uppercase' }}>
 							{t('escrow.staking.vested')}
 						</DataHeaderLarge>
-						<DataMegaEscrow>{totalVested && formatCurrency(totalVested)} SNX</DataMegaEscrow>
+						<DataMegaEscrow>{totalVested && formatCurrency(totalVested)} HZN</DataMegaEscrow>
 					</DataBlock>
 					<DataBlock>
 						<DataHeaderLarge style={{ textTransform: 'uppercase' }}>
 							{t('escrow.staking.total')}
 						</DataHeaderLarge>
-						<DataMegaEscrow>{totalEscrowed && formatCurrency(totalEscrowed)} SNX</DataMegaEscrow>
+						<DataMegaEscrow>{totalEscrowed && formatCurrency(totalEscrowed)} HZN</DataMegaEscrow>
 					</DataBlock>
 				</DataBlockRow>
 			</RightBlock>

@@ -4,7 +4,7 @@ import Action from './Action';
 import Confirmation from './Confirmation';
 import Complete from './Complete';
 
-import snxJSConnector from '../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../helpers/hznJSConnector';
 import { addBufferToGasLimit } from '../../../helpers/networkHelper';
 import { SliderContext } from '../../../components/ScreenSlider';
 
@@ -43,21 +43,21 @@ const useGetGasEstimate = (
 				const amountBN =
 					amount === currency.balance
 						? currency.balanceBN
-						: snxJSConnector.utils.parseEther(amount.toString());
+						: hznJSConnector.utils.parseEther(amount.toString());
 				setFetchingGasLimit(true);
-				if (currency.name === 'SNX') {
-					gasEstimate = await snxJSConnector.snxJS.Synthetix.contract.estimate.transfer(
+				if (currency.name === 'HZN') {
+					gasEstimate = await hznJSConnector.hznJS.Synthetix.contract.estimate.transfer(
 						destination,
 						amountBN
 					);
 				} else if (currency.name === 'ETH') {
 					if (amount === currency.balance) throw new Error('input.error.balanceTooLow');
-					gasEstimate = await snxJSConnector.provider.estimateGas({
+					gasEstimate = await hznJSConnector.provider.estimateGas({
 						value: amountBN,
 						to: destination,
 					});
 				} else {
-					gasEstimate = await snxJSConnector.snxJS[
+					gasEstimate = await hznJSConnector.hznJS[
 						currency.name
 					].contract.estimate.transferAndSettle(destination, amountBN);
 				}
@@ -77,15 +77,15 @@ const useGetGasEstimate = (
 
 const sendTransaction = (currency, amount, destination, settings) => {
 	if (!currency) return null;
-	if (currency === 'SNX') {
-		return snxJSConnector.snxJS.Synthetix.contract.transfer(destination, amount, settings);
+	if (currency === 'HZN') {
+		return hznJSConnector.hznJS.Synthetix.contract.transfer(destination, amount, settings);
 	} else if (currency === 'ETH') {
-		return snxJSConnector.signer.sendTransaction({
+		return hznJSConnector.signer.sendTransaction({
 			value: amount,
 			to: destination,
 			...settings,
 		});
-	} else return snxJSConnector.snxJS[currency].transferAndSettle(destination, amount, settings);
+	} else return hznJSConnector.hznJS[currency].transferAndSettle(destination, amount, settings);
 };
 
 const Send = ({
@@ -125,9 +125,9 @@ const Send = ({
 
 	const getMaxSecsLeftInWaitingPeriod = useCallback(async () => {
 		if (!currentCurrency) return;
-		if (['ETH', 'SNX'].includes(currentCurrency.name)) return;
+		if (['ETH', 'HZN'].includes(currentCurrency.name)) return;
 		try {
-			const maxSecsLeftInWaitingPeriod = await snxJSConnector.snxJS.Exchanger.maxSecsLeftInWaitingPeriod(
+			const maxSecsLeftInWaitingPeriod = await hznJSConnector.hznJS.Exchanger.maxSecsLeftInWaitingPeriod(
 				currentWallet,
 				bytesFormatter(currentCurrency.name)
 			);
@@ -152,7 +152,7 @@ const Send = ({
 			const realSendAmount =
 				sendAmount === currentCurrency.balance
 					? currentCurrency.balanceBN
-					: snxJSConnector.utils.parseEther(sendAmount.toString());
+					: hznJSConnector.utils.parseEther(sendAmount.toString());
 			handleNext(1);
 			const transaction = await sendTransaction(
 				currentCurrency.name,

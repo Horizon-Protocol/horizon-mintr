@@ -37,7 +37,7 @@ const Success = ({
 							{t('mintrActions.mint.confirmation.subActionDescription')}
 						</DataHeaderLarge>
 						<Amount>
-							{issuanceRatio ? formatCurrency(mintAmount / issuanceRatio / SNXPrice) : '--'} SNX
+							{issuanceRatio ? formatCurrency(mintAmount / issuanceRatio / SNXPrice) : '--'} HZN
 						</Amount>
 					</Box>
 				</Details>

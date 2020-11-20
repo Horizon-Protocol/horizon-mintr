@@ -20,9 +20,9 @@ const Welcome: React.FC<WelcomeProps> = ({ onNext }) => {
 		},
 		{
 			icon: <SendIcon />,
-			title: 'STEP 2: DEPOSIT SNX to L2',
+			title: 'STEP 2: DEPOSIT HZN to L2',
 			copy:
-				"This migrates your SNX from Goerli testnet L1 to L2 testnet. This won't affect your L1 SNX on mainnet. ",
+				"This migrates your HZN from Goerli testnet L1 to L2 testnet. This won't affect your L1 HZN on mainnet. ",
 		},
 	];
 
@@ -40,7 +40,7 @@ const Welcome: React.FC<WelcomeProps> = ({ onNext }) => {
 			</CenteredContainer>
 			<Header>MINTR on L2 Testnet</Header>
 			<Subtitle>
-				These steps complete the process of migrating your SNX from Goerli testnet Layer 1 to Layer
+				These steps complete the process of migrating your HZN from Goerli testnet Layer 1 to Layer
 				2 testnet.
 			</Subtitle>
 			<FlexDivCentered>

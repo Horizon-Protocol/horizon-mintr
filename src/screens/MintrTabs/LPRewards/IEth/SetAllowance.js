@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { createTransaction } from '../../../../ducks/transactions';
 import { getCurrentGasPrice } from '../../../../ducks/network';
 
-import snxJSConnector from '../../../../helpers/snxJSConnector';
+import hznJSConnector from '../../../../helpers/hznJSConnector';
 
 import { TOKEN_ALLOWANCE_LIMIT } from '../../../../constants/network';
 
@@ -21,10 +21,10 @@ const SetAllowance = ({ createTransaction, goBack, currentGasPrice }) => {
 
 	const onUnlock = async () => {
 		const {
-			snxJS: { iETH },
+			hznJS: { iETH },
 			utils: { parseEther },
 			iEthRewardsContract,
-		} = snxJSConnector;
+		} = hznJSConnector;
 		try {
 			setError(null);
 

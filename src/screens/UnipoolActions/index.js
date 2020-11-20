@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import snxJSConnector from '../../helpers/snxJSConnector';
+import hznJSConnector from '../../helpers/hznJSConnector';
 import Slider, { SliderContext } from '../../components/ScreenSlider';
 
 import { getWalletDetails } from '../../ducks/wallet';
@@ -37,8 +37,8 @@ const SliderController = ({
 					gasLimit,
 				};
 				const transaction = param
-					? await snxJSConnector[contract][contractFunction](param, transactionSettings)
-					: await snxJSConnector[contract][contractFunction](transactionSettings);
+					? await hznJSConnector[contract][contractFunction](param, transactionSettings)
+					: await hznJSConnector[contract][contractFunction](transactionSettings);
 
 				if (transaction) {
 					setTransactionInfo({ transactionHash: transaction.hash });
