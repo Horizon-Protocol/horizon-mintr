@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import snxData from 'synthetix-data';
+import hznData from '@phoenix-global/horizon-data';
 
 import { TRANSACTION_EVENTS_MAP } from '../constants/transactionHistory';
 
@@ -52,8 +52,8 @@ export const fetchDepotHistory = walletAddress => async dispatch => {
 
 	try {
 		const [depotActions, cleared] = await Promise.all([
-			snxData.depot.userActions({ user: walletAddress, max: 1000 }),
-			snxData.depot.clearedDeposits({ toAddress: walletAddress, max: 1000 }),
+			hznData.depot.userActions({ user: walletAddress, max: 1000 }),
+			hznData.depot.clearedDeposits({ toAddress: walletAddress, max: 1000 }),
 		]);
 
 		const deposited = [];

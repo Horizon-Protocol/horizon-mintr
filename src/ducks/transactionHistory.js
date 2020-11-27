@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import snxData from 'synthetix-data';
+import hznData from '@phoenix-global/horizon-data';
 import flatten from 'lodash/flatten';
 import orderBy from 'lodash/orderBy';
 
@@ -65,13 +65,13 @@ export const fetchTransactionHistory = walletAddress => async dispatch => {
 			clearedDeposits,
 			depotExchanges,
 		] = await Promise.all([
-			snxData.snx.issued({ account: walletAddress }),
-			snxData.snx.burned({ account: walletAddress }),
-			snxData.snx.feesClaimed({ account: walletAddress }),
-			snxData.exchanges.since({ fromAddress: walletAddress, minTimestamp: 0, max: 100 }),
-			snxData.depot.userActions({ user: walletAddress }),
-			snxData.depot.clearedDeposits({ toAddress: walletAddress }),
-			snxData.depot.exchanges({ from: walletAddress }),
+			hznData.hzn.issued({ account: walletAddress }),
+			hznData.hzn.burned({ account: walletAddress }),
+			hznData.hzn.feesClaimed({ account: walletAddress }),
+			hznData.exchanges.since({ fromAddress: walletAddress, minTimestamp: 0, max: 100 }),
+			hznData.depot.userActions({ user: walletAddress }),
+			hznData.depot.clearedDeposits({ toAddress: walletAddress }),
+			hznData.depot.exchanges({ from: walletAddress }),
 		]);
 
 		const mergedArray = flatten(

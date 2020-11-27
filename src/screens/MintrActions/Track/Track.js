@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useTranslation, Trans } from 'react-i18next';
 import orderBy from 'lodash/orderBy';
 import last from 'lodash/last';
-import snxData from 'synthetix-data';
+import hznData from '@phoenix-global/horizon-data';
 import hznJSConnector from 'helpers/hznJSConnector';
 
 import Tooltip from 'components/Tooltip';
@@ -35,9 +35,9 @@ const Track = ({ onDestroy, currentWallet, balances: { totalSynths }, sUSDRate, 
 		const fetchEvents = async () => {
 			try {
 				const [burnEvents, mintEvents, debtHistory, currentDebt] = await Promise.all([
-					snxData.snx.burned({ account: currentWallet, max: 1000 }),
-					snxData.snx.issued({ account: currentWallet, max: 1000 }),
-					snxData.snx.debtSnapshot({ account: currentWallet, max: 1000 }),
+					hznData.hzn.burned({ account: currentWallet, max: 1000 }),
+					hznData.hzn.issued({ account: currentWallet, max: 1000 }),
+					hznData.hzn.debtSnapshot({ account: currentWallet, max: 1000 }),
 					hznJS.Synthetix.debtBalanceOf(currentWallet, bytesFormatter('sUSD')),
 				]);
 
