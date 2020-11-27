@@ -1,19 +1,17 @@
-[![CircleCI](https://circleci.com/gh/Synthetixio/synthetix-mintr.svg?style=svg)](https://circleci.com/gh/Synthetixio/synthetix-mintr) [![Netlify Status](https://api.netlify.com/api/v1/badges/817f3cc2-ba8e-4d03-8375-00cd0cede28c/deploy-status)](https://app.netlify.com/sites/synthetix-mintr/deploys) [![Discord](https://img.shields.io/discord/413890591840272394.svg?color=768AD4&label=discord&logo=https%3A%2F%2Fdiscordapp.com%2Fassets%2F8c9701b98ad4372b58f13fd9f65f966e.svg)](https://discordapp.com/channels/413890591840272394/)
-[![Twitter Follow](https://img.shields.io/twitter/follow/synthetix_io.svg?label=synthetix_io&style=social)](https://twitter.com/synthetix_io)
 
-# Mintr v2
+# Horizon Mintr
 
-This is the code for the new Synthetix Mintr dApp: https://mintr.synthetix.io.
+This is the code for the new Horizon Mintr dApp
 
 For translator instructions, [go here](#translator-instructions).
 
-The dApp communicates with the [Synthetix contracts](https://developer.synthetix.io/api/docs/deployed-contracts.html), allowing users to perform the following actions:
+The dApp communicates with the Horizon contracts, allowing users to perform the following actions:
 
-- Mint (aka Issue) `sUSD` by locking `HZN`
-- Claim rewards of both `HZN` (inflation) and `sUSD` (exchange fees) every week
-- Burn `sUSD` to unlock `HZN`
+- Mint (aka Issue) `hUSD` by locking `HZN`
+- Claim rewards of both `HZN` (inflation) and `hUSD` (exchange fees) every week
+- Burn `hUSD` to unlock `HZN`
 - Transfer `HZN` to other accounts
-- Deposit (or withdrawl) `sUSD` into the `Depot` contract, to go in the queue for exchanging with `ETH` at current market price
+- Deposit (or withdrawl) `hUSD` into the `Depot` contract, to go in the queue for exchanging with `ETH` at current market price
 
 Mintr v2 supports the following wallet providers:
 
@@ -21,8 +19,6 @@ Mintr v2 supports the following wallet providers:
 - Trezor
 - Ledger
 - Coinbase Wallet
-
-![mintrv2](https://user-images.githubusercontent.com/799038/67426237-aa7a5c00-f5a7-11e9-96a6-1d721f3c58ba.gif)
 
 ---
 
