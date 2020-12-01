@@ -1,4 +1,4 @@
-import { SynthetixJs } from 'synthetix-js';
+import { HorizonJs } from '@phoenix-global/horizon-js';
 import {
 	getEthereumNetwork,
 	INFURA_JSON_RPC_URLS,
@@ -29,11 +29,11 @@ import {
 
 let hznJSConnector = {
 	initialized: false,
-	signers: SynthetixJs.signers,
+	signers: HorizonJs.signers,
 	setContractSettings: function (contractSettings) {
 		this.initialized = true;
 		//this.hznJS = new HorizonJs(contractSettings);
-		this.hznJS = new SynthetixJs(contractSettings);
+		this.hznJS = new HorizonJs(contractSettings);
 		this.synths = this.hznJS.contractSettings.synths;
 		this.signer = this.hznJS.contractSettings.signer;
 		this.provider = this.hznJS.contractSettings.provider;
