@@ -1,12 +1,5 @@
 import { HorizonJs } from '@phoenix-global/horizon-js';
-import {
-	getEthereumNetwork,
-	INFURA_JSON_RPC_URLS,
-	SUPPORTED_WALLETS_MAP,
-	INFURA_PROJECT_ID,
-	PORTIS_APP_ID,
-	NETWORK_NAMES,
-} from './networkHelper';
+import { getEthereumNetwork, SUPPORTED_WALLETS_MAP } from './networkHelper';
 import { ethers, providers } from 'ethers';
 import {
 	uniswapV1,
@@ -32,7 +25,7 @@ let hznJSConnector = {
 	signers: HorizonJs.signers,
 	setContractSettings: function (contractSettings) {
 		this.initialized = true;
-		//this.hznJS = new HorizonJs(contractSettings);
+		console.log(contractSettings);
 		this.hznJS = new HorizonJs(contractSettings);
 		this.synths = this.hznJS.contractSettings.synths;
 		this.signer = this.hznJS.contractSettings.signer;
@@ -243,31 +236,31 @@ const getSignerConfig = ({ type, networkId, derivationPath, networkName }) => {
 		};
 	}
 
-	if (type === SUPPORTED_WALLETS_MAP.TREZOR) {
-		return {
-			provider: customProvider,
-		};
-	}
+	// if (type === SUPPORTED_WALLETS_MAP.TREZOR) {
+	// 	return {
+	// 		provider: customProvider,
+	// 	};
+	// }
 
-	if (type === SUPPORTED_WALLETS_MAP.COINBASE) {
-		return {
-			appName: 'Mintr',
-			appLogoUrl: `${window.location.origin}/images/mintr-leaf-logo.png`,
-			jsonRpcUrl: INFURA_JSON_RPC_URLS[networkId],
-			networkId,
-		};
-	}
-	if (type === SUPPORTED_WALLETS_MAP.WALLET_CONNECT) {
-		return {
-			infuraId: process.env.REACT_APP_INFURA_PROJECT_ID,
-		};
-	}
-	if (type === SUPPORTED_WALLETS_MAP.PORTIS) {
-		return {
-			networkName: networkName.toLowerCase(),
-			appId: PORTIS_APP_ID,
-		};
-	}
+	// if (type === SUPPORTED_WALLETS_MAP.COINBASE) {
+	// 	return {
+	// 		appName: 'Mintr',
+	// 		appLogoUrl: `${window.location.origin}/images/mintr-leaf-logo.png`,
+	// 		jsonRpcUrl: INFURA_JSON_RPC_URLS[networkId],
+	// 		networkId,
+	// 	};
+	// }
+	// if (type === SUPPORTED_WALLETS_MAP.WALLET_CONNECT) {
+	// 	return {
+	// 		infuraId: process.env.REACT_APP_INFURA_PROJECT_ID,
+	// 	};
+	// }
+	// if (type === SUPPORTED_WALLETS_MAP.PORTIS) {
+	// 	return {
+	// 		networkName: networkName.toLowerCase(),
+	// 		appId: PORTIS_APP_ID,
+	// 	};
+	// }
 
 	return {};
 };
@@ -312,7 +305,6 @@ export const connectToWallet = async ({ wallet, derivationPath }) => {
 	}
 };
 
-export const getProvider = ({ networkId }) =>
-	new providers.InfuraProvider(NETWORK_NAMES[networkId].toLowerCase(), INFURA_PROJECT_ID);
+export const getProvider = ({ networkId }) => new providers.JsonRpcProvider();
 
 export default hznJSConnector;
