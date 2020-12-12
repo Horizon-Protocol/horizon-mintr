@@ -122,7 +122,7 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
 			<OnboardingContainer>
 				<Header>
 					<Logo />
-					{/* <LanguageButtonWrapper>
+					<LanguageButtonWrapper>
 						<RoundButton onClick={() => setFlagVisibility(true)}>
 							<Globe />
 						</RoundButton>
@@ -131,7 +131,7 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
 							setIsVisible={setFlagVisibility}
 							position={{ right: 0 }}
 						/>
-					</LanguageButtonWrapper> */}
+					</LanguageButtonWrapper>
 				</Header>
 				<OnBoardingCarousel
 					pageIndex={pageIndex}

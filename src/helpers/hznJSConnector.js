@@ -1,5 +1,5 @@
 import { HorizonJs } from '@phoenix-global/horizon-js';
-import { getEthereumNetwork, SUPPORTED_WALLETS_MAP } from './networkHelper';
+import { getEthereumNetwork, BSC_JSON_RPC_URLS, SUPPORTED_WALLETS_MAP } from './networkHelper';
 import { ethers, providers } from 'ethers';
 import {
 	uniswapV1,
@@ -88,16 +88,16 @@ let hznJSConnector = {
 				this.signer
 			);
 		}
-		this.synthSummaryUtilContract = new ethers.Contract(
-			synthSummary.addresses[contractSettings.networkId],
-			synthSummary.abi,
-			this.provider
-		);
-		this.curveSUSDSwapContract = new ethers.Contract(
-			curveSUSDSwapContract.address,
-			curveSUSDSwapContract.abi,
-			this.provider
-		);
+		// this.synthSummaryUtilContract = new ethers.Contract(
+		// 	synthSummary.addresses[contractSettings.networkId],
+		// 	synthSummary.abi,
+		// 	this.provider
+		// );
+		// this.curveSUSDSwapContract = new ethers.Contract(
+		// 	curveSUSDSwapContract.address,
+		// 	curveSUSDSwapContract.abi,
+		// 	this.provider
+		// );
 	},
 };
 
@@ -305,6 +305,9 @@ export const connectToWallet = async ({ wallet, derivationPath }) => {
 	}
 };
 
-export const getProvider = ({ networkId }) => new providers.JsonRpcProvider();
+export const getProvider = ({ networkId }) => {
+	console.log(BSC_JSON_RPC_URLS[networkId]);
+	return new providers.JsonRpcProvider(BSC_JSON_RPC_URLS[networkId]);
+};
 
 export default hznJSConnector;

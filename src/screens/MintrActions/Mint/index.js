@@ -57,15 +57,15 @@ const useGetGasEstimate = (mintAmount, issuableHassets, setFetchingGasLimit, set
 			let gasEstimate;
 			try {
 				const {
-					hznJS: { Horizon },
+					hznJS: { Synthetix },
 				} = hznJSConnector;
 				if (!parseFloat(mintAmount)) throw new Error('input.error.invalidAmount');
 				if (mintAmount <= 0 || mintAmount > issuableHassets)
 					throw new Error('input.error.notEnoughToMint');
 				if (mintAmount === issuableHassets) {
-					gasEstimate = await Horizon.contract.estimate.issueMaxSynths();
+					gasEstimate = await Synthetix.contract.estimate.issueMaxSynths();
 				} else {
-					gasEstimate = await Horizon.contract.estimate.issueSynths(
+					gasEstimate = await Synthetix.contract.estimate.issueSynths(
 						hznJSConnector.utils.parseEther(mintAmount.toString())
 					);
 				}
@@ -119,14 +119,14 @@ const Mint = ({
 		};
 		try {
 			const {
-				hznJS: { Horizon },
+				hznJS: { Synthetix },
 			} = hznJSConnector;
 			handleNext(1);
 			let transaction;
 			if (mintAmount === issuableHassets) {
-				transaction = await Horizon.issueMaxSynths(transactionSettings);
+				transaction = await Synthetix.issueMaxSynths(transactionSettings);
 			} else {
-				transaction = await Horizon.issueSynths(
+				transaction = await Synthetix.issueSynths(
 					hznJSConnector.utils.parseEther(mintAmount.toString()),
 					transactionSettings
 				);
