@@ -109,7 +109,7 @@ const Dashboard = ({
 							);
 						})}
 					</PricesContainer>
-					<BarCharts debtData={debtStatusData} totalEscrow={totalEscrowedBalances} />
+					{/* <BarCharts debtData={debtStatusData} totalEscrow={totalEscrowedBalances} />
 					<BalanceTable debtData={debtStatusData} />
 					<Row margin="18px 0 0 0 ">
 						<StyledExternalLink href="https://kwenta.io">
@@ -118,7 +118,7 @@ const Dashboard = ({
 						<StyledExternalLink href="https://dashboard.synthetix.io" style={{ marginLeft: '5px' }}>
 							<ButtonTertiaryLabel>{t('dashboard.buttons.synthetixDashboard')}</ButtonTertiaryLabel>
 						</StyledExternalLink>
-					</Row>
+					</Row> */}
 				</Container>
 			</Content>
 		</DashboardWrapper>

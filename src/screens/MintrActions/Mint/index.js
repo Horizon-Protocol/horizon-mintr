@@ -27,7 +27,7 @@ const useGetIssuanceData = (walletAddress, hUSDBytes) => {
 				const results = await Promise.all([
 					hznJSConnector.hznJS.Synthetix.maxIssuableSynths(walletAddress, hUSDBytes),
 					hznJSConnector.hznJS.Synthetix.debtBalanceOf(walletAddress, hUSDBytes),
-					hznJSConnector.hznJS.SynthetixState.issuanceRatio(),
+					hznJSConnector.hznJS.SystemSettings.issuanceRatio(),
 					hznJSConnector.hznJS.ExchangeRates.rateForCurrency(HZNBytes),
 					hznJSConnector.hznJS.Synthetix.collateral(walletAddress),
 				]);
@@ -46,6 +46,7 @@ const useGetIssuanceData = (walletAddress, hUSDBytes) => {
 	return data;
 };
 
+// TODO: replace it with BSC.
 const useGetGasEstimate = (mintAmount, issuableHassets, setFetchingGasLimit, setGasLimit) => {
 	const { t } = useTranslation();
 	const [error, setError] = useState(null);
