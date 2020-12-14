@@ -72,7 +72,7 @@ const App: FC<AppProps> = ({
 	return (
 		<ThemeProvider theme={themeStyle}>
 			{appIsReady && (
-				<NotifyProvider networkId={networkId ? networkId : 1}>
+				<NotifyProvider networkId={networkId ? networkId : 56}>
 					<GlobalEventsGate />
 					<MainLayout>
 						<CurrentPage

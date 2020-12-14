@@ -101,6 +101,38 @@ let hznJSConnector = {
 	},
 };
 
+const connectToBinance = async (networkId, networkName) => {
+	const walletState = {
+		walletType: SUPPORTED_WALLETS_MAP.BINANCE,
+		unlocked: false,
+	};
+	try {
+		const accounts = await hznJSConnector.signer.getNextAddresses();
+		if (accounts && accounts.length > 0) {
+			return {
+				...walletState,
+				currentWallet: accounts[0],
+				unlocked: true,
+				networkId,
+				networkName: networkName.toLowerCase(),
+			};
+		} else {
+			return {
+				...walletState,
+				unlockReason: 'Please connect to Binance Wallet',
+			};
+		}
+		// We updateWalletStatus with all the infos
+	} catch (e) {
+		console.log(e);
+		return {
+			...walletState,
+			unlockReason: 'ErrorWhileConnectingToBinanceWallet',
+			unlockMessage: e,
+		};
+	}
+};
+
 const connectToMetamask = async (networkId, networkName) => {
 	const walletState = {
 		walletType: SUPPORTED_WALLETS_MAP.METAMASK,
@@ -289,6 +321,8 @@ export const connectToWallet = async ({ wallet, derivationPath }) => {
 	setSigner({ type: wallet, networkId, derivationPath, networkName: name });
 
 	switch (wallet) {
+		case SUPPORTED_WALLETS_MAP.BINANCE:
+			return connectToBinance(networkId, name);
 		case SUPPORTED_WALLETS_MAP.METAMASK:
 			return connectToMetamask(networkId, name);
 		case SUPPORTED_WALLETS_MAP.COINBASE:

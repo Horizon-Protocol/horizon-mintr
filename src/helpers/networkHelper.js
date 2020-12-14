@@ -44,9 +44,10 @@ const ETH_GAS_STATION_URL = `https://ethgasstation.info/api/ethgasAPI.json?api-k
 const GAS_NOW_URL = 'https://www.gasnow.org/api/v3/gas/price?utm_source=mintr';
 
 export const SUPPORTED_WALLETS_MAP = {
+	BINANCE: 'Binance',
 	METAMASK: 'Metamask',
 	// TREZOR: 'Trezor',
-	LEDGER: 'Ledger',
+	// LEDGER: 'Ledger',
 	// COINBASE: 'Coinbase',
 	// WALLET_CONNECT: 'WalletConnect',
 	// PORTIS: 'Portis',
