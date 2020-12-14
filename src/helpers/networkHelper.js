@@ -61,6 +61,7 @@ export const L2_MESSENGER_ADDRESS = '0x4200000000000000000000000000000000000007'
 
 export const SUPPORTED_WALLETS = Object.values(SUPPORTED_WALLETS_MAP);
 
+// add REACT_APP_BLOCKNATIVE_NOTIFY_KEY=xxx to .env
 export const BLOCKNATIVE_KEY = process.env.REACT_APP_BLOCKNATIVE_NOTIFY_KEY;
 
 export const hasEthereumInjected = () => !!window.ethereum;
