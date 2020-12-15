@@ -14,7 +14,7 @@ const Action = ({
 	t,
 	onDestroy,
 	onMint,
-	issuableSynths,
+	issuableHassets,
 	mintAmount,
 	setMintAmount,
 	isFetchingGasLimit,
@@ -49,7 +49,7 @@ const Action = ({
 							rightComponent={
 								<ButtonMax
 									onClick={() => {
-										setMintAmount(issuableSynths);
+										setMintAmount(issuableHassets);
 									}}
 								/>
 							}

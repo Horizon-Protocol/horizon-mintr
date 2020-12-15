@@ -43,7 +43,7 @@ const useGetDebtData = (walletAddress, sUSDBytes) => {
 					SNXPrice,
 					totalRewardEscrow,
 					totalTokenSaleEscrow,
-					issuableSynths,
+					issuableHassets,
 				] = results.map(bigNumberFormatter);
 				let maxBurnAmount, maxBurnAmountBN;
 				if (debt > sUSDBalance) {
@@ -61,8 +61,11 @@ const useGetDebtData = (walletAddress, sUSDBytes) => {
 					maxBurnAmount,
 					maxBurnAmountBN,
 					SNXPrice,
-					burnAmountToFixCRatio: Math.max(debt - issuableSynths, 0),
-					debtEscrow: Math.max(escrowBalance * SNXPrice * issuanceRatio + debt - issuableSynths, 0),
+					burnAmountToFixCRatio: Math.max(debt - issuableHassets, 0),
+					debtEscrow: Math.max(
+						escrowBalance * SNXPrice * issuanceRatio + debt - issuableHassets,
+						0
+					),
 				});
 			} catch (e) {
 				console.log(e);

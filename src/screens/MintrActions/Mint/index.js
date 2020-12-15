@@ -31,9 +31,7 @@ const useGetIssuanceData = (walletAddress, hUSDBytes) => {
 					hznJSConnector.hznJS.ExchangeRates.rateForCurrency(HZNBytes),
 					hznJSConnector.hznJS.Synthetix.collateral(walletAddress),
 				]);
-				const [maxIssuableHassets, debtBalance, issuanceRatio, HZNPrice, hznBalance] = results.map(
-					bigNumberFormatter
-				);
+				const [maxIssuableHassets, debtBalance, issuanceRatio, HZNPrice, hznBalance] = results.map(bigNumberFormatter);
 				const issuableHassets = Math.max(0, maxIssuableHassets - debtBalance);
 				setData({ issuableHassets, debtBalance, issuanceRatio, HZNPrice, hznBalance });
 			} catch (e) {
@@ -56,21 +54,20 @@ const useGetGasEstimate = (mintAmount, issuableHassets, setFetchingGasLimit, set
 		const getGasEstimate = async () => {
 			setError(null);
 			setFetchingGasLimit(true);
-			let gasEstimate;
+			let gasEstimate = 1500000;
 			try {
 				const {
 					hznJS: { Synthetix },
 				} = hznJSConnector;
 				if (!parseFloat(mintAmount)) throw new Error('input.error.invalidAmount');
-				if (mintAmount <= 0 || mintAmount > issuableHassets)
-					throw new Error('input.error.notEnoughToMint');
-				if (mintAmount === issuableHassets) {
-					gasEstimate = await Synthetix.contract.estimate.issueMaxSynths();
-				} else {
-					gasEstimate = await Synthetix.contract.estimate.issueSynths(
-						hznJSConnector.utils.parseEther(mintAmount.toString())
-					);
-				}
+				if (mintAmount <= 0 || mintAmount > issuableHassets) throw new Error('input.error.notEnoughToMint');
+				// if (mintAmount === issuableHassets) {
+				// 	gasEstimate = await Synthetix.contract.estimate.issueMaxSynths();
+				// } else {
+				// 	gasEstimate = await Synthetix.contract.estimate.issueSynths(
+				// 		hznJSConnector.utils.parseEther(mintAmount.toString())
+				// 	);
+				// }
 				setFetchingGasLimit(false);
 				setGasLimit(addBufferToGasLimit(gasEstimate));
 			} catch (e) {
@@ -86,13 +83,7 @@ const useGetGasEstimate = (mintAmount, issuableHassets, setFetchingGasLimit, set
 	return error;
 };
 
-const Mint = ({
-	onDestroy,
-	walletDetails,
-	currentGasPrice,
-	fetchDebtStatusRequest,
-	fetchBalancesRequest,
-}) => {
+const Mint = ({ onDestroy, walletDetails, currentGasPrice, fetchDebtStatusRequest, fetchBalancesRequest }) => {
 	const { handleNext, handlePrev } = useContext(SliderContext);
 	const [mintAmount, setMintAmount] = useState('');
 	const { currentWallet, walletType, networkName, networkId } = walletDetails;
@@ -107,12 +98,7 @@ const Mint = ({
 		hUSDBytes
 	);
 
-	const gasEstimateError = useGetGasEstimate(
-		mintAmount,
-		issuableHassets,
-		setFetchingGasLimit,
-		setGasLimit
-	);
+	const gasEstimateError = useGetGasEstimate(mintAmount, issuableHassets, setFetchingGasLimit, setGasLimit);
 
 	const onMint = async () => {
 		const transactionSettings = {
@@ -175,9 +161,7 @@ const Mint = ({
 		hznBalance,
 	};
 
-	return [Action, Confirmation, Complete].map((SlideContent, i) => (
-		<SlideContent key={i} {...props} />
-	));
+	return [Action, Confirmation, Complete].map((SlideContent, i) => <SlideContent key={i} {...props} />);
 };
 
 const mapStateToProps = state => ({

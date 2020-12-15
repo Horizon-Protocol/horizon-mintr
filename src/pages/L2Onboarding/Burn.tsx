@@ -44,21 +44,16 @@ const useGetDebtData = (walletAddress, sUSDBytes) => {
 					hznJSConnector.hznJS.SynthetixEscrow.balanceOf(walletAddress),
 					hznJSConnector.hznJS.Synthetix.maxIssuableSynths(walletAddress),
 				]);
-				const [
-					debt,
-					issuanceRatio,
-					SNXPrice,
-					totalRewardEscrow,
-					totalTokenSaleEscrow,
-					issuableSynths,
-				] = results.map(bigNumberFormatter);
+				const [debt, issuanceRatio, SNXPrice, totalRewardEscrow, totalTokenSaleEscrow, issuableHassets] = results.map(
+					bigNumberFormatter
+				);
 
 				const escrowBalance = totalRewardEscrow + totalTokenSaleEscrow;
 				setData({
 					issuanceRatio,
 					SNXPrice,
-					burnAmountToFixCRatio: Math.max(debt - issuableSynths, 0),
-					debtEscrow: Math.max(escrowBalance * SNXPrice * issuanceRatio + debt - issuableSynths, 0),
+					burnAmountToFixCRatio: Math.max(debt - issuableHassets, 0),
+					debtEscrow: Math.max(escrowBalance * SNXPrice * issuanceRatio + debt - issuableHassets, 0),
 				});
 			} catch (e) {
 				console.log(e);
@@ -70,13 +65,7 @@ const useGetDebtData = (walletAddress, sUSDBytes) => {
 	return data as any;
 };
 
-const Burn: React.FC<BurnProps> = ({
-	onComplete,
-	walletDetails,
-	currentGasPrice,
-	currentsUSDBalance,
-	debtData,
-}) => {
+const Burn: React.FC<BurnProps> = ({ onComplete, walletDetails, currentGasPrice, currentsUSDBalance, debtData }) => {
 	const [waitingPeriod, setWaitingPeriod] = useState(0);
 	const [issuanceDelay, setIssuanceDelay] = useState(0);
 	const { currentWallet, walletType, networkId } = walletDetails;
@@ -108,9 +97,7 @@ const Burn: React.FC<BurnProps> = ({
 					if (issuanceDelay) throw new Error('Waiting period to burn is still ongoing');
 					if (burnAmount > sUSDBalance) throw new Error('input.error.notEnoughToBurn');
 					setFetchingGasLimit(true);
-					const gasEstimate = await hznJSConnector.hznJS.Synthetix.contract.estimate.burnSynths(
-						debtData.debtBalanceBN
-					);
+					const gasEstimate = await hznJSConnector.hznJS.Synthetix.contract.estimate.burnSynths(debtData.debtBalanceBN);
 					setGasLimit(addBufferToGasLimit(gasEstimate));
 				} catch (e) {
 					const errorMessage = (e && e.message) || 'input.error.gasEstimate';
@@ -162,9 +149,7 @@ const Burn: React.FC<BurnProps> = ({
 			if (Number(lastIssueEvent) && Number(minimumStakeTime)) {
 				const burnUnlockDate = addSeconds(Number(lastIssueEvent) * 1000, Number(minimumStakeTime));
 				const issuanceDelayInSeconds = differenceInSeconds(burnUnlockDate, new Date());
-				setIssuanceDelay(
-					issuanceDelayInSeconds > 0 ? issuanceDelayInSeconds : canBurnSynths ? 0 : 1
-				);
+				setIssuanceDelay(issuanceDelayInSeconds > 0 ? issuanceDelayInSeconds : canBurnSynths ? 0 : 1);
 			}
 		} catch (e) {
 			console.log(e);
@@ -192,8 +177,7 @@ const Burn: React.FC<BurnProps> = ({
 			if (await Synthetix.isWaitingPeriod(bytesFormatter('sUSD')))
 				throw new Error('Waiting period for sUSD is still ongoing');
 
-			if (!(await Issuer.canBurnSynths(currentWallet)))
-				throw new Error('Waiting period to burn is still ongoing');
+			if (!(await Issuer.canBurnSynths(currentWallet))) throw new Error('Waiting period to burn is still ongoing');
 
 			const tx = await Synthetix.burnSynths(debtData.debtBalanceBN, {
 				gasPrice: currentGasPrice.formattedPrice,
@@ -226,8 +210,8 @@ const Burn: React.FC<BurnProps> = ({
 						Retry
 					</CTAButton>
 					<Subtext style={{ position: 'absolute', fontSize: '12px' }}>
-						There is a waiting period after minting before you can burn. Please wait{' '}
-						{secondsToTime(issuanceDelay)} before attempting to burn sUSD.
+						There is a waiting period after minting before you can burn. Please wait {secondsToTime(issuanceDelay)}{' '}
+						before attempting to burn sUSD.
 					</Subtext>
 				</RetryButtonWrapper>
 			);
@@ -236,8 +220,8 @@ const Burn: React.FC<BurnProps> = ({
 				<RetryButtonWrapper>
 					<CTAButton onClick={getMaxSecsLeftInWaitingPeriod}>Retry</CTAButton>
 					<Subtext style={{ position: 'absolute', fontSize: '12px' }}>
-						There is a waiting period after completing a trade. Please wait{' '}
-						{secondsToTime(waitingPeriod)} before attempting to burn sUSD.
+						There is a waiting period after completing a trade. Please wait {secondsToTime(waitingPeriod)} before
+						attempting to burn sUSD.
 					</Subtext>
 				</RetryButtonWrapper>
 			);
@@ -245,10 +229,7 @@ const Burn: React.FC<BurnProps> = ({
 			return <Spinner />;
 		} else {
 			return (
-				<CTAButton
-					disabled={isFetchingGasLimit || gasEstimateError || debtData.debtBalance === 0}
-					onClick={onBurn}
-				>
+				<CTAButton disabled={isFetchingGasLimit || gasEstimateError || debtData.debtBalance === 0} onClick={onBurn}>
 					Burn
 				</CTAButton>
 			);
@@ -264,19 +245,12 @@ const Burn: React.FC<BurnProps> = ({
 				icon={<BurnIcon />}
 			/>
 			<ContainerStats>
-				<StatBox
-					multiple
-					subtext={'BURNING:'}
-					tokenName="sUSD"
-					content={`${debtData.debtBalance ?? 0}`}
-				/>
+				<StatBox multiple subtext={'BURNING:'} tokenName="sUSD" content={`${debtData.debtBalance ?? 0}`} />
 				<StatBox
 					multiple
 					subtext={'UNLOCKING:'}
 					tokenName="HZN"
-					content={`${
-						Math.max((debtData.debtBalance - debtEscrow) / issuanceRatio / SNXPrice, 0) ?? 0
-					}`}
+					content={`${Math.max((debtData.debtBalance - debtEscrow) / issuanceRatio / SNXPrice, 0) ?? 0}`}
 				/>
 			</ContainerStats>
 			{gasEstimateError && (

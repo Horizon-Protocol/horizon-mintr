@@ -38,7 +38,7 @@ export const INFURA_JSON_RPC_URLS = {
 
 // export const PORTIS_APP_ID = '81b6e4b9-9f28-4cce-b41f-2de90c4f906f';
 
-const DEFIPULSE_API_KEY = process.env.REACT_APP_DEFIPULSE_API_KEY;
+// const DEFIPULSE_API_KEY = process.env.REACT_APP_DEFIPULSE_API_KEY;
 
 export const SUPPORTED_WALLETS_MAP = {
 	BINANCE: 'Binance',
@@ -133,8 +133,7 @@ export function onMetamaskNetworkChange() {
 	});
 }
 
-export const addBufferToGasLimit = gasLimit =>
-	Math.round(Number(gasLimit) * (1 + GAS_LIMIT_BUFFER_PERCENTAGE));
+export const addBufferToGasLimit = gasLimit => Math.round(Number(gasLimit) * (1 + GAS_LIMIT_BUFFER_PERCENTAGE));
 
 export const isMainNet = networkId => networkId === Number(SUPPORTED_NETWORKS_MAP.MAINNET);
 
