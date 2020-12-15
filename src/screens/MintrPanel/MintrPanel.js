@@ -39,6 +39,9 @@ const RESTRICTED_TABS = {
 	},
 };
 
+// const tabs = ['home', 'depot', 'transactionsHistory', 'escrow', 'lpRewards']
+const tabs = ['home'];
+
 const MainContainer = ({
 	currentTab,
 	modalState: { modalType, modalProps },
@@ -51,7 +54,7 @@ const MainContainer = ({
 		<MainContainerWrapper>
 			<Overlay isVisible={modalType}></Overlay>
 			<Header>
-				{['home', 'depot', 'transactionsHistory', 'escrow', 'lpRewards'].map(tab => {
+				{tabs.map(tab => {
 					return (
 						<TabButton
 							key={tab}

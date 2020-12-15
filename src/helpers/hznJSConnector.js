@@ -15,7 +15,7 @@ import {
 	balancerSNXRewards,
 	curveSBTC,
 	sBTCRewards,
-	curveSUSDSwapContract,
+	// curveSUSDSwapContract,
 	iBtcRewards,
 	iBtc2Rewards,
 } from './contracts';
@@ -88,11 +88,11 @@ let hznJSConnector = {
 				this.signer
 			);
 		}
-		// this.synthSummaryUtilContract = new ethers.Contract(
-		// 	synthSummary.addresses[contractSettings.networkId],
-		// 	synthSummary.abi,
-		// 	this.provider
-		// );
+		this.synthSummaryUtilContract = new ethers.Contract(
+			synthSummary.addresses[contractSettings.networkId],
+			synthSummary.abi,
+			this.provider
+		);
 		// this.curveSUSDSwapContract = new ethers.Contract(
 		// 	curveSUSDSwapContract.address,
 		// 	curveSUSDSwapContract.abi,

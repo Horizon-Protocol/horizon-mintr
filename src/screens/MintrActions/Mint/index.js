@@ -48,6 +48,7 @@ const useGetIssuanceData = (walletAddress, hUSDBytes) => {
 
 // TODO: replace it with BSC.
 const useGetGasEstimate = (mintAmount, issuableHassets, setFetchingGasLimit, setGasLimit) => {
+	console.log({ mintAmount, issuableHassets });
 	const { t } = useTranslation();
 	const [error, setError] = useState(null);
 	useEffect(() => {
@@ -55,7 +56,7 @@ const useGetGasEstimate = (mintAmount, issuableHassets, setFetchingGasLimit, set
 		const getGasEstimate = async () => {
 			setError(null);
 			setFetchingGasLimit(true);
-			let gasEstimate;
+			let gasEstimate = 1500000;
 			try {
 				const {
 					hznJS: { Synthetix },
@@ -100,7 +101,7 @@ const Mint = ({
 	const [gasLimit, setGasLimit] = useState(0);
 	const { notify } = useNotifyContext();
 
-	const hUSDBytes = bytesFormatter('hUSD');
+	const hUSDBytes = bytesFormatter('sUSD');
 	const { issuableHassets, issuanceRatio, HZNPrice, debtBalance, hznBalance } = useGetIssuanceData(
 		currentWallet,
 		hUSDBytes
