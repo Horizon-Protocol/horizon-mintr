@@ -22,7 +22,7 @@ const OnBoardingPageContainer = ({ t, children }) => {
 						href="https://www.synthetix.io/uploads/synthetix_litepaper.pdf"
 						target="_blank"
 					>
-						{t('button.whatIsSynthetix')}
+						{t('button.whatIsHorizon')}
 					</ButtonTertiary>
 				</HeaderBlock>
 			</Header>

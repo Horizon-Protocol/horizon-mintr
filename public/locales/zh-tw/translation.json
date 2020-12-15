@@ -5,7 +5,7 @@
 				"title": "歡迎使用 Mintr!",
 				"description": "Mintr 是為 SNX 持有者開發的 dApp。如果您之前從未使用過 Mintr，請先閱讀我們的簡要介紹。"
 			},
-			"whatIsSynthetix": {
+			"whatIsHorizon": {
 				"title": "什麽是 Synthetix?",
 				"description": "Synthetix 是一個建立在以太坊上的去中心化合成資產發行協議。這些合成資產（Synths）來自於抵押 Synthetix Network Token（SNX），且可以直接用 Kwenta.io 交易所上的 Synthetix 智能合約在彼此間交易。"
 			},
@@ -553,7 +553,7 @@
 		"fixCRatio": "調整至目標抵押率",
 		"edit": "編輯",
 		"havingTrouble": "有問題？",
-		"whatIsSynthetix": "什麽是 Synthetix?",
+		"whatIsHorizon": "什麽是 Synthetix?",
 		"previous": "上一頁",
 		"next": "下一頁",
 		"startOver": "重新再來",

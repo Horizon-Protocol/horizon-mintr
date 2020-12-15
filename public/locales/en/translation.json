@@ -5,7 +5,7 @@
 				"title": "Welcome to Mintr!",
 				"description": "Mintr is the dApp for SNX holders. If you've never used Mintr before, read through our quick introduction first."
 			},
-			"whatIsSynthetix": {
+			"whatIsHorizon": {
 				"title": "What is Synthetix?",
 				"description": "Synthetix is a decentralised synthetic asset issuance protocol built on Ethereum. These synthetic assets (Synths) are created by staking the Synthetix Network Token (SNX), and these Synths can be exchanged for each other directly with the Synthetix smart contracts on Kwenta.io."
 			},
@@ -585,7 +585,7 @@
 		"fixCRatio": "Fix your Collateralization Ratio",
 		"edit": "Edit",
 		"havingTrouble": "Having trouble?",
-		"whatIsSynthetix": "What is Synthetix?",
+		"whatIsHorizon": "What is Synthetix?",
 		"previous": "Previous",
 		"next": "Next",
 		"startOver": "Start over",

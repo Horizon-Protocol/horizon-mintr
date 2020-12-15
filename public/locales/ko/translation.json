@@ -5,7 +5,7 @@
 				"title": "Mintr(민터)에 오신 걸 환영합니다!",
 				"description": "Mintr은 SNX 홀더를 위한 디앱입니다. 만약 Mintr을 사용해보신 적이 없으시다면, Mintr 가이드를 먼저 읽어주세요."
 			},
-			"whatIsSynthetix": {
+			"whatIsHorizon": {
 				"title": "신세틱스(Synthetix)가 뭔가요?",
 				"description": "신세틱스(Synthetix)는 이더리움 상에 구축된 탈중앙 합성자산 발행 프로토콜입니다. 이러한 합성자산들(신스, Synths)은 신세틱스 네트워크 토큰(SNX)을 스테이킹함으로써 만들 수 있으며, Kwenta.io 상에서 신세틱스 스마트 컨트랙트를 통해 다른 신스들과 거래할 수 있습니다."
 			},
@@ -560,7 +560,7 @@
 		"fixCRatio": "담보 비율을 수정해주세요",
 		"edit": "수정",
 		"havingTrouble": "문제가 발생하셨나요?",
-		"whatIsSynthetix": "신세틱스가 뭔가요?",
+		"whatIsHorizon": "신세틱스가 뭔가요?",
 		"previous": "이전",
 		"next": "다음",
 		"startOver": "다시 시작",

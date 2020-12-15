@@ -7,7 +7,7 @@ const persistedState = getPersistedState('ui');
 export const uiSlice = createSlice({
 	name: 'ui',
 	initialState: {
-		theme: 'dark',
+		theme: 'light',
 		currentPage: 'landing',
 		currentTab: 'home',
 		tabParams: null,

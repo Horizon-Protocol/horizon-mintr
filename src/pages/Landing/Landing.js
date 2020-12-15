@@ -78,8 +78,8 @@ const OnBoardingCarousel = ({ pageIndex, setPageIndex, currentTheme }) => {
 					/>
 				</CarouselSlide>
 				<CarouselSlide>
-					<OnboardingH1>{t('onboarding.slides.whatIsSynthetix.title')}</OnboardingH1>
-					<OnboardingPMega>{t('onboarding.slides.whatIsSynthetix.description')}</OnboardingPMega>
+					<OnboardingH1>{t('onboarding.slides.whatIsHorizon.title')}</OnboardingH1>
+					<OnboardingPMega>{t('onboarding.slides.whatIsHorizon.description')}</OnboardingPMega>
 					<OnboardingIllustration
 						src={`/images/onboarding/what-is-synthetix-${currentTheme ? 'dark' : 'light'}.png`}
 					/>
@@ -182,13 +182,13 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
 						<ButtonTertiaryLabel>{t('button.havingTrouble')}</ButtonTertiaryLabel>
 					</Link>
 					<Link href={'https://docs.synthetix.io/litepaper/'} target="_blank">
-						<ButtonTertiaryLabel>{t('button.whatIsSynthetix')}</ButtonTertiaryLabel>
+						<ButtonTertiaryLabel>{t('button.whatIsHorizon')}</ButtonTertiaryLabel>
 					</Link>
-					<ExternalLink
-						href={`https://github.com/Phoenix/synthetix-mintr/releases/tag/v${process.env.REACT_APP_VERSION}`}
+					{/* <ExternalLink
+						href={`https://github.com/PhoenixGlobal/horizon-mintr/releases/tag/v${process.env.REACT_APP_VERSION}`}
 					>
 						<VersionLabel>v{process.env.REACT_APP_VERSION}</VersionLabel>
-					</ExternalLink>
+					</ExternalLink> */}
 				</BottomLinks>
 			</WalletConnectContainer>
 		</LandingPageContainer>
