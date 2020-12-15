@@ -56,7 +56,7 @@ const useGetGasEstimate = (mintAmount, issuableHassets, setFetchingGasLimit, set
 		const getGasEstimate = async () => {
 			setError(null);
 			setFetchingGasLimit(true);
-			let gasEstimate = 1500000;
+			let gasEstimate;
 			try {
 				const {
 					hznJS: { Synthetix },

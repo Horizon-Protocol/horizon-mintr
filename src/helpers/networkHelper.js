@@ -36,12 +36,9 @@ export const INFURA_JSON_RPC_URLS = {
 	42: `https://kovan.infura.io/v3/${INFURA_PROJECT_ID}`,
 };
 
-export const PORTIS_APP_ID = '81b6e4b9-9f28-4cce-b41f-2de90c4f906f';
+// export const PORTIS_APP_ID = '81b6e4b9-9f28-4cce-b41f-2de90c4f906f';
 
 const DEFIPULSE_API_KEY = process.env.REACT_APP_DEFIPULSE_API_KEY;
-
-const ETH_GAS_STATION_URL = `https://ethgasstation.info/api/ethgasAPI.json?api-key=${DEFIPULSE_API_KEY}`;
-const GAS_NOW_URL = 'https://www.gasnow.org/api/v3/gas/price?utm_source=mintr';
 
 export const SUPPORTED_WALLETS_MAP = {
 	BINANCE: 'Binance',
@@ -94,47 +91,27 @@ export async function getEthereumNetwork() {
 	}
 }
 
-const handleGasNowRequest = async () => {
+const handleBasGasSpeedsRequest = async () => {
 	const result = await fetch(GAS_NOW_URL);
 	const { data } = await result.json();
 	return {
 		[NETWORK_SPEEDS_TO_KEY.AVERAGE]: {
-			price: Math.round(data.standard / 1e8) / 10,
+			price: 18,
 		},
 		[NETWORK_SPEEDS_TO_KEY.FAST]: {
-			price: Math.round(data.fast / 1e8) / 10,
+			price: 25,
 		},
 		[NETWORK_SPEEDS_TO_KEY.FASTEST]: {
-			price: Math.round(data.rapid / 1e8) / 10,
-		},
-	};
-};
-
-const handleEthGasStationRequest = async () => {
-	const result = await fetch(ETH_GAS_STATION_URL);
-	const networkInfo = await result.json();
-	return {
-		[NETWORK_SPEEDS_TO_KEY.AVERAGE]: {
-			price: networkInfo.average / 10,
-			time: networkInfo.avgWait,
-		},
-		[NETWORK_SPEEDS_TO_KEY.FAST]: {
-			price: networkInfo.fast / 10,
-			time: networkInfo.fastWait,
-		},
-		[NETWORK_SPEEDS_TO_KEY.FASTEST]: {
-			price: networkInfo.fastest / 10,
-			time: networkInfo.fastestWait,
+			price: 30,
 		},
 	};
 };
 
 export const getNetworkSpeeds = async () => {
 	try {
-		return await handleGasNowRequest();
+		return await handleBasGasSpeedsRequest();
 	} catch (e) {
 		console.log(e);
-		return await handleEthGasStationRequest();
 	}
 };
 

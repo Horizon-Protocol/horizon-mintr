@@ -2,12 +2,16 @@
 const USER_DENIED = 'transactionProcessing.error.type.userDenied';
 
 const ERROR_CODES = {
+	Binance: {
+		'-32603': USER_DENIED,
+		4001: USER_DENIED,
+	},
 	Metamask: {
 		'-32603': USER_DENIED,
-		'4001': USER_DENIED,
+		4001: USER_DENIED,
 	},
 	Ledger: {
-		'27013': USER_DENIED,
+		27013: USER_DENIED,
 	},
 	Trezor: {},
 	Coinbase: {
