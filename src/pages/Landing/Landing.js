@@ -26,7 +26,7 @@ import { LanguageDropdown } from '../../components/Dropdown';
 
 import { PAGES_BY_KEY } from '../../constants/ui';
 import { LINKS } from 'constants/links';
-import { ExternalLink } from 'styles/common';
+// import { ExternalLink } from 'styles/common';
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import './carousel.css';
@@ -340,13 +340,13 @@ const LanguageButtonWrapper = styled.div`
 	position: relative;
 `;
 
-const VersionLabel = styled.div`
-	text-align: right;
-	font-size: 12px;
-	margin-top: 5px;
-	color: ${props => props.theme.colorStyles.body};
-	text-decoration: underline;
-`;
+// const VersionLabel = styled.div`
+// 	text-align: right;
+// 	font-size: 12px;
+// 	margin-top: 5px;
+// 	color: ${props => props.theme.colorStyles.body};
+// 	text-decoration: underline;
+// `;
 
 const mapStateToProps = state => ({
 	currentTheme: getCurrentTheme(state),

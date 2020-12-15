@@ -23,14 +23,14 @@ import Header from 'components/Header';
 import { MicroSpinner } from 'components/Spinner';
 
 import { ButtonTertiary } from 'components/Button';
-import { H5, ButtonTertiaryLabel, DataLarge, Figure } from 'components/Typography';
+import { H5, /*  ButtonTertiaryLabel, */ DataLarge, Figure } from 'components/Typography';
 import Skeleton from 'components/Skeleton';
 import Tooltip from 'components/Tooltip';
 import { Info } from 'components/Icons';
-import BalanceTable from './BalanceTable';
-import BarCharts from './BarCharts';
+// import BalanceTable from './BalanceTable';
+// import BarCharts from './BarCharts';
 import CollRatios from './CollRatios';
-import { FlexDivCentered, ExternalLink } from 'styles/common';
+import { FlexDivCentered /* ExternalLink */ } from 'styles/common';
 
 const Dashboard = ({
 	walletDetails,
@@ -168,26 +168,26 @@ const ContainerHeader = styled.div`
 	margin-bottom: 20px;
 `;
 
-const Row = styled.div`
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin: ${props => (props.margin ? props.margin : 0)};
-	padding: ${props => (props.padding ? props.padding : 0)};
-`;
+// const Row = styled.div`
+// 	width: 100%;
+// 	display: flex;
+// 	justify-content: space-between;
+// 	align-items: center;
+// 	margin: ${props => (props.margin ? props.margin : 0)};
+// 	padding: ${props => (props.padding ? props.padding : 0)};
+// `;
 
-const StyledExternalLink = styled(ExternalLink)`
-	background-color: ${props => props.theme.colorStyles.buttonTertiaryBgFocus};
-	text-transform: uppercase;
-	text-decoration: none;
-	cursor: pointer;
-	padding: 16px 20px;
-	width: 50%;
-	border: 1px solid ${props => props.theme.colorStyles.borders};
-	border-radius: 2px;
-	text-align: center;
-`;
+// const StyledExternalLink = styled(ExternalLink)`
+// 	background-color: ${props => props.theme.colorStyles.buttonTertiaryBgFocus};
+// 	text-transform: uppercase;
+// 	text-decoration: none;
+// 	cursor: pointer;
+// 	padding: 16px 20px;
+// 	width: 50%;
+// 	border: 1px solid ${props => props.theme.colorStyles.borders};
+// 	border-radius: 2px;
+// 	text-align: center;
+// `;
 
 const CurrencyIcon = styled.img`
 	width: 22px;
