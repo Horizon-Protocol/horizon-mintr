@@ -51,7 +51,7 @@ const Home = ({ walletDetails: { networkId }, redirectToTrade }) => {
 						>
 							<ButtonContainer>
 								<ActionImage src={`/images/actions/${action}.svg`} />
-								<H2>{t(actionLabelMapper[action].title)}</H2>
+								<H2 style={{ marginBottom: 0 }}>{t(actionLabelMapper[action].title)}</H2>
 								<PLarge>{t(actionLabelMapper[action].description)}</PLarge>
 							</ButtonContainer>
 						</Button>
@@ -65,8 +65,8 @@ const Home = ({ walletDetails: { networkId }, redirectToTrade }) => {
 const Button = styled.button<{ big }>`
 	flex: 1;
 	cursor: pointer;
-	height: 352px;
-	max-width: ${props => (props.big ? '336px' : '216px')};
+	height: 200px;
+	max-width: ${props => (props.big ? '100%' : '216px')};
 	background-color: ${props => props.theme.colorStyles.panelButton};
 	border: 1px solid ${props => props.theme.colorStyles.borders};
 	border-radius: 5px;
@@ -93,7 +93,7 @@ const ButtonContainer = styled.div`
 
 const ButtonRow = styled.div`
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(1, 1fr);
 	grid-gap: 34px;
 `;
 

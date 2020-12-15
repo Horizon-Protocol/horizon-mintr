@@ -92,8 +92,6 @@ export async function getEthereumNetwork() {
 }
 
 const handleBasGasSpeedsRequest = async () => {
-	const result = await fetch(GAS_NOW_URL);
-	const { data } = await result.json();
 	return {
 		[NETWORK_SPEEDS_TO_KEY.AVERAGE]: {
 			price: 18,

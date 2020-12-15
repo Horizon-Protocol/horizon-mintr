@@ -53,21 +53,23 @@ const MainContainer = ({
 	return (
 		<MainContainerWrapper>
 			<Overlay isVisible={modalType}></Overlay>
-			<Header>
-				{tabs.map(tab => {
-					return (
-						<TabButton
-							key={tab}
-							isSelected={tab === currentTab}
-							onClick={() => setCurrentTab({ tab })}
-							disabled={RESTRICTED_TABS[networkId] && RESTRICTED_TABS[networkId][tab]}
-						>
-							{/* i18next-extract-disable-next-line */}
-							{t(`mainNavigation.tabs.${tab}`)}
-						</TabButton>
-					);
-				})}
-			</Header>
+			{false && (
+				<Header>
+					{tabs.map(tab => {
+						return (
+							<TabButton
+								key={tab}
+								isSelected={tab === currentTab}
+								onClick={() => setCurrentTab({ tab })}
+								disabled={RESTRICTED_TABS[networkId] && RESTRICTED_TABS[networkId][tab]}
+							>
+								{/* i18next-extract-disable-next-line */}
+								{t(`mainNavigation.tabs.${tab}`)}
+							</TabButton>
+						);
+					})}
+				</Header>
+			)}
 			{renderScreen(currentTab)}
 			{modalType === MODAL_TYPES_TO_KEY.DELEGATE ? <DelegateModal {...modalProps} /> : null}
 		</MainContainerWrapper>
