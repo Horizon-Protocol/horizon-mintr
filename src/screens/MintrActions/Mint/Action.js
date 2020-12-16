@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { withTranslation } from 'react-i18next';
+import Big from 'big.js';
 
 import { SlidePage } from '../../../components/ScreenSlider';
 import TransactionPriceIndicator from '../../../components/TransactionPriceIndicator';
@@ -49,7 +50,7 @@ const Action = ({
 							rightComponent={
 								<ButtonMax
 									onClick={() => {
-										setMintAmount(issuableHassets);
+										setMintAmount(Big(issuableHassets).toFixed());
 									}}
 								/>
 							}
