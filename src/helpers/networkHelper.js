@@ -125,7 +125,6 @@ export function onWalletAccountChange(cb) {
 }
 
 export function onWalletNetworkChange() {
-	console.log('bind onWalletNetworkChange');
 	if (window.BinanceChain) {
 		window.BinanceChain.on('chainChanged', () => {
 			document.location.reload();

@@ -15,11 +15,6 @@ export const NotifyProvider: React.FC<INotifyProvider> = ({ children, networkId 
 	const [notify, setNotify] = useState<any>(null);
 
 	useEffect(() => {
-		console.log('Notify', {
-			dappId: BLOCKNATIVE_KEY,
-			networkId: networkId,
-			darkMode: true,
-		});
 		setNotify(
 			Notify({
 				dappId: BLOCKNATIVE_KEY,

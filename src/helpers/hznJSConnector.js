@@ -25,7 +25,6 @@ let hznJSConnector = {
 	signers: HorizonJs.signers,
 	setContractSettings: function (contractSettings) {
 		this.initialized = true;
-		console.log(contractSettings);
 		this.hznJS = new HorizonJs(contractSettings);
 		this.synths = this.hznJS.contractSettings.synths;
 		this.signer = this.hznJS.contractSettings.signer;
@@ -230,7 +229,6 @@ export const connectToWallet = async ({ wallet, derivationPath }) => {
 };
 
 export const getProvider = ({ networkId }) => {
-	console.log(BSC_JSON_RPC_URLS[networkId]);
 	return new providers.JsonRpcProvider(BSC_JSON_RPC_URLS[networkId]);
 };
 
