@@ -13,7 +13,7 @@ import { RootState } from 'ducks/types';
 import App from './App';
 
 import hznJSConnector, { getProvider } from 'helpers/hznJSConnector';
-import { getEthereumNetwork, onMetamaskNetworkChange } from 'helpers/networkHelper';
+import { getBscNetwork, onWalletNetworkChange } from 'helpers/networkHelper';
 import useInterval from 'hooks/useInterval';
 import { INTERVAL_TIMER } from 'constants/ui';
 
@@ -60,7 +60,7 @@ const Root: FC<PropsFromRedux> = ({
 			fetchGasPricesRequest();
 			fetchRatesRequest();
 			fetchAppStatusRequest();
-			onMetamaskNetworkChange();
+			onWalletNetworkChange();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [appIsReady]);
@@ -79,12 +79,12 @@ const Root: FC<PropsFromRedux> = ({
 
 	useEffect(() => {
 		const init = async () => {
-			const { networkId } = await getEthereumNetwork();
+			const { networkId } = await getBscNetwork();
 			const provider = getProvider({ networkId });
 			hznJSConnector.setContractSettings({ networkId, provider });
 			setAppReady();
 		};
-		init();
+		setTimeout(init, 1000); // binance wallet initiation has delay
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

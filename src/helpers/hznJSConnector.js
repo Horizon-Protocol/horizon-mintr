@@ -1,5 +1,5 @@
 import { HorizonJs } from '@phoenix-global/horizon-js';
-import { getEthereumNetwork, BSC_JSON_RPC_URLS, SUPPORTED_WALLETS_MAP } from './networkHelper';
+import { getBscNetwork, BSC_JSON_RPC_URLS, SUPPORTED_WALLETS_MAP } from './networkHelper';
 import { ethers, providers } from 'ethers';
 import {
 	uniswapV1,
@@ -165,38 +165,6 @@ const connectToMetamask = async (networkId, networkName) => {
 	}
 };
 
-const connectToCoinbase = async (networkId, networkName) => {
-	const walletState = {
-		walletType: SUPPORTED_WALLETS_MAP.COINBASE,
-		unlocked: false,
-	};
-	try {
-		const accounts = await hznJSConnector.signer.getNextAddresses();
-		if (accounts && accounts.length > 0) {
-			return {
-				...walletState,
-				currentWallet: accounts[0],
-				unlocked: true,
-				networkId,
-				networkName: networkName.toLowerCase(),
-			};
-		} else {
-			return {
-				...walletState,
-				unlockReason: 'CoinbaseNoAccounts',
-			};
-		}
-		// We updateWalletStatus with all the infos
-	} catch (e) {
-		console.log(e);
-		return {
-			...walletState,
-			unlockReason: 'ErrorWhileConnectingToCoinbase',
-			unlockMessage: e,
-		};
-	}
-};
-
 const connectToHardwareWallet = (networkId, networkName, walletType) => {
 	return {
 		walletType,
@@ -204,58 +172,6 @@ const connectToHardwareWallet = (networkId, networkName, walletType) => {
 		networkId,
 		networkName: networkName.toLowerCase(),
 	};
-};
-
-const connectToWalletConnect = async (networkId, networkName) => {
-	const walletState = {
-		walletType: SUPPORTED_WALLETS_MAP.WALLET_CONNECT,
-		unlocked: false,
-	};
-	try {
-		await hznJSConnector.signer.provider._web3Provider.enable();
-		const accounts = await hznJSConnector.signer.getNextAddresses();
-		if (accounts && accounts.length > 0) {
-			return {
-				...walletState,
-				currentWallet: accounts[0],
-				unlocked: true,
-				networkId,
-				networkName: networkName.toLowerCase(),
-			};
-		}
-	} catch (e) {
-		console.log(e);
-		return {
-			...walletState,
-			unlockReason: 'ErrorWhileConnectingToWalletConnect',
-			unlockMessage: e,
-		};
-	}
-};
-
-const connectToPortis = async (networkId, networkName) => {
-	const walletState = {
-		walletType: SUPPORTED_WALLETS_MAP.PORTIS,
-		unlocked: false,
-	};
-	try {
-		const accounts = await hznJSConnector.signer.getNextAddresses();
-		if (accounts && accounts.length > 0) {
-			return {
-				...walletState,
-				currentWallet: accounts[0],
-				unlocked: true,
-				networkId,
-				networkName: networkName.toLowerCase(),
-			};
-		}
-	} catch (e) {
-		console.log(e);
-		return {
-			...walletState,
-			unlockError: e.message,
-		};
-	}
 };
 
 const getSignerConfig = ({ type, networkId, derivationPath, networkName }) => {
@@ -271,26 +187,6 @@ const getSignerConfig = ({ type, networkId, derivationPath, networkName }) => {
 	// if (type === SUPPORTED_WALLETS_MAP.TREZOR) {
 	// 	return {
 	// 		provider: customProvider,
-	// 	};
-	// }
-
-	// if (type === SUPPORTED_WALLETS_MAP.COINBASE) {
-	// 	return {
-	// 		appName: 'Mintr',
-	// 		appLogoUrl: `${window.location.origin}/images/mintr-leaf-logo.png`,
-	// 		jsonRpcUrl: INFURA_JSON_RPC_URLS[networkId],
-	// 		networkId,
-	// 	};
-	// }
-	// if (type === SUPPORTED_WALLETS_MAP.WALLET_CONNECT) {
-	// 	return {
-	// 		infuraId: process.env.REACT_APP_INFURA_PROJECT_ID,
-	// 	};
-	// }
-	// if (type === SUPPORTED_WALLETS_MAP.PORTIS) {
-	// 	return {
-	// 		networkName: networkName.toLowerCase(),
-	// 		appId: PORTIS_APP_ID,
 	// 	};
 	// }
 
@@ -310,7 +206,8 @@ export const setSigner = ({ type, networkId, derivationPath, networkName }) => {
 };
 
 export const connectToWallet = async ({ wallet, derivationPath }) => {
-	const { name, networkId } = await getEthereumNetwork();
+	const { name, networkId } = await getBscNetwork(wallet);
+	console.log('connectToWallet', name, networkId);
 	if (!name) {
 		return {
 			walletType: '',
@@ -325,15 +222,8 @@ export const connectToWallet = async ({ wallet, derivationPath }) => {
 			return connectToBinance(networkId, name);
 		case SUPPORTED_WALLETS_MAP.METAMASK:
 			return connectToMetamask(networkId, name);
-		case SUPPORTED_WALLETS_MAP.COINBASE:
-			return connectToCoinbase(networkId, name);
-		case SUPPORTED_WALLETS_MAP.TREZOR:
-		case SUPPORTED_WALLETS_MAP.LEDGER:
-			return connectToHardwareWallet(networkId, name, wallet);
-		case SUPPORTED_WALLETS_MAP.WALLET_CONNECT:
-			return connectToWalletConnect(networkId, name);
-		case SUPPORTED_WALLETS_MAP.PORTIS:
-			return connectToPortis(networkId, name);
+		// case SUPPORTED_WALLETS_MAP.LEDGER:
+		// 	return connectToHardwareWallet(networkId, name, wallet);
 		default:
 			return {};
 	}

@@ -10,7 +10,7 @@ import PageContainer from 'components/PageContainer';
 
 import MintrAction from '../../MintrActions';
 import { ACTIONS } from 'constants/actions';
-import { isGoerliTestnet, isMainNet } from 'helpers/networkHelper';
+import { isMainNet } from 'helpers/networkHelper';
 import { getRedirectToTrade } from 'ducks/ui';
 
 const initialScenario = null;
@@ -44,7 +44,7 @@ const Home = ({ walletDetails: { networkId }, redirectToTrade }) => {
 				{ACTIONS.map(action => {
 					return (
 						<Button
-							disabled={(action === 'track' && !isMainNet(networkId)) || isGoerliTestnet(networkId)}
+							disabled={action === 'track' && !isMainNet(networkId)}
 							key={action}
 							onClick={() => setCurrentScenario(action)}
 							big

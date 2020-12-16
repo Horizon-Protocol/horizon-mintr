@@ -6,15 +6,14 @@ import { useTranslation } from 'react-i18next';
 
 import hznJSConnector, { connectToWallet } from '../../helpers/hznJSConnector';
 
-import { setCurrentPage } from '../../ducks/ui';
+import { setCurrentPage, getCurrentTheme } from '../../ducks/ui';
 import { updateWalletStatus, getWalletDetails } from '../../ducks/wallet';
-import { getCurrentTheme } from '../../ducks/ui';
 
 import {
-	hasEthereumInjected,
 	SUPPORTED_WALLETS,
-	onMetamaskAccountChange,
 	SUPPORTED_WALLETS_MAP,
+	hasWalletInstalled,
+	onWalletAccountChange,
 } from '../../helpers/networkHelper';
 import { ButtonPrimary, ButtonSecondary } from '../../components/Button';
 import { H1, H2, PMega, ButtonTertiaryLabel } from '../../components/Typography';
@@ -39,7 +38,7 @@ const onWalletClick = ({ wallet, derivationPath, updateWalletStatus, setCurrentP
 		updateWalletStatus({ ...walletStatus, availableWallets: [] });
 		if (walletStatus && walletStatus.unlocked && walletStatus.currentWallet) {
 			if (walletStatus.walletType === SUPPORTED_WALLETS_MAP.METAMASK) {
-				onMetamaskAccountChange(async () => {
+				onWalletAccountChange(async () => {
 					const address = await hznJSConnector.signer.getNextAddresses();
 					const signer = new hznJSConnector.signers[SUPPORTED_WALLETS_MAP.METAMASK]({});
 					hznJSConnector.setContractSettings({
@@ -159,10 +158,9 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
 				<Wallets>
 					<PMega m={'10px 0 20px 0'}>{t('onboarding.walletConnection.title')}</PMega>
 					{SUPPORTED_WALLETS.map(wallet => {
-						const noMetamask = wallet === 'Metamask' && !hasEthereumInjected();
 						return (
 							<Button
-								disabled={noMetamask}
+								disabled={!hasWalletInstalled(wallet)}
 								key={wallet}
 								onClick={onWalletClick({
 									wallet,

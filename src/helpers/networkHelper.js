@@ -1,12 +1,13 @@
 import throttle from 'lodash/throttle';
 import invert from 'lodash/invert';
+import some from 'lodash/some';
 
 import { NETWORK_SPEEDS_TO_KEY } from '../constants/network';
 import { GWEI_UNIT, GAS_LIMIT_BUFFER_PERCENTAGE } from '../constants/network';
 
 export const SUPPORTED_NETWORKS = {
 	56: 'MAINNET', // BSC
-	97: 'TESTNET', // BSC
+	97: 'TESTNET', // BSC testnet
 };
 
 export const BSC_JSON_RPC_URLS = {
@@ -26,54 +27,47 @@ export const DEFAULT_GAS_LIMIT = {
 	sendSynth: 150000,
 };
 
-export const INFURA_PROJECT_ID = process.env.REACT_APP_INFURA_PROJECT_ID;
-
-export const INFURA_JSON_RPC_URLS = {
-	1: `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`,
-	3: `https://ropsten.infura.io/v3/${INFURA_PROJECT_ID}`,
-	4: `https://rinkeby.infura.io/v3/${INFURA_PROJECT_ID}`,
-	5: `https://goerli.infura.io/v3/${INFURA_PROJECT_ID}`,
-	42: `https://kovan.infura.io/v3/${INFURA_PROJECT_ID}`,
-};
-
-// export const PORTIS_APP_ID = '81b6e4b9-9f28-4cce-b41f-2de90c4f906f';
-
-// const DEFIPULSE_API_KEY = process.env.REACT_APP_DEFIPULSE_API_KEY;
-
 export const SUPPORTED_WALLETS_MAP = {
 	BINANCE: 'Binance',
 	METAMASK: 'Metamask',
-	// TREZOR: 'Trezor',
 	// LEDGER: 'Ledger',
-	// COINBASE: 'Coinbase',
-	// WALLET_CONNECT: 'WalletConnect',
-	// PORTIS: 'Portis',
 };
 
-export const OVM_RPC_URL = 'https://goerli.optimism.io';
-
-export const L1_MESSENGER_ADDRESS = '0xed95BaA90FBb6d6cF4993A0D0a4C738c94e28eA1';
-
-export const L2_MESSENGER_ADDRESS = '0x4200000000000000000000000000000000000007';
-
 export const SUPPORTED_WALLETS = Object.values(SUPPORTED_WALLETS_MAP);
+
+const WALLET_INJECT_MAP = {
+	Binance: 'BinanceChain',
+	Metamask: 'ethereum',
+};
+
+export const hasWalletInstalled = wallet => {
+	const injectName = WALLET_INJECT_MAP[wallet];
+	return injectName ? !!window[injectName] : false;
+};
+
+export const hasAnyWalletInstalled = () => some(SUPPORTED_WALLETS, hasWalletInstalled);
 
 // add REACT_APP_BLOCKNATIVE_NOTIFY_KEY=xxx to .env
 export const BLOCKNATIVE_KEY = process.env.REACT_APP_BLOCKNATIVE_NOTIFY_KEY;
 
-export const hasEthereumInjected = () => !!window.ethereum;
-
 const defaultNetwork = { name: 'TESTNET', networkId: 97 };
 
-export async function getEthereumNetwork() {
-	if (!hasEthereumInjected()) {
+export async function getBscNetwork(wallet) {
+	if (!hasAnyWalletInstalled()) {
 		return defaultNetwork;
 	}
-	let networkId = 1;
+	let networkId = 56;
+
 	try {
-		if (window.ethereum?.networkVersion) {
-			console.log('ethereum');
-			networkId = Number(window.ethereum?.networkVersion);
+		let chainId = window.BinanceChain?.chainId || window.ethereum?.chainId;
+		if (wallet === SUPPORTED_WALLETS_MAP.BINANCE) {
+			chainId = window.BinanceChain?.chainId;
+		} else if (wallet === SUPPORTED_WALLETS_MAP.METAMASK) {
+			chainId = window.ethereum?.chainId;
+		}
+		if (chainId) {
+			console.log('chainId', chainId);
+			networkId = parseInt(chainId);
 			return { name: SUPPORTED_NETWORKS[networkId], networkId };
 		} else if (window.web3?.eth?.net) {
 			console.log('web3.net');
@@ -97,10 +91,10 @@ const handleBasGasSpeedsRequest = async () => {
 			price: 18,
 		},
 		[NETWORK_SPEEDS_TO_KEY.FAST]: {
-			price: 25,
+			price: 22,
 		},
 		[NETWORK_SPEEDS_TO_KEY.FASTEST]: {
-			price: 30,
+			price: 26,
 		},
 	};
 };
@@ -120,21 +114,31 @@ export const getTransactionPrice = (gasPrice, gasLimit, ethPrice) => {
 	return (gasPrice * ethPrice * gasLimit) / GWEI_UNIT;
 };
 
-export function onMetamaskAccountChange(cb) {
-	if (!window.ethereum) return;
+export function onWalletAccountChange(cb) {
 	const listener = throttle(cb, 1000);
-	window.ethereum.on('accountsChanged', listener);
+	if (window.BinanceChain) {
+		window.BinanceChain.on('accountsChanged', listener);
+	}
+	if (window.ethereum) {
+		window.ethereum.on('accountsChanged', listener);
+	}
 }
 
-export function onMetamaskNetworkChange() {
-	if (!window.ethereum) return;
-	window.ethereum.on('chainChanged', () => {
-		document.location.reload();
-	});
+export function onWalletNetworkChange() {
+	console.log('bind onWalletNetworkChange');
+	if (window.BinanceChain) {
+		window.BinanceChain.on('chainChanged', () => {
+			document.location.reload();
+		});
+	}
+	if (window.ethereum) {
+		window.ethereum.on('chainChanged', () => {
+			document.location.reload();
+		});
+	}
 }
 
-export const addBufferToGasLimit = gasLimit => Math.round(Number(gasLimit) * (1 + GAS_LIMIT_BUFFER_PERCENTAGE));
+export const addBufferToGasLimit = gasLimit =>
+	Math.round(Number(gasLimit) * (1 + GAS_LIMIT_BUFFER_PERCENTAGE));
 
 export const isMainNet = networkId => networkId === Number(SUPPORTED_NETWORKS_MAP.MAINNET);
-
-export const isGoerliTestnet = networkId => networkId === Number(SUPPORTED_NETWORKS_MAP.GOERLI);

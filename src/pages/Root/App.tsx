@@ -20,7 +20,6 @@ import MobileLanding from '../MobileLanding';
 
 import MainLayout from './components/MainLayout';
 import { NotifyProvider } from 'contexts/NotifyContext';
-import L2Onboarding from 'pages/L2Onboarding/L2Onboarding';
 
 const mapStateToProps = (state: RootState) => ({
 	currentTheme: getCurrentTheme(state),
@@ -43,14 +42,10 @@ const CurrentPage: FC<CurrentPageProps> = ({ isOnMaintenance, page, wallet }) =>
 	if (isMobileOrTablet()) return <MobileLanding />;
 	if (isOnMaintenance) return <MaintenancePage />;
 	switch (page) {
-		case PAGES_BY_KEY.LANDING:
-			return <Landing />;
 		case PAGES_BY_KEY.WALLET_SELECTION:
 			return <WalletSelection />;
 		case PAGES_BY_KEY.MAIN:
 			return <Main wallet={wallet} />;
-		case PAGES_BY_KEY.L2ONBOARDING:
-			return <L2Onboarding />;
 		default:
 			return <Landing />;
 	}
