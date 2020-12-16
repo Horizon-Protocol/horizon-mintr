@@ -7,19 +7,12 @@ const DEFAULT_SUSD_RATE = 1;
 
 export const getDebtStatus = async (walletAddress: string) => {
 	const {
-		hznJS: {
-			SystemSettings,
-			Synthetix,
-			Liquidations,
-			SynthetixState,
-			contractSettings: { networkId },
-		},
+		hznJS: { SystemSettings, Synthetix, Liquidations },
 	} = hznJSConnector as any;
 	const debtBalanceBN = await Synthetix.debtBalanceOf(walletAddress, bytesFormatter('sUSD'));
 
-	const IssuanceRatioContract = networkId === 5 ? SystemSettings : SynthetixState;
 	const result = await Promise.all([
-		IssuanceRatioContract.issuanceRatio(),
+		SystemSettings.issuanceRatio(),
 		Synthetix.collateralisationRatio(walletAddress),
 		Synthetix.transferableSynthetix(walletAddress),
 		Synthetix.debtBalanceOf(walletAddress, bytesFormatter('sUSD')),
