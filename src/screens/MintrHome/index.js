@@ -2,13 +2,11 @@ import { useState } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Container, Grid, Tabs, Tab, Typography } from '@material-ui/core';
-import { TabContext, TabList, TabPanel } from '@material-ui/lab';
+import { Box, Tabs, Tab, Container, Grid, Typography } from '@material-ui/core';
 
 import { isMainNet } from 'helpers/networkHelper';
 import { getWalletDetails } from 'ducks/wallet';
 import { getRedirectToTrade } from 'ducks/ui';
-import Slider from 'components/ScreenSlider';
 
 import MintrAction from '../MintrActions';
 
@@ -18,9 +16,20 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   tab: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
+  actionTab: {
+    borderBottom: 2,
     color: theme.palette.primary.contrastText,
     background: ({ action }) => `url(/images/actions/${action}.svg)`,
   },
+  actionTitle: {
+    lineHeight: '28px',
+  },
+  actionDesc: {},
+  actionAmount: {},
   content: {
     position: 'relative',
     maxWidth: 720,
@@ -50,13 +59,31 @@ const tabs = [
 
 const initialAction = tabs[0].key;
 
+const ActionTab = ({ title, value, desc, amountLabel, ...props }) => {
+  const classes = useStyles();
+  return (
+    <Box className={classes.actionTab} {...props}>
+      <Typography
+        component="span"
+        variant="subtitle1"
+        color="inherit"
+        className={classes.actionTitle}
+      >
+        {title}
+      </Typography>
+      <span className={classes.actionDesc}>{desc}</span>
+      <span className={classes.actionAmount}>{amountLabel}</span>
+    </Box>
+  );
+};
+
 const Home = ({ walletDetails: { networkId } }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
   const [currentAction, setCurrentAction] = useState(initialAction);
 
-  const handleChangeAction = (event, newValue) => {
+  const handleChangeAction = (_, newValue) => {
     setCurrentAction(newValue);
   };
 
@@ -64,7 +91,12 @@ const Home = ({ walletDetails: { networkId } }) => {
     <Container maxWidth="sm">
       <Tabs variant="fullWidth" value={currentAction} onChange={handleChangeAction}>
         {tabs.map(({ key, title }) => (
-          <Tab key={key} label={t(title)} value={key} className={classes.tab} />
+          <Tab
+            key={key}
+            label={<ActionTab title={t(title)} />}
+            value={key}
+            className={classes.tab}
+          />
         ))}
       </Tabs>
       <Grid className={classes.content}>
