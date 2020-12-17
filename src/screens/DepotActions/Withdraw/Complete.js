@@ -72,7 +72,7 @@ const Complete = props => {
 
 const Container = styled.div`
   width: 100%;
-  height: 850px;
+  height: 640px;
   max-width: 720px;
   margin: 0 auto;
   overflow: hidden;

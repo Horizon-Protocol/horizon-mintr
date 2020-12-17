@@ -20,7 +20,7 @@ export const ButtonPrimaryMedium = ({ children, onClick, disabled }) => {
 
 const Button = styled.button`
   width: ${props => (props.width ? props.width : '400px')};
-  height: ${props => (props.height ? props.height : '72px')};
+  height: ${props => (props.height ? props.height : '56px')};
   border-radius: 5px;
   text-transform: uppercase;
   border: none;

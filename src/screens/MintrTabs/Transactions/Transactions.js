@@ -171,7 +171,7 @@ const TransactionsPanel = styled.div`
 
 const TransactionsPlaceholder = styled.div`
   width: 100%;
-  height: 600px;
+  height: 640px;
   display: flex;
   align-items: center;
   justify-content: center;

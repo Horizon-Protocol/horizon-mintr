@@ -2,16 +2,13 @@ import { useState } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Container, Box, Tab, Typography } from '@material-ui/core';
+import { Button, Container, Grid, Tabs, Tab, Typography } from '@material-ui/core';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 
-import { getWalletDetails } from 'ducks/wallet';
-
-import { PLarge, H2 } from 'components/Typography';
-
-import { ACTIONS } from 'constants/actions';
 import { isMainNet } from 'helpers/networkHelper';
+import { getWalletDetails } from 'ducks/wallet';
 import { getRedirectToTrade } from 'ducks/ui';
+import Slider from 'components/ScreenSlider';
 
 import MintrAction from '../MintrActions';
 
@@ -20,12 +17,30 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
+  tab: {
+    color: theme.palette.primary.contrastText,
+    background: ({ action }) => `url(/images/actions/${action}.svg)`,
+  },
+  content: {
+    position: 'relative',
+    maxWidth: 720,
+    overflow: 'hidden',
+    width: '100%',
+    height: 640,
+  },
 }));
 
-const initialScenario = null;
 const tabs = [
-  { key: 'mint', description: 'home.actions.mint.description', title: 'home.actions.mint.title' },
-  { key: 'burn', description: 'home.actions.burn.description', title: 'home.actions.burn.title' },
+  {
+    key: 'mint',
+    description: 'home.actions.mint.description',
+    title: 'home.actions.mint.title',
+  },
+  {
+    key: 'burn',
+    description: 'home.actions.burn.description',
+    title: 'home.actions.burn.title',
+  },
   {
     key: 'claim',
     description: 'home.actions.claim.description',
@@ -33,33 +48,29 @@ const tabs = [
   },
 ];
 
-const Home = ({ walletDetails: { networkId }, redirectToTrade }) => {
+const initialAction = tabs[0].key;
+
+const Home = ({ walletDetails: { networkId } }) => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const [value, setValue] = useState('1');
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const [currentAction, setCurrentAction] = useState(initialAction);
+
+  const handleChangeAction = (event, newValue) => {
+    setCurrentAction(newValue);
   };
-
-  const [currentScenario, setCurrentScenario] = useState(
-    redirectToTrade ? 'trade' : initialScenario
-  );
 
   return (
     <Container maxWidth="sm">
-      <MintrAction action={currentScenario} onDestroy={() => setCurrentScenario(null)} />
-      <TabContext value={value}>
-        <TabList onChange={handleChange} aria-label="simple tabs example">
-          {tabs.map(({ key, title }) => (
-            <Tab key={key} label={title} value={key} />
-          ))}
-        </TabList>
-        <TabPanel value="1">Item One</TabPanel>
-        <TabPanel value="2">Item Two</TabPanel>
-        <TabPanel value="3">Item Three</TabPanel>
-      </TabContext>
-      <Tab>
+      <Tabs variant="fullWidth" value={currentAction} onChange={handleChangeAction}>
+        {tabs.map(({ key, title }) => (
+          <Tab key={key} label={t(title)} value={key} className={classes.tab} />
+        ))}
+      </Tabs>
+      <Grid className={classes.content}>
+        <MintrAction action={currentAction} />
+      </Grid>
+      {/* <Tab>
         {ACTIONS.map(action => {
           return (
             <Button key={action} onClick={() => setCurrentScenario(action)} big>
@@ -69,7 +80,7 @@ const Home = ({ walletDetails: { networkId }, redirectToTrade }) => {
             </Button>
           );
         })}
-      </Tab>
+      </Tab> */}
     </Container>
   );
 };

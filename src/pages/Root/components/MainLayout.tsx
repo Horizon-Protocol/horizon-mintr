@@ -6,7 +6,7 @@ const MainLayout = styled(FlexDiv)`
   flex-flow: column;
   width: 100%;
   min-width: 960px;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
   background: ${({ theme }) => theme.colorStyles.background};
 `;

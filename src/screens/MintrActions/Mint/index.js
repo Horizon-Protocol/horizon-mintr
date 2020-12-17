@@ -1,22 +1,22 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import Action from './Action';
-import Confirmation from './Confirmation';
-import Complete from './Complete';
 
-import hznJSConnector from '../../../helpers/hznJSConnector';
-import { addBufferToGasLimit } from '../../../helpers/networkHelper';
-import { SliderContext } from '../../../components/ScreenSlider';
-import { bytesFormatter, bigNumberFormatter, formatCurrency } from '../../../helpers/formatters';
-
-import errorMapper from '../../../helpers/errorMapper';
-import { getCurrentGasPrice } from '../../../ducks/network';
-import { getWalletDetails } from '../../../ducks/wallet';
+import hznJSConnector from 'helpers/hznJSConnector';
+import { addBufferToGasLimit } from 'helpers/networkHelper';
+import { SliderContext } from 'components/ScreenSlider';
+import { bytesFormatter, bigNumberFormatter, formatCurrency } from 'helpers/formatters';
+import errorMapper from 'helpers/errorMapper';
+import { getCurrentGasPrice } from 'ducks/network';
+import { getWalletDetails } from 'ducks/wallet';
 import { fetchBalancesRequest } from 'ducks/balances';
 import { fetchDebtStatusRequest } from 'ducks/debtStatus';
 import { useNotifyContext } from 'contexts/NotifyContext';
 import { notifyHandler } from 'helpers/notifyHelper';
+
+import Action from './Action';
+import Confirmation from './Confirmation';
+import Complete from './Complete';
 
 const useGetIssuanceData = (walletAddress, hUSDBytes) => {
   const [data, setData] = useState({});

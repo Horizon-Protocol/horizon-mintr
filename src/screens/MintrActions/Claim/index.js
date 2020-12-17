@@ -1,25 +1,25 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { connect } from 'react-redux';
 import { addSeconds, formatDistanceToNow } from 'date-fns';
-import hznJSConnector from '../../../helpers/hznJSConnector';
+import hznJSConnector from 'helpers/hznJSConnector';
 
-import { SliderContext } from '../../../components/ScreenSlider';
-import { setCurrentTab, getCurrentTheme } from '../../../ducks/ui';
+import { SliderContext } from 'components/ScreenSlider';
+import { setCurrentTab, getCurrentTheme } from 'ducks/ui';
 
 import Action from './Action';
 import Confirmation from './Confirmation';
 import Complete from './Complete';
-import { bigNumberFormatter } from '../../../helpers/formatters';
-import { addBufferToGasLimit } from '../../../helpers/networkHelper';
-import { TRANSACTION_EVENTS_MAP } from '../../../constants/transactionHistory';
+import { bigNumberFormatter } from 'helpers/formatters';
+import { addBufferToGasLimit } from 'helpers/networkHelper';
+import { TRANSACTION_EVENTS_MAP } from 'constants/transactionHistory';
 import { fetchBalancesRequest } from 'ducks/balances';
 import { fetchDebtStatusRequest } from 'ducks/debtStatus';
 import { fetchEscrowRequest } from 'ducks/escrow';
 
-import { createTransaction } from '../../../ducks/transactions';
-import { getCurrentGasPrice } from '../../../ducks/network';
-import { getWalletDetails } from '../../../ducks/wallet';
-import errorMapper from '../../../helpers/errorMapper';
+import { createTransaction } from 'ducks/transactions';
+import { getCurrentGasPrice } from 'ducks/network';
+import { getWalletDetails } from 'ducks/wallet';
+import errorMapper from 'helpers/errorMapper';
 import { useNotifyContext } from 'contexts/NotifyContext';
 import { notifyHandler } from 'helpers/notifyHelper';
 

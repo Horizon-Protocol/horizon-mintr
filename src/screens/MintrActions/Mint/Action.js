@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { withTranslation } from 'react-i18next';
 import Big from 'big.js';
 
-import { SlidePage } from '../../../components/ScreenSlider';
-import TransactionPriceIndicator from '../../../components/TransactionPriceIndicator';
-import { ButtonPrimary, ButtonTertiary, ButtonMax } from '../../../components/Button';
-import { PLarge, H1, Subtext } from '../../../components/Typography';
-import Input from '../../../components/Input';
-import ErrorMessage from '../../../components/ErrorMessage';
+import { SlidePage } from 'components/ScreenSlider';
+import TransactionPriceIndicator from 'components/TransactionPriceIndicator';
+import { ButtonPrimary, ButtonMax } from 'components/Button';
+import { PLarge, H1, Subtext } from 'components/Typography';
+import Input from 'components/Input';
+import ErrorMessage from 'components/ErrorMessage';
 import { getStakingAmount, estimateCRatio } from './mint-helpers';
 
 const Action = ({
@@ -29,10 +29,6 @@ const Action = ({
   return (
     <SlidePage>
       <Container>
-        <Navigation>
-          <ButtonTertiary onClick={onDestroy}>{t('button.navigation.cancel')}</ButtonTertiary>
-        </Navigation>
-
         <Top>
           <Intro>
             <ActionImage src="/images/actions/mint.svg" big />
@@ -78,11 +74,11 @@ const Action = ({
           </InfoRow>
         </Top>
         <Bottom>
-          <TransactionPriceIndicator
+          {/* <TransactionPriceIndicator
             isFetchingGasLimit={isFetchingGasLimit}
             gasLimit={gasLimit}
             style={{ margin: '0' }}
-          />
+          /> */}
           <ButtonPrimary
             disabled={isFetchingGasLimit || gasEstimateError}
             onClick={onMint}
@@ -98,7 +94,7 @@ const Action = ({
 
 const Container = styled.div`
   width: 100%;
-  height: 850px;
+  height: 640px;
   max-width: 720px;
   margin: 0 auto;
   overflow: hidden;
@@ -142,7 +138,7 @@ const Navigation = styled.div`
 
 const Intro = styled.div`
   max-width: 380px;
-  margin-bottom: 64px;
+  margin-bottom: 32px;
 `;
 
 const ActionImage = styled.img`

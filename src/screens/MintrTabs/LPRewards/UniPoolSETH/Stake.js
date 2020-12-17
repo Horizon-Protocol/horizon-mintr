@@ -214,7 +214,7 @@ const Link = styled.a`
 `;
 
 const Container = styled.div`
-  min-height: 850px;
+  min-height: 640px;
 `;
 
 const Navigation = styled.div`

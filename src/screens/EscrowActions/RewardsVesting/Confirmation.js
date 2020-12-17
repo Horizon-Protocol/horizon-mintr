@@ -51,7 +51,7 @@ const Confirmation = ({ t, onDestroy, walletType, vestAmount, gasLimit, isFetchi
 
 const Container = styled.div`
   width: 100%;
-  height: 850px;
+  height: 640px;
   max-width: 720px;
   margin: 0 auto;
   overflow: hidden;

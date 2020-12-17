@@ -2,22 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
-import { formatCurrency } from '../../../helpers/formatters';
+import { formatCurrency } from 'helpers/formatters';
 
-import { SlidePage } from '../../../components/ScreenSlider';
-import TransactionPriceIndicator from '../../../components/TransactionPriceIndicator';
-import { ButtonPrimary, ButtonTertiary } from '../../../components/Button';
-import {
-  PLarge,
-  H1,
-  Subtext,
-  DataHeaderLarge,
-  TableHeaderMedium,
-  H2,
-} from '../../../components/Typography';
+import { SlidePage } from 'components/ScreenSlider';
+import TransactionPriceIndicator from 'components/TransactionPriceIndicator';
+import { ButtonPrimary, ButtonTertiary } from 'components/Button';
+import { PLarge, H1, Subtext, DataHeaderLarge, TableHeaderMedium, H2 } from 'components/Typography';
 
-import Tooltip from '../../../components/Tooltip';
-import { Info } from '../../../components/Icons';
+import Tooltip from 'components/Tooltip';
+import { Info } from 'components/Icons';
 
 const Action = ({
   onDestroy,
@@ -35,24 +28,23 @@ const Action = ({
   return (
     <SlidePage>
       <Container>
-        <Navigation>
-          <ButtonTertiary onClick={onDestroy}>{t('button.navigation.cancel')}</ButtonTertiary>
+        {/* <Navigation>
           <ButtonTertiary onClick={onClaimHistory}>
             {t('mintrActions.claim.action.buttons.history')} ↗
           </ButtonTertiary>
-        </Navigation>
+        </Navigation> */}
         <Intro>
           <ActionImage src="/images/actions/claim.svg" big />
           <H1 m={'10px 0'}>{t('mintrActions.claim.action.title')}</H1>
           <Subtitle>{t('mintrActions.claim.action.subtitle')}</Subtitle>
         </Intro>
         <BoxRow>
-          <Box>
+          {/* <Box>
             <DataHeaderLarge>{t('mintrActions.claim.action.tradingRewards')}</DataHeaderLarge>
             <Amount>
               {feesAvailable && feesAvailable[0] ? formatCurrency(feesAvailable[0]) : 0} sUSD
             </Amount>
-          </Box>
+          </Box> */}
           <Box>
             <DataHeaderLarge>{t('mintrActions.claim.action.stakingRewards')}</DataHeaderLarge>
             <Amount>
@@ -78,11 +70,11 @@ const Action = ({
               </IconContainer>
             </Tooltip>
           </Status>
-          <TransactionPriceIndicator
+          {/* <TransactionPriceIndicator
             isFetchingGasLimit={isFetchingGasLimit}
             gasLimit={gasLimit}
             style={{ margin: '0' }}
-          />
+          /> */}
           <ButtonPrimary
             disabled={!feesAreClaimable || isFetchingGasLimit || gasEstimateError}
             onClick={onClaim}
@@ -101,7 +93,7 @@ const Action = ({
 const WrapTableBreakpoint = 1340;
 const Container = styled.div`
   width: 100%;
-  height: 850px;
+  height: 640px;
   max-width: 720px;
   margin: 0 auto;
   overflow: hidden;

@@ -1,4 +1,3 @@
-import React from 'react';
 import Mint from './Mint';
 import Burn from './Burn';
 import Claim from './Claim';

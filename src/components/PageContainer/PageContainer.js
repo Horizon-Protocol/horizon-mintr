@@ -20,7 +20,7 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 0 5px;
   overflow: hidden;
-  height: 850px;
+  height: 640px;
 `;
 
 export default PageContainer;

@@ -13,7 +13,7 @@ import {
 const useStyles = makeStyles(theme => ({
   card: {
     width: props => props.width || 230,
-    height: props => props.height || 94,
+    height: props => props.height || 90,
     borderRadius: 16,
     padding: '8px 0',
     position: 'relative',
@@ -24,8 +24,12 @@ const useStyles = makeStyles(theme => ({
   },
   cell: {
     border: 'none',
-    padding: 4,
+    padding: '4px 8px',
     fontSize: 12,
+    whiteSpace: 'nowrap',
+    '&:last-child': {
+      paddingRight: 8,
+    },
   },
   loading: {
     position: 'absolute',
@@ -42,7 +46,7 @@ export default function HeaderCard({ loading = true, width, height, rows = [], t
   return (
     <Card variant="outlined" className={classes.card} style={style}>
       {title && <Box className={classes.title}>{title}</Box>}
-      <TableContainer class>
+      <TableContainer>
         <Table size="small">
           <TableBody>
             {rows.map(({ name, value }) => (

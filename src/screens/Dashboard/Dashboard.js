@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
     padding: '42px 0',
     backgroundColor: theme.palette.background.default,
     borderBottom: '1px solid #11263B',
+    marginBottom: 24,
   },
   logo: {
     width: 277,

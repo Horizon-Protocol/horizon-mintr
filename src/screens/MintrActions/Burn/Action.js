@@ -1,14 +1,15 @@
 import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
-import { SlidePage } from '../../../components/ScreenSlider';
+import { SlidePage } from 'components/ScreenSlider';
 import { withTranslation } from 'react-i18next';
+import Big from 'big.js';
 
-import { ButtonPrimary, ButtonTertiary } from '../../../components/Button';
-import { PLarge, H1, HyperlinkSmall, Subtext } from '../../../components/Typography';
-import TransactionPriceIndicator from '../../../components/TransactionPriceIndicator';
-import Input from '../../../components/Input';
-import ErrorMessage from '../../../components/ErrorMessage';
-import { formatCurrency, secondsToTime } from '../../../helpers/formatters';
+import { ButtonPrimary, ButtonMax } from 'components/Button';
+import { PLarge, H1, HyperlinkSmall, Subtext } from 'components/Typography';
+import TransactionPriceIndicator from 'components/TransactionPriceIndicator';
+import Input from 'components/Input';
+import ErrorMessage from 'components/ErrorMessage';
+import { formatCurrency, secondsToTime } from 'helpers/formatters';
 
 const Action = ({
   t,
@@ -79,9 +80,6 @@ const Action = ({
   return (
     <SlidePage>
       <Container>
-        <Navigation>
-          <ButtonTertiary onClick={onDestroy}>{t('button.navigation.cancel')}</ButtonTertiary>
-        </Navigation>
         <Top>
           <Intro>
             <ActionImage src="/images/actions/burn.svg" big />
@@ -90,7 +88,7 @@ const Action = ({
           </Intro>
           <Form>
             <PLarge>{t('mintrActions.burn.action.instruction')}</PLarge>
-            <ButtonRow>
+            {/* <ButtonRow>
               <AmountButton
                 onClick={() => {
                   setBurnAmount(maxBurnAmount);
@@ -113,19 +111,26 @@ const Action = ({
               >
                 {t('button.fixCRatio')}
               </AmountButton>
-            </ButtonRow>
+            </ButtonRow> */}
             <SubtextRow>
               <Subtext>${formatCurrency(maxBurnAmount)}</Subtext>
-              <Subtext>${formatCurrency(burnAmountToFixCRatio)}</Subtext>
+              {/* <Subtext>${formatCurrency(burnAmountToFixCRatio)}</Subtext> */}
             </SubtextRow>
             <Input
               singleSynth={'sUSD'}
               onChange={e => setBurnAmount(e.target.value)}
               value={burnAmount}
               placeholder="0.00"
+              rightComponent={
+                <ButtonMax
+                  onClick={() => {
+                    setBurnAmount(Big(maxBurnAmount).toFixed());
+                  }}
+                />
+              }
             />
             <ErrorMessage message={gasEstimateError} />
-            {snxInputIsVisible ? (
+            {/* {snxInputIsVisible ? (
               <Fragment>
                 <PLarge>{t('mintrActions.burn.action.transferrable.title')}</PLarge>
                 <Input
@@ -141,11 +146,11 @@ const Action = ({
                   {t('mintrActions.burn.action.transferrable.button')}
                 </HyperlinkSmall>
               </ButtonToggleInput>
-            )}
+            )} */}
           </Form>
         </Top>
         <Bottom>
-          <TransactionPriceIndicator isFetchingGasLimit={isFetchingGasLimit} gasLimit={gasLimit} />
+          {/* <TransactionPriceIndicator isFetchingGasLimit={isFetchingGasLimit} gasLimit={gasLimit} /> */}
           {renderSubmitButton()}
         </Bottom>
       </Container>
@@ -155,7 +160,7 @@ const Action = ({
 
 const Container = styled.div`
   width: 100%;
-  height: 850px;
+  height: 640px;
   max-width: 720px;
   margin: 0 auto;
   overflow: hidden;
@@ -179,13 +184,6 @@ const Top = styled.div`
 const Bottom = styled.div`
   height: auto;
   margin-bottom: 64px;
-`;
-
-const Navigation = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 0;
 `;
 
 const Intro = styled.div`

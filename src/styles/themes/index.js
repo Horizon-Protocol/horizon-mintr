@@ -14,14 +14,14 @@ const theme = themeName => {
       fontSize: [32],
       letterSpacing: 2,
       color: colorStyles.heading,
-      m: '30px 0px 8px 0px',
+      m: '16px 0px 8px 0px',
     },
     h2: {
       as: 'h2',
       fontSize: [24],
       letterSpacing: 2,
       color: colorStyles.heading,
-      m: '30px 0px 20px 0px',
+      m: '12px 0px 20px 0px',
     },
     pageTitle: {
       as: 'h3',

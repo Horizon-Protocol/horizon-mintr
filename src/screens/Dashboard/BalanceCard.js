@@ -52,7 +52,7 @@ const BalanceCard = ({ loading, currentWallet, walletBalances, debtData }) => {
       width={150}
       loading={loading}
       rows={rows}
-      title={<Typography variant="body">{shortenAddress(currentWallet)}</Typography>}
+      title={<Typography variant="body2">{shortenAddress(currentWallet)}</Typography>}
       style={{ marginLeft: 8 }}
     />
   );
