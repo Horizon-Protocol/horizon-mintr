@@ -6,51 +6,51 @@ import { RootState } from './types';
 import { getEscrowData } from 'dataFetcher';
 
 export type EscrowSliceState = {
-	escrowedBalances: EscrowedBalances | null;
-	isFetching: boolean;
-	isFetched: boolean;
-	isRefreshing: boolean;
-	fetchError: string | null;
+  escrowedBalances: EscrowedBalances | null;
+  isFetching: boolean;
+  isFetched: boolean;
+  isRefreshing: boolean;
+  fetchError: string | null;
 };
 
 export type EscrowedBalances = {
-	stakingRewards: number;
-	tokenSale: number;
+  stakingRewards: number;
+  tokenSale: number;
 };
 
 const initialState: EscrowSliceState = {
-	escrowedBalances: null,
-	isFetching: false,
-	isFetched: false,
-	isRefreshing: false,
-	fetchError: null,
+  escrowedBalances: null,
+  isFetching: false,
+  isFetched: false,
+  isRefreshing: false,
+  fetchError: null,
 };
 
 const sliceName = 'escrow';
 
 export const escrowSlice = createSlice({
-	name: sliceName,
-	initialState,
-	reducers: {
-		fetchEscrowRequest: state => {
-			state.fetchError = null;
-			state.isFetching = true;
-			if (state.isFetched) {
-				state.isRefreshing = true;
-			}
-		},
-		fetchEscrowFailure: (state, action: PayloadAction<{ error: string }>) => {
-			state.fetchError = action.payload.error;
-			state.isFetching = false;
-			state.isRefreshing = false;
-		},
-		fetchEscrowSuccess: (state, action: PayloadAction<{ escrowedBalances: EscrowedBalances }>) => {
-			state.escrowedBalances = action.payload.escrowedBalances;
-			state.isFetching = false;
-			state.isRefreshing = false;
-			state.isFetched = true;
-		},
-	},
+  name: sliceName,
+  initialState,
+  reducers: {
+    fetchEscrowRequest: state => {
+      state.fetchError = null;
+      state.isFetching = true;
+      if (state.isFetched) {
+        state.isRefreshing = true;
+      }
+    },
+    fetchEscrowFailure: (state, action: PayloadAction<{ error: string }>) => {
+      state.fetchError = action.payload.error;
+      state.isFetching = false;
+      state.isRefreshing = false;
+    },
+    fetchEscrowSuccess: (state, action: PayloadAction<{ escrowedBalances: EscrowedBalances }>) => {
+      state.escrowedBalances = action.payload.escrowedBalances;
+      state.isFetching = false;
+      state.isRefreshing = false;
+      state.isFetched = true;
+    },
+  },
 });
 
 export const { fetchEscrowRequest, fetchEscrowFailure, fetchEscrowSuccess } = escrowSlice.actions;
@@ -60,27 +60,27 @@ export const getEscrowedBalances = (state: RootState) => getEscrowState(state).e
 export const getIsFetchingEscrowData = (state: RootState) => getEscrowState(state).isFetching;
 
 export const getTotalEscrowedBalance = createSelector(getEscrowedBalances, escrowedBalances => {
-	if (!escrowedBalances) return null;
-	const { stakingRewards, tokenSale } = escrowedBalances;
-	return stakingRewards + tokenSale;
+  if (!escrowedBalances) return null;
+  const { stakingRewards, tokenSale } = escrowedBalances;
+  return stakingRewards + tokenSale;
 });
 
 function* fetchEscrowedBalances() {
-	const currentWallet = yield select(getCurrentWallet);
-	if (currentWallet != null) {
-		try {
-			const escrowedBalances = yield getEscrowData(currentWallet);
-			yield put(fetchEscrowSuccess({ escrowedBalances }));
-		} catch (e) {
-			yield put(fetchEscrowFailure({ error: e.message }));
-			return false;
-		}
-	}
-	return false;
+  const currentWallet = yield select(getCurrentWallet);
+  if (currentWallet != null) {
+    try {
+      const escrowedBalances = yield getEscrowData(currentWallet);
+      yield put(fetchEscrowSuccess({ escrowedBalances }));
+    } catch (e) {
+      yield put(fetchEscrowFailure({ error: e.message }));
+      return false;
+    }
+  }
+  return false;
 }
 
 export function* watchFetchEscrowRequest() {
-	yield takeLatest(fetchEscrowRequest.type, fetchEscrowedBalances);
+  yield takeLatest(fetchEscrowRequest.type, fetchEscrowedBalances);
 }
 
 export default escrowSlice.reducer;

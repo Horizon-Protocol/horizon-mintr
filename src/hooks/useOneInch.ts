@@ -12,56 +12,56 @@ export const ethTokenAddress = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
 const GAS_LIMIT_BUFFER = 100000;
 
 const useOneInch = (signer: Signer | Provider) => {
-	const [oneInchContract, setOneInchContract] = useState<Contract | null>(null);
+  const [oneInchContract, setOneInchContract] = useState<Contract | null>(null);
 
-	useEffect(() => {
-		if (signer) {
-			const contract = new Contract(
-				oneSplitAuditContract.addresses[SUPPORTED_NETWORKS_MAP.MAINNET],
-				oneSplitAuditContract.abi,
-				signer
-			);
+  useEffect(() => {
+    if (signer) {
+      const contract = new Contract(
+        oneSplitAuditContract.addresses[SUPPORTED_NETWORKS_MAP.MAINNET],
+        oneSplitAuditContract.abi,
+        signer
+      );
 
-			setOneInchContract(contract);
-		}
-	}, [signer]);
+      setOneInchContract(contract);
+    }
+  }, [signer]);
 
-	const swap = async (amount: string, gasPrice: number, gasLimit: number) => {
-		try {
-			if (oneInchContract != null) {
-				const amountBN = utils.parseEther(amount);
-				const swapRates = await oneInchContract.getExpectedReturn(
-					ethTokenAddress,
-					sUSDTokenAddress,
-					amountBN,
-					100,
-					0
-				);
+  const swap = async (amount: string, gasPrice: number, gasLimit: number) => {
+    try {
+      if (oneInchContract != null) {
+        const amountBN = utils.parseEther(amount);
+        const swapRates = await oneInchContract.getExpectedReturn(
+          ethTokenAddress,
+          sUSDTokenAddress,
+          amountBN,
+          100,
+          0
+        );
 
-				const swapParams = [
-					ethTokenAddress,
-					sUSDTokenAddress,
-					amountBN,
-					swapRates.returnAmount,
-					swapRates.distribution,
-					0,
-				];
+        const swapParams = [
+          ethTokenAddress,
+          sUSDTokenAddress,
+          amountBN,
+          swapRates.returnAmount,
+          swapRates.distribution,
+          0,
+        ];
 
-				return oneInchContract.swap(...swapParams, {
-					gasPrice,
-					gasLimit: gasLimit + GAS_LIMIT_BUFFER,
-					value: amountBN,
-				});
-			}
-		} catch (e) {
-			return Promise.reject(e);
-		}
-	};
+        return oneInchContract.swap(...swapParams, {
+          gasPrice,
+          gasLimit: gasLimit + GAS_LIMIT_BUFFER,
+          value: amountBN,
+        });
+      }
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
 
-	return {
-		swap,
-		oneInchContract,
-	};
+  return {
+    swap,
+    oneInchContract,
+  };
 };
 
 export default useOneInch;

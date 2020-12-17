@@ -1,3 +1,3 @@
 export const LINKS = {
-	Support: 'https://synthetix.community/docs/staking',
+  Support: 'https://synthetix.community/docs/staking',
 };

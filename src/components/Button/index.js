@@ -8,13 +8,13 @@ import WalletStatusButton from './WalletStatusButton';
 import BorderlessButton from './BorderlessButton';
 
 export {
-	ButtonPrimary,
-	ButtonSecondary,
-	ButtonTertiary,
-	ButtonMax,
-	ButtonPrimaryMedium,
-	HeaderButton,
-	TabButton,
-	WalletStatusButton,
-	BorderlessButton,
+  ButtonPrimary,
+  ButtonSecondary,
+  ButtonTertiary,
+  ButtonMax,
+  ButtonPrimaryMedium,
+  HeaderButton,
+  TabButton,
+  WalletStatusButton,
+  BorderlessButton,
 };

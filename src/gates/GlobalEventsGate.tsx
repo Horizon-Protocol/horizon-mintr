@@ -6,42 +6,42 @@ import { getCurrentWallet } from 'ducks/wallet';
 import { setSystemUpgrading } from 'ducks/app';
 
 const mapStateToProps = (state: RootState) => ({
-	currentWallet: getCurrentWallet(state),
+  currentWallet: getCurrentWallet(state),
 });
 
 const mapDispatchToProps = {
-	setSystemUpgrading,
+  setSystemUpgrading,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const GlobalEventsGate: FC<PropsFromRedux> = ({ currentWallet, setSystemUpgrading }) => {
-	useEffect(() => {
-		// const {
-		// 	//@ts-ignore
-		// 	hznJS: { SystemStatus, ExchangeRates },
-		// } = hznJSConnector;
-		// SystemStatus.contract.on(SYSTEM_STATUS_EVENTS.SYSTEM_SUSPENDED, (reason: number) => {
-		// 	setSystemUpgrading({ reason: true });
-		// });
-		// SystemStatus.contract.on(SYSTEM_STATUS_EVENTS.SYSTEM_RESUMED, () => {
-		// 	setSystemUpgrading({ reason: false });
-		// });
-		// ExchangeRates.contract.on(EXCHANGE_RATES_EVENTS.RATES_UPDATED, () => {
-		// 	fetchRatesRequest();
-		// });
-		// return () => {
-		// Object.values(SYSTEM_STATUS_EVENTS).forEach(event =>
-		// 	SystemStatus.contract.removeAllListeners(event)
-		// );
-		// Object.values(EXCHANGE_RATES_EVENTS).forEach(event =>
-		// 	ExchangeRates.contract.removeAllListeners(event)
-		// );
-		// };
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-	return null;
+  useEffect(() => {
+    // const {
+    // 	//@ts-ignore
+    // 	hznJS: { SystemStatus, ExchangeRates },
+    // } = hznJSConnector;
+    // SystemStatus.contract.on(SYSTEM_STATUS_EVENTS.SYSTEM_SUSPENDED, (reason: number) => {
+    // 	setSystemUpgrading({ reason: true });
+    // });
+    // SystemStatus.contract.on(SYSTEM_STATUS_EVENTS.SYSTEM_RESUMED, () => {
+    // 	setSystemUpgrading({ reason: false });
+    // });
+    // ExchangeRates.contract.on(EXCHANGE_RATES_EVENTS.RATES_UPDATED, () => {
+    // 	fetchRatesRequest();
+    // });
+    // return () => {
+    // Object.values(SYSTEM_STATUS_EVENTS).forEach(event =>
+    // 	SystemStatus.contract.removeAllListeners(event)
+    // );
+    // Object.values(EXCHANGE_RATES_EVENTS).forEach(event =>
+    // 	ExchangeRates.contract.removeAllListeners(event)
+    // );
+    // };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return null;
 };
 
 export default connector(GlobalEventsGate);

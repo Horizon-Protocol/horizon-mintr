@@ -16,74 +16,74 @@ import { useNotifyContext } from 'contexts/NotifyContext';
 import { notifyHandler } from 'helpers/notifyHelper';
 
 const RewardsVesting = ({
-	onDestroy,
-	vestAmount,
-	walletDetails,
-	currentGasPrice,
-	gasLimit,
-	isFetchingGasLimit,
-	fetchEscrowRequest,
+  onDestroy,
+  vestAmount,
+  walletDetails,
+  currentGasPrice,
+  gasLimit,
+  isFetchingGasLimit,
+  fetchEscrowRequest,
 }) => {
-	const { handleNext, hasLoaded } = useContext(SliderContext);
-	const [transactionInfo, setTransactionInfo] = useState({});
-	const { walletType, networkName, networkId } = walletDetails;
-	const { notify } = useNotifyContext();
+  const { handleNext, hasLoaded } = useContext(SliderContext);
+  const [transactionInfo, setTransactionInfo] = useState({});
+  const { walletType, networkName, networkId } = walletDetails;
+  const { notify } = useNotifyContext();
 
-	useLayoutEffect(() => {
-		const vest = async () => {
-			if (!hasLoaded) return;
-			const {
-				hznJS: { RewardEscrow },
-			} = hznJSConnector;
-			try {
-				const transaction = await RewardEscrow.vest({
-					gasPrice: currentGasPrice.formattedPrice,
-					gasLimit,
-				});
-				if (notify && transaction) {
-					const refetch = () => {
-						fetchEscrowRequest();
-					};
-					const message = `Vesting confirmed`;
-					setTransactionInfo({ transactionHash: transaction.hash });
-					notifyHandler(notify, transaction.hash, networkId, refetch, message);
-					handleNext(2);
-				}
-			} catch (e) {
-				console.log(e);
-				const errorMessage = errorMapper(e, walletType);
-				console.log(errorMessage);
-				setTransactionInfo({
-					...transactionInfo,
-					transactionError: errorMessage,
-				});
-				handleNext(2);
-			}
-		};
-		vest();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [hasLoaded]);
+  useLayoutEffect(() => {
+    const vest = async () => {
+      if (!hasLoaded) return;
+      const {
+        hznJS: { RewardEscrow },
+      } = hznJSConnector;
+      try {
+        const transaction = await RewardEscrow.vest({
+          gasPrice: currentGasPrice.formattedPrice,
+          gasLimit,
+        });
+        if (notify && transaction) {
+          const refetch = () => {
+            fetchEscrowRequest();
+          };
+          const message = `Vesting confirmed`;
+          setTransactionInfo({ transactionHash: transaction.hash });
+          notifyHandler(notify, transaction.hash, networkId, refetch, message);
+          handleNext(2);
+        }
+      } catch (e) {
+        console.log(e);
+        const errorMessage = errorMapper(e, walletType);
+        console.log(errorMessage);
+        setTransactionInfo({
+          ...transactionInfo,
+          transactionError: errorMessage,
+        });
+        handleNext(2);
+      }
+    };
+    vest();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasLoaded]);
 
-	const props = {
-		onDestroy,
-		vestAmount,
-		...transactionInfo,
-		walletType,
-		networkName,
-		gasLimit,
-		isFetchingGasLimit,
-	};
+  const props = {
+    onDestroy,
+    vestAmount,
+    ...transactionInfo,
+    walletType,
+    networkName,
+    gasLimit,
+    isFetchingGasLimit,
+  };
 
-	return [Confirmation, Complete].map((SlideContent, i) => <SlideContent key={i} {...props} />);
+  return [Confirmation, Complete].map((SlideContent, i) => <SlideContent key={i} {...props} />);
 };
 
 const mapStateToProps = state => ({
-	walletDetails: getWalletDetails(state),
-	currentGasPrice: getCurrentGasPrice(state),
+  walletDetails: getWalletDetails(state),
+  currentGasPrice: getCurrentGasPrice(state),
 });
 
 const mapDispatchToProps = {
-	fetchEscrowRequest,
+  fetchEscrowRequest,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RewardsVesting);

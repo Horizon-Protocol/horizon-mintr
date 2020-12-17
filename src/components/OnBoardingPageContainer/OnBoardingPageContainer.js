@@ -6,46 +6,46 @@ import { withTranslation } from 'react-i18next';
 import { LINKS } from 'constants/links';
 
 const OnBoardingPageContainer = ({ t, children }) => {
-	return (
-		<PageContainer>
-			<Header>
-				<HeaderBlock>
-					<Logo />
-					{/* <Network>{networkName}</Network> */}
-				</HeaderBlock>
-				<HeaderBlock>
-					<ButtonTertiary as="a" href={LINKS.Support} target="_blank">
-						{t('button.havingTrouble')}
-					</ButtonTertiary>
-					<ButtonTertiary
-						as="a"
-						href="https://www.synthetix.io/uploads/synthetix_litepaper.pdf"
-						target="_blank"
-					>
-						{t('button.whatIsHorizon')}
-					</ButtonTertiary>
-				</HeaderBlock>
-			</Header>
-			{children}
-		</PageContainer>
-	);
+  return (
+    <PageContainer>
+      <Header>
+        <HeaderBlock>
+          <Logo />
+          {/* <Network>{networkName}</Network> */}
+        </HeaderBlock>
+        <HeaderBlock>
+          <ButtonTertiary as="a" href={LINKS.Support} target="_blank">
+            {t('button.havingTrouble')}
+          </ButtonTertiary>
+          <ButtonTertiary
+            as="a"
+            href="https://www.synthetix.io/uploads/synthetix_litepaper.pdf"
+            target="_blank"
+          >
+            {t('button.whatIsHorizon')}
+          </ButtonTertiary>
+        </HeaderBlock>
+      </Header>
+      {children}
+    </PageContainer>
+  );
 };
 
 const PageContainer = styled.div`
-	padding: 42px;
-	height: 100vh;
+  padding: 42px;
+  height: 100vh;
 `;
 
 const Header = styled.div`
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const HeaderBlock = styled.div`
-	display: flex;
-	& :first-child:not(:last-child) {
-		margin-right: 10px;
-	}
+  display: flex;
+  & :first-child:not(:last-child) {
+    margin-right: 10px;
+  }
 `;
 
 // const Network = styled.div`

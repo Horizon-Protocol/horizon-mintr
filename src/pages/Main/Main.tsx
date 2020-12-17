@@ -1,28 +1,20 @@
-import React, { FC } from 'react';
-import styled from 'styled-components';
+import { FC } from 'react';
 import Dashboard from 'screens/Dashboard';
-import MintrPanel from 'screens/MintrPanel';
+import MintrHome from 'screens/MintrHome';
 import LiquidationBanner from 'components/BannerLiquidation';
 
 type MainProps = {
-	wallet: string;
+  wallet: string;
 };
 
 const Main: FC<MainProps> = ({ wallet }) => {
-	return (
-		<>
-			<LiquidationBanner />
-			<MainWrapper>
-				<Dashboard />
-				<MintrPanel />
-			</MainWrapper>
-		</>
-	);
+  return (
+    <>
+      <LiquidationBanner />
+      <Dashboard />
+      <MintrHome />
+    </>
+  );
 };
-
-const MainWrapper = styled.div`
-	display: flex;
-	width: 100%;
-`;
 
 export default Main;

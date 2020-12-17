@@ -15,60 +15,60 @@ import GasMenu from '../GasMenu';
 import { getTransactionPrice } from '../../helpers/networkHelper';
 
 const TransactionPriceIndicator = ({
-	canEdit = true,
-	currentGasPrice,
-	isFetchingGasLimit,
-	showModal,
-	gasLimit,
-	ethRate,
-	...style
+  canEdit = true,
+  currentGasPrice,
+  isFetchingGasLimit,
+  showModal,
+  gasLimit,
+  ethRate,
+  ...style
 }) => {
-	const { t } = useTranslation();
-	return (
-		<Container {...style}>
-			<Block>
-				<Subtext mr={'10px'}>{t('transactionSettings.priceIndicator')}</Subtext>
-			</Block>
-			<Block>
-				{isFetchingGasLimit ? (
-					<MicroSpinner />
-				) : (
-					<Fragment>
-						<Subtext>
-							{currentGasPrice
-								? `$${formatCurrency(
-										getTransactionPrice(currentGasPrice.price, gasLimit, ethRate)
-								  )} / ${currentGasPrice.price} GWEI`
-								: 0}
-						</Subtext>
-						{canEdit ? <GasMenu /> : null}
-					</Fragment>
-				)}
-			</Block>
-		</Container>
-	);
+  const { t } = useTranslation();
+  return (
+    <Container {...style}>
+      <Block>
+        <Subtext mr={'10px'}>{t('transactionSettings.priceIndicator')}</Subtext>
+      </Block>
+      <Block>
+        {isFetchingGasLimit ? (
+          <MicroSpinner />
+        ) : (
+          <Fragment>
+            <Subtext>
+              {currentGasPrice
+                ? `$${formatCurrency(
+                    getTransactionPrice(currentGasPrice.price, gasLimit, ethRate)
+                  )} / ${currentGasPrice.price} GWEI`
+                : 0}
+            </Subtext>
+            {canEdit ? <GasMenu /> : null}
+          </Fragment>
+        )}
+      </Block>
+    </Container>
+  );
 };
 
 const Container = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin: ${props => (props.margin ? props.margin : '25px 0')};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: ${props => (props.margin ? props.margin : '25px 0')};
 `;
 
 const Block = styled.div`
-	display: flex;
-	justify-content: center;
-	white-space: nowrap;
+  display: flex;
+  justify-content: center;
+  white-space: nowrap;
 `;
 
 const mapStateToProps = state => ({
-	currentGasPrice: getCurrentGasPrice(state),
-	ethRate: getEthRate(state),
+  currentGasPrice: getCurrentGasPrice(state),
+  ethRate: getEthRate(state),
 });
 
 const mapDispatchToProps = {
-	showModal,
+  showModal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransactionPriceIndicator);

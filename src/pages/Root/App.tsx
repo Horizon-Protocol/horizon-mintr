@@ -1,11 +1,13 @@
 import React, { FC } from 'react';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 
 import GlobalEventsGate from 'gates/GlobalEventsGate';
 import { RootState } from 'ducks/types';
 import { getAppIsOnMaintenance } from 'ducks/app';
 import { isDarkTheme, lightTheme, darkTheme } from 'styles/themes';
+import muiTheme from 'styles/muiThemes';
 import { PAGES_BY_KEY } from 'constants/ui';
 import { isMobileOrTablet } from 'helpers/browserHelper';
 import { getCurrentTheme, getCurrentPage } from 'ducks/ui';
@@ -22,65 +24,67 @@ import MainLayout from './components/MainLayout';
 import { NotifyProvider } from 'contexts/NotifyContext';
 
 const mapStateToProps = (state: RootState) => ({
-	currentTheme: getCurrentTheme(state),
-	currentPage: getCurrentPage(state),
-	appIsOnMaintenance: getAppIsOnMaintenance(state),
-	currentWallet: getCurrentWallet(state),
-	walletDetails: getWalletDetails(state),
+  currentTheme: getCurrentTheme(state),
+  currentPage: getCurrentPage(state),
+  appIsOnMaintenance: getAppIsOnMaintenance(state),
+  currentWallet: getCurrentWallet(state),
+  walletDetails: getWalletDetails(state),
 });
 
 const connector = connect(mapStateToProps, null);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type CurrentPageProps = {
-	isOnMaintenance: boolean;
-	page: string;
-	wallet: string;
+  isOnMaintenance: boolean;
+  page: string;
+  wallet: string;
 };
 
 const CurrentPage: FC<CurrentPageProps> = ({ isOnMaintenance, page, wallet }) => {
-	if (isMobileOrTablet()) return <MobileLanding />;
-	if (isOnMaintenance) return <MaintenancePage />;
-	switch (page) {
-		case PAGES_BY_KEY.WALLET_SELECTION:
-			return <WalletSelection />;
-		case PAGES_BY_KEY.MAIN:
-			return <Main wallet={wallet} />;
-		default:
-			return <Landing />;
-	}
+  if (isMobileOrTablet()) return <MobileLanding />;
+  if (isOnMaintenance) return <MaintenancePage />;
+  switch (page) {
+    case PAGES_BY_KEY.WALLET_SELECTION:
+      return <WalletSelection />;
+    case PAGES_BY_KEY.MAIN:
+      return <Main wallet={wallet} />;
+    default:
+      return <Landing />;
+  }
 };
 
 type AppProps = {
-	appIsReady: boolean;
+  appIsReady: boolean;
 } & PropsFromRedux;
 
 const App: FC<AppProps> = ({
-	appIsReady,
-	currentTheme,
-	currentPage,
-	appIsOnMaintenance,
-	currentWallet,
-	walletDetails: { networkId },
+  appIsReady,
+  currentTheme,
+  currentPage,
+  appIsOnMaintenance,
+  currentWallet,
+  walletDetails: { networkId },
 }) => {
-	const themeStyle = isDarkTheme(currentTheme) ? darkTheme : lightTheme;
-	return (
-		<ThemeProvider theme={themeStyle}>
-			{appIsReady && (
-				<NotifyProvider networkId={networkId ? networkId : 56}>
-					<GlobalEventsGate />
-					<MainLayout>
-						<CurrentPage
-							isOnMaintenance={appIsOnMaintenance}
-							page={currentPage}
-							wallet={currentWallet}
-						/>
-						<NotificationCenter />
-					</MainLayout>
-				</NotifyProvider>
-			)}
-		</ThemeProvider>
-	);
+  const themeStyle = isDarkTheme(currentTheme) ? darkTheme : lightTheme;
+  return (
+    <StyledThemeProvider theme={themeStyle}>
+      <ThemeProvider theme={muiTheme}>
+        {appIsReady && (
+          <NotifyProvider networkId={networkId ? networkId : 56}>
+            <GlobalEventsGate />
+            <MainLayout>
+              <CurrentPage
+                isOnMaintenance={appIsOnMaintenance}
+                page={currentPage}
+                wallet={currentWallet}
+              />
+              <NotificationCenter />
+            </MainLayout>
+          </NotifyProvider>
+        )}
+      </ThemeProvider>
+    </StyledThemeProvider>
+  );
 };
 
 export default connector(App) as any;

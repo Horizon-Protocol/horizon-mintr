@@ -22,205 +22,205 @@ import { notifyHandler } from 'helpers/notifyHelper';
 import { useNotifyContext } from 'contexts/NotifyContext';
 
 const useGetGasEstimate = (
-	currency,
-	amount,
-	destination,
-	waitingPeriod,
-	setFetchingGasLimit,
-	setGasLimit
+  currency,
+  amount,
+  destination,
+  waitingPeriod,
+  setFetchingGasLimit,
+  setGasLimit
 ) => {
-	const [error, setError] = useState(null);
-	const { t } = useTranslation();
-	useEffect(() => {
-		if (!currency || !currency.name || !amount || !destination) return;
-		const getGasEstimate = async () => {
-			setError(null);
-			let gasEstimate;
-			try {
-				if (amount > currency.balance) throw new Error('input.error.balanceTooLow');
-				if (waitingPeriod) throw new Error(`Waiting period for ${currency.name} is still ongoing`);
-				if (!Number(amount)) throw new Error('input.error.invalidAmount');
-				const amountBN =
-					amount === currency.balance
-						? currency.balanceBN
-						: hznJSConnector.utils.parseEther(amount.toString());
-				setFetchingGasLimit(true);
-				if (currency.name === 'HZN') {
-					gasEstimate = await hznJSConnector.hznJS.Synthetix.contract.estimate.transfer(
-						destination,
-						amountBN
-					);
-				} else if (currency.name === 'ETH') {
-					if (amount === currency.balance) throw new Error('input.error.balanceTooLow');
-					gasEstimate = await hznJSConnector.provider.estimateGas({
-						value: amountBN,
-						to: destination,
-					});
-				} else {
-					gasEstimate = await hznJSConnector.hznJS[
-						currency.name
-					].contract.estimate.transferAndSettle(destination, amountBN);
-				}
-				setGasLimit(addBufferToGasLimit(gasEstimate));
-			} catch (e) {
-				console.log(e);
-				const errorMessage = (e && e.message) || 'input.error.gasEstimate';
-				setError(t(errorMessage));
-			}
-			setFetchingGasLimit(false);
-		};
-		getGasEstimate();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [amount, currency, destination, waitingPeriod]);
-	return error;
+  const [error, setError] = useState(null);
+  const { t } = useTranslation();
+  useEffect(() => {
+    if (!currency || !currency.name || !amount || !destination) return;
+    const getGasEstimate = async () => {
+      setError(null);
+      let gasEstimate;
+      try {
+        if (amount > currency.balance) throw new Error('input.error.balanceTooLow');
+        if (waitingPeriod) throw new Error(`Waiting period for ${currency.name} is still ongoing`);
+        if (!Number(amount)) throw new Error('input.error.invalidAmount');
+        const amountBN =
+          amount === currency.balance
+            ? currency.balanceBN
+            : hznJSConnector.utils.parseEther(amount.toString());
+        setFetchingGasLimit(true);
+        if (currency.name === 'HZN') {
+          gasEstimate = await hznJSConnector.hznJS.Synthetix.contract.estimate.transfer(
+            destination,
+            amountBN
+          );
+        } else if (currency.name === 'ETH') {
+          if (amount === currency.balance) throw new Error('input.error.balanceTooLow');
+          gasEstimate = await hznJSConnector.provider.estimateGas({
+            value: amountBN,
+            to: destination,
+          });
+        } else {
+          gasEstimate = await hznJSConnector.hznJS[
+            currency.name
+          ].contract.estimate.transferAndSettle(destination, amountBN);
+        }
+        setGasLimit(addBufferToGasLimit(gasEstimate));
+      } catch (e) {
+        console.log(e);
+        const errorMessage = (e && e.message) || 'input.error.gasEstimate';
+        setError(t(errorMessage));
+      }
+      setFetchingGasLimit(false);
+    };
+    getGasEstimate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [amount, currency, destination, waitingPeriod]);
+  return error;
 };
 
 const sendTransaction = (currency, amount, destination, settings) => {
-	if (!currency) return null;
-	if (currency === 'HZN') {
-		return hznJSConnector.hznJS.Synthetix.contract.transfer(destination, amount, settings);
-	} else if (currency === 'ETH') {
-		return hznJSConnector.signer.sendTransaction({
-			value: amount,
-			to: destination,
-			...settings,
-		});
-	} else return hznJSConnector.hznJS[currency].transferAndSettle(destination, amount, settings);
+  if (!currency) return null;
+  if (currency === 'HZN') {
+    return hznJSConnector.hznJS.Synthetix.contract.transfer(destination, amount, settings);
+  } else if (currency === 'ETH') {
+    return hznJSConnector.signer.sendTransaction({
+      value: amount,
+      to: destination,
+      ...settings,
+    });
+  } else return hznJSConnector.hznJS[currency].transferAndSettle(destination, amount, settings);
 };
 
 const Send = ({
-	onDestroy,
-	walletDetails,
-	currentGasPrice,
-	walletBalances,
-	debtStatusData,
-	fetchBalancesRequest,
-	fetchDebtStatusRequest,
+  onDestroy,
+  walletDetails,
+  currentGasPrice,
+  walletBalances,
+  debtStatusData,
+  fetchBalancesRequest,
+  fetchDebtStatusRequest,
 }) => {
-	const { handleNext, handlePrev } = useContext(SliderContext);
-	const [sendAmount, setSendAmount] = useState('');
-	const [sendDestination, setSendDestination] = useState('');
-	const [currentCurrency, setCurrentCurrency] = useState(null);
-	const [transactionInfo, setTransactionInfo] = useState({});
-	const [waitingPeriod, setWaitingPeriod] = useState(0);
-	const { currentWallet, walletType, networkName, networkId } = walletDetails;
-	const [isFetchingGasLimit, setFetchingGasLimit] = useState(false);
-	const [gasLimit, setGasLimit] = useState(0);
-	const { notify } = useNotifyContext();
+  const { handleNext, handlePrev } = useContext(SliderContext);
+  const [sendAmount, setSendAmount] = useState('');
+  const [sendDestination, setSendDestination] = useState('');
+  const [currentCurrency, setCurrentCurrency] = useState(null);
+  const [transactionInfo, setTransactionInfo] = useState({});
+  const [waitingPeriod, setWaitingPeriod] = useState(0);
+  const { currentWallet, walletType, networkName, networkId } = walletDetails;
+  const [isFetchingGasLimit, setFetchingGasLimit] = useState(false);
+  const [gasLimit, setGasLimit] = useState(0);
+  const { notify } = useNotifyContext();
 
-	const gasEstimateError = useGetGasEstimate(
-		currentCurrency,
-		sendAmount,
-		sendDestination,
-		waitingPeriod,
-		setFetchingGasLimit,
-		setGasLimit
-	);
+  const gasEstimateError = useGetGasEstimate(
+    currentCurrency,
+    sendAmount,
+    sendDestination,
+    waitingPeriod,
+    setFetchingGasLimit,
+    setGasLimit
+  );
 
-	useEffect(() => {
-		if (currentCurrency == null && walletBalances && walletBalances.length > 0) {
-			setCurrentCurrency(walletBalances ? walletBalances[0] : null);
-		}
-	}, [walletBalances, currentCurrency]);
+  useEffect(() => {
+    if (currentCurrency == null && walletBalances && walletBalances.length > 0) {
+      setCurrentCurrency(walletBalances ? walletBalances[0] : null);
+    }
+  }, [walletBalances, currentCurrency]);
 
-	const getMaxSecsLeftInWaitingPeriod = useCallback(async () => {
-		if (!currentCurrency) return;
-		if (['ETH', 'HZN'].includes(currentCurrency.name)) return;
-		try {
-			const maxSecsLeftInWaitingPeriod = await hznJSConnector.hznJS.Exchanger.maxSecsLeftInWaitingPeriod(
-				currentWallet,
-				bytesFormatter(currentCurrency.name)
-			);
-			setWaitingPeriod(Number(maxSecsLeftInWaitingPeriod));
-		} catch (e) {
-			console.log(e);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentCurrency, sendAmount]);
+  const getMaxSecsLeftInWaitingPeriod = useCallback(async () => {
+    if (!currentCurrency) return;
+    if (['ETH', 'HZN'].includes(currentCurrency.name)) return;
+    try {
+      const maxSecsLeftInWaitingPeriod = await hznJSConnector.hznJS.Exchanger.maxSecsLeftInWaitingPeriod(
+        currentWallet,
+        bytesFormatter(currentCurrency.name)
+      );
+      setWaitingPeriod(Number(maxSecsLeftInWaitingPeriod));
+    } catch (e) {
+      console.log(e);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentCurrency, sendAmount]);
 
-	useEffect(() => {
-		getMaxSecsLeftInWaitingPeriod();
-	}, [getMaxSecsLeftInWaitingPeriod]);
+  useEffect(() => {
+    getMaxSecsLeftInWaitingPeriod();
+  }, [getMaxSecsLeftInWaitingPeriod]);
 
-	const handleCurrencyChange = synth => {
-		setSendAmount('');
-		setCurrentCurrency(synth);
-	};
+  const handleCurrencyChange = synth => {
+    setSendAmount('');
+    setCurrentCurrency(synth);
+  };
 
-	const onSend = async () => {
-		try {
-			const realSendAmount =
-				sendAmount === currentCurrency.balance
-					? currentCurrency.balanceBN
-					: hznJSConnector.utils.parseEther(sendAmount.toString());
-			handleNext(1);
-			const transaction = await sendTransaction(
-				currentCurrency.name,
-				realSendAmount,
-				sendDestination,
-				{ gasPrice: currentGasPrice.formattedPrice, gasLimit }
-			);
-			if (notify && transaction) {
-				const refetch = () => {
-					fetchBalancesRequest();
-					fetchDebtStatusRequest();
-				};
-				const message = `Sending ${Math.round(sendAmount, 3)} ${
-					currentCurrency.name
-				} to ${shortenAddress(sendDestination)}`;
-				setTransactionInfo({ transactionHash: transaction.hash });
-				notifyHandler(notify, transaction.hash, networkId, refetch, message);
+  const onSend = async () => {
+    try {
+      const realSendAmount =
+        sendAmount === currentCurrency.balance
+          ? currentCurrency.balanceBN
+          : hznJSConnector.utils.parseEther(sendAmount.toString());
+      handleNext(1);
+      const transaction = await sendTransaction(
+        currentCurrency.name,
+        realSendAmount,
+        sendDestination,
+        { gasPrice: currentGasPrice.formattedPrice, gasLimit }
+      );
+      if (notify && transaction) {
+        const refetch = () => {
+          fetchBalancesRequest();
+          fetchDebtStatusRequest();
+        };
+        const message = `Sending ${Math.round(sendAmount, 3)} ${
+          currentCurrency.name
+        } to ${shortenAddress(sendDestination)}`;
+        setTransactionInfo({ transactionHash: transaction.hash });
+        notifyHandler(notify, transaction.hash, networkId, refetch, message);
 
-				handleNext(2);
-			}
-		} catch (e) {
-			console.log(e);
-			const errorMessage = errorMapper(e, walletType);
-			console.log(errorMessage);
-			setTransactionInfo({
-				...transactionInfo,
-				transactionError: errorMessage,
-			});
-			handleNext(2);
-		}
-	};
+        handleNext(2);
+      }
+    } catch (e) {
+      console.log(e);
+      const errorMessage = errorMapper(e, walletType);
+      console.log(errorMessage);
+      setTransactionInfo({
+        ...transactionInfo,
+        transactionError: errorMessage,
+      });
+      handleNext(2);
+    }
+  };
 
-	const props = {
-		onDestroy,
-		onSend,
-		sendAmount,
-		sendDestination,
-		setSendAmount,
-		setSendDestination,
-		...transactionInfo,
-		goBack: handlePrev,
-		walletBalances,
-		currentCurrency,
-		onCurrentCurrencyChange: handleCurrencyChange,
-		walletType,
-		networkName,
-		gasEstimateError,
-		isFetchingGasLimit,
-		waitingPeriod,
-		onWaitingPeriodCheck: () => getMaxSecsLeftInWaitingPeriod(),
-		gasLimit,
-	};
+  const props = {
+    onDestroy,
+    onSend,
+    sendAmount,
+    sendDestination,
+    setSendAmount,
+    setSendDestination,
+    ...transactionInfo,
+    goBack: handlePrev,
+    walletBalances,
+    currentCurrency,
+    onCurrentCurrencyChange: handleCurrencyChange,
+    walletType,
+    networkName,
+    gasEstimateError,
+    isFetchingGasLimit,
+    waitingPeriod,
+    onWaitingPeriodCheck: () => getMaxSecsLeftInWaitingPeriod(),
+    gasLimit,
+  };
 
-	return [Action, Confirmation, Complete].map((SlideContent, i) => (
-		<SlideContent debtStatusData={debtStatusData} key={i} {...props} />
-	));
+  return [Action, Confirmation, Complete].map((SlideContent, i) => (
+    <SlideContent debtStatusData={debtStatusData} key={i} {...props} />
+  ));
 };
 
 const mapStateToProps = state => ({
-	walletDetails: getWalletDetails(state),
-	currentGasPrice: getCurrentGasPrice(state),
-	walletBalances: getWalletBalancesToArray(state),
-	debtStatusData: getDebtStatusData(state),
+  walletDetails: getWalletDetails(state),
+  currentGasPrice: getCurrentGasPrice(state),
+  walletBalances: getWalletBalancesToArray(state),
+  debtStatusData: getDebtStatusData(state),
 });
 
 const mapDispatchToProps = {
-	fetchBalancesRequest,
-	fetchDebtStatusRequest,
+  fetchBalancesRequest,
+  fetchDebtStatusRequest,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Send);

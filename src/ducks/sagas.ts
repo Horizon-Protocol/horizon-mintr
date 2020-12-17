@@ -8,14 +8,14 @@ import { watchFetchSystemStatusRequest } from './app';
 import { watchFetchRatesRequest } from './rates';
 
 const rootSaga = function* () {
-	yield all([
-		watchFetchDebtStatusRequest(),
-		watchFetchEscrowRequest(),
-		watchFetchBalances(),
-		watchFetchNetworkRequest(),
-		watchFetchSystemStatusRequest(),
-		watchFetchRatesRequest(),
-	]);
+  yield all([
+    watchFetchDebtStatusRequest(),
+    watchFetchEscrowRequest(),
+    watchFetchBalances(),
+    watchFetchNetworkRequest(),
+    watchFetchSystemStatusRequest(),
+    watchFetchRatesRequest(),
+  ]);
 };
 
 export default rootSaga;

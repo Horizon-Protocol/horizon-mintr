@@ -8,46 +8,46 @@ import { getExchangeRates } from 'dataFetcher';
 export type Rates = Record<string, number>;
 
 export type RateSliceState = {
-	rates: Rates | null;
-	isFetching: boolean;
-	isFetched: boolean;
-	isRefreshing: boolean;
-	fetchError: string | null;
+  rates: Rates | null;
+  isFetching: boolean;
+  isFetched: boolean;
+  isRefreshing: boolean;
+  fetchError: string | null;
 };
 
 const initialState: RateSliceState = {
-	rates: null,
-	isFetching: false,
-	isFetched: false,
-	isRefreshing: false,
-	fetchError: null,
+  rates: null,
+  isFetching: false,
+  isFetched: false,
+  isRefreshing: false,
+  fetchError: null,
 };
 
 const sliceName = 'rates';
 
 export const appSlice = createSlice({
-	name: sliceName,
-	initialState,
-	reducers: {
-		fetchRatesRequest: state => {
-			state.fetchError = null;
-			state.isFetching = true;
-			if (state.isFetched) {
-				state.isRefreshing = true;
-			}
-		},
-		fetchRatesFailure: (state, action: PayloadAction<{ error: string }>) => {
-			state.fetchError = action.payload.error;
-			state.isFetching = false;
-			state.isRefreshing = false;
-		},
-		fetchRatesSuccess: (state, action: PayloadAction<{ rates: Rates }>) => {
-			state.rates = action.payload.rates;
-			state.isFetching = false;
-			state.isRefreshing = false;
-			state.isFetched = true;
-		},
-	},
+  name: sliceName,
+  initialState,
+  reducers: {
+    fetchRatesRequest: state => {
+      state.fetchError = null;
+      state.isFetching = true;
+      if (state.isFetched) {
+        state.isRefreshing = true;
+      }
+    },
+    fetchRatesFailure: (state, action: PayloadAction<{ error: string }>) => {
+      state.fetchError = action.payload.error;
+      state.isFetching = false;
+      state.isRefreshing = false;
+    },
+    fetchRatesSuccess: (state, action: PayloadAction<{ rates: Rates }>) => {
+      state.rates = action.payload.rates;
+      state.isFetching = false;
+      state.isRefreshing = false;
+      state.isFetched = true;
+    },
+  },
 });
 
 export const { fetchRatesRequest, fetchRatesFailure, fetchRatesSuccess } = appSlice.actions;
@@ -55,26 +55,26 @@ export const { fetchRatesRequest, fetchRatesFailure, fetchRatesSuccess } = appSl
 const getRatesState = (state: RootState) => state.rates;
 
 export const getEthRate = (state: RootState) =>
-	getRatesState(state).rates && getRatesState(state).rates![CRYPTO_CURRENCY_TO_KEY.ETH];
+  getRatesState(state).rates && getRatesState(state).rates![CRYPTO_CURRENCY_TO_KEY.ETH];
 export const getSNXRate = (state: RootState) =>
-	getRatesState(state).rates && getRatesState(state).rates![CRYPTO_CURRENCY_TO_KEY.HZN];
+  getRatesState(state).rates && getRatesState(state).rates![CRYPTO_CURRENCY_TO_KEY.HZN];
 export const getSUSDRate = (state: RootState) =>
-	getRatesState(state).rates && getRatesState(state).rates![CRYPTO_CURRENCY_TO_KEY.sUSD];
+  getRatesState(state).rates && getRatesState(state).rates![CRYPTO_CURRENCY_TO_KEY.sUSD];
 export const getRates = (state: RootState) => getRatesState(state).rates;
 
 function* fetchRates() {
-	try {
-		const rates = yield getExchangeRates();
-		yield put(fetchRatesSuccess({ rates }));
-		return true;
-	} catch (e) {
-		yield put(fetchRatesFailure({ error: e.message }));
-		return false;
-	}
+  try {
+    const rates = yield getExchangeRates();
+    yield put(fetchRatesSuccess({ rates }));
+    return true;
+  } catch (e) {
+    yield put(fetchRatesFailure({ error: e.message }));
+    return false;
+  }
 }
 
 export function* watchFetchRatesRequest() {
-	yield takeLatest(fetchRatesRequest.type, fetchRates);
+  yield takeLatest(fetchRatesRequest.type, fetchRates);
 }
 
 export default appSlice.reducer;

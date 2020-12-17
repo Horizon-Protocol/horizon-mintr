@@ -13,16 +13,16 @@ import debtStatus from './debtStatus';
 import escrow from './escrow';
 
 export default combineReducers({
-	app,
-	ui,
-	rates,
-	wallet,
-	transactions,
-	transactionHistory,
-	depotHistory,
-	network,
-	modal,
-	balances,
-	debtStatus,
-	escrow,
+  app,
+  ui,
+  rates,
+  wallet,
+  transactions,
+  transactionHistory,
+  depotHistory,
+  network,
+  modal,
+  balances,
+  debtStatus,
+  escrow,
 });

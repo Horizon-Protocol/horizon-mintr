@@ -4,40 +4,40 @@ import hznData from '@phoenix-global/horizon-data';
 import { TRANSACTION_EVENTS_MAP } from '../constants/transactionHistory';
 
 export const depotHistorySlice = createSlice({
-	name: 'depotHistory',
-	initialState: {
-		transactions: [],
-		isFetching: false,
-		isFetched: false,
-		isRefreshing: false,
-		fetchError: null,
-	},
-	reducers: {
-		fetchDepotHistoryRequest: state => {
-			state.fetchError = null;
-			state.isFetching = true;
-			if (state.isFetched) {
-				state.isRefreshing = true;
-			}
-		},
-		fetchDepotHistoryFailure: (state, action) => {
-			state.fetchError = action.payload.error;
-			state.isFetching = false;
-			state.isRefreshing = false;
-		},
-		fetchDepotHistorySuccess: (state, action) => {
-			state.transactions = action.payload;
-			state.isFetching = false;
-			state.isRefreshing = false;
-			state.isFetched = true;
-		},
-	},
+  name: 'depotHistory',
+  initialState: {
+    transactions: [],
+    isFetching: false,
+    isFetched: false,
+    isRefreshing: false,
+    fetchError: null,
+  },
+  reducers: {
+    fetchDepotHistoryRequest: state => {
+      state.fetchError = null;
+      state.isFetching = true;
+      if (state.isFetched) {
+        state.isRefreshing = true;
+      }
+    },
+    fetchDepotHistoryFailure: (state, action) => {
+      state.fetchError = action.payload.error;
+      state.isFetching = false;
+      state.isRefreshing = false;
+    },
+    fetchDepotHistorySuccess: (state, action) => {
+      state.transactions = action.payload;
+      state.isFetching = false;
+      state.isRefreshing = false;
+      state.isFetched = true;
+    },
+  },
 });
 
 const {
-	fetchDepotHistoryRequest,
-	fetchDepotHistoryFailure,
-	fetchDepotHistorySuccess,
+  fetchDepotHistoryRequest,
+  fetchDepotHistoryFailure,
+  fetchDepotHistorySuccess,
 } = depotHistorySlice.actions;
 
 const getDepotHistoryState = state => state.depotHistory;
@@ -48,25 +48,25 @@ export const getDepotHistoryFetchError = state => getDepotHistoryState(state).fe
 export const getDepotHistory = state => getDepotHistoryState(state).transactions;
 
 export const fetchDepotHistory = walletAddress => async dispatch => {
-	dispatch(fetchDepotHistoryRequest());
+  dispatch(fetchDepotHistoryRequest());
 
-	try {
-		const [depotActions, cleared] = await Promise.all([
-			hznData.depot.userActions({ user: walletAddress, max: 1000 }),
-			hznData.depot.clearedDeposits({ toAddress: walletAddress, max: 1000 }),
-		]);
+  try {
+    const [depotActions, cleared] = await Promise.all([
+      hznData.depot.userActions({ user: walletAddress, max: 1000 }),
+      hznData.depot.clearedDeposits({ toAddress: walletAddress, max: 1000 }),
+    ]);
 
-		const deposited = [];
-		const removed = [];
+    const deposited = [];
+    const removed = [];
 
-		depotActions.forEach(event => {
-			if (event.type === TRANSACTION_EVENTS_MAP.deposit) deposited.push(event);
-			if (event.type === TRANSACTION_EVENTS_MAP.removal) removed.push(event);
-		});
-		dispatch(fetchDepotHistorySuccess({ cleared, deposited, removed }));
-	} catch (e) {
-		dispatch(fetchDepotHistoryFailure({ error: e.message }));
-	}
+    depotActions.forEach(event => {
+      if (event.type === TRANSACTION_EVENTS_MAP.deposit) deposited.push(event);
+      if (event.type === TRANSACTION_EVENTS_MAP.removal) removed.push(event);
+    });
+    dispatch(fetchDepotHistorySuccess({ cleared, deposited, removed }));
+  } catch (e) {
+    dispatch(fetchDepotHistoryFailure({ error: e.message }));
+  }
 };
 
 export default depotHistorySlice.reducer;

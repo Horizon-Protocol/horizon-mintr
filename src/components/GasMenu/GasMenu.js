@@ -11,183 +11,183 @@ import { NETWORK_SPEEDS_TO_KEY } from 'constants/network';
 const MAX_GAS_MULTIPLE = 3;
 
 const GasMenu = ({ networkPrices, setCurrentGasPrice, cyan }) => {
-	const { t } = useTranslation();
-	const [dropdownVisible, setDropdownVisible] = useState(false);
-	const [customGasPrice, setCustomGasPrice] = useState('');
-	const [errorMessage, setErrorMessage] = useState(null);
+  const { t } = useTranslation();
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [customGasPrice, setCustomGasPrice] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
 
-	const fastPrice = networkPrices?.[NETWORK_SPEEDS_TO_KEY.FAST]?.price ?? 0;
+  const fastPrice = networkPrices?.[NETWORK_SPEEDS_TO_KEY.FAST]?.price ?? 0;
 
-	const gasPriceLimit = useMemo(() => {
-		return fastPrice > 0 ? Math.floor(fastPrice * MAX_GAS_MULTIPLE) : 0;
-	}, [fastPrice]);
+  const gasPriceLimit = useMemo(() => {
+    return fastPrice > 0 ? Math.floor(fastPrice * MAX_GAS_MULTIPLE) : 0;
+  }, [fastPrice]);
 
-	useEffect(() => {
-		if (customGasPrice) {
-			const customGasPriceNum = Number(customGasPrice);
-			const exceedsLimit = customGasPriceNum > gasPriceLimit;
-			const newGasPrice = exceedsLimit ? gasPriceLimit : Math.max(0, customGasPriceNum);
-			setCurrentGasPrice({ gasPrice: newGasPrice });
-			setErrorMessage(
-				exceedsLimit
-					? t('transactionSettings.gas-exceeds-limit', { gasPrice: gasPriceLimit })
-					: null
-			);
-		}
-	}, [setCurrentGasPrice, customGasPrice, setErrorMessage, gasPriceLimit, t]);
+  useEffect(() => {
+    if (customGasPrice) {
+      const customGasPriceNum = Number(customGasPrice);
+      const exceedsLimit = customGasPriceNum > gasPriceLimit;
+      const newGasPrice = exceedsLimit ? gasPriceLimit : Math.max(0, customGasPriceNum);
+      setCurrentGasPrice({ gasPrice: newGasPrice });
+      setErrorMessage(
+        exceedsLimit
+          ? t('transactionSettings.gas-exceeds-limit', { gasPrice: gasPriceLimit })
+          : null
+      );
+    }
+  }, [setCurrentGasPrice, customGasPrice, setErrorMessage, gasPriceLimit, t]);
 
-	return (
-		<OutsideClickHandler onOutsideClick={() => setDropdownVisible(false)}>
-			<GasMenuWrapper>
-				{dropdownVisible ? (
-					<SelectContainer hasErrorMessage={errorMessage != null}>
-						<List>
-							<ListElement>
-								<Input
-									type="number"
-									step=".01"
-									placeholder={t('transactionSettings.placeholder')}
-									onChange={e => setCustomGasPrice(e.target.value)}
-									value={customGasPrice}
-								/>
-							</ListElement>
-							{errorMessage && <StyledErrorMessage message={errorMessage} />}
-							{networkPrices && networkPrices[NETWORK_SPEEDS_TO_KEY.AVERAGE] ? (
-								<>
-									<HoverListElement
-										onClick={() => {
-											setCurrentGasPrice({
-												gasPrice: networkPrices[NETWORK_SPEEDS_TO_KEY.AVERAGE].price,
-												time: networkPrices[NETWORK_SPEEDS_TO_KEY.AVERAGE].time,
-											});
-											setDropdownVisible(false);
-										}}
-									>
-										<div>{t('transactionSettings.speed.average')}</div>
-										<div>{networkPrices[NETWORK_SPEEDS_TO_KEY.AVERAGE].price}</div>
-									</HoverListElement>
-									<HoverListElement
-										onClick={() => {
-											setCurrentGasPrice({
-												gasPrice: networkPrices[NETWORK_SPEEDS_TO_KEY.FAST].price,
-												time: networkPrices[NETWORK_SPEEDS_TO_KEY.FAST].time,
-											});
-											setDropdownVisible(false);
-										}}
-									>
-										<div>{t('transactionSettings.speed.fast')}</div>
-										<div>{networkPrices[NETWORK_SPEEDS_TO_KEY.FAST].price}</div>
-									</HoverListElement>
-									<HoverListElement
-										onClick={() => {
-											setCurrentGasPrice({
-												gasPrice: networkPrices[NETWORK_SPEEDS_TO_KEY.FASTEST].price,
-												time: networkPrices[NETWORK_SPEEDS_TO_KEY.FASTEST].time,
-											});
-											setDropdownVisible(false);
-										}}
-									>
-										<div>{t('transactionSettings.speed.fastest')}</div>
-										<div>{networkPrices[NETWORK_SPEEDS_TO_KEY.FASTEST].price}</div>
-									</HoverListElement>
-								</>
-							) : null}
-						</List>
-					</SelectContainer>
-				) : null}
-				<EditText cyan={cyan} onClick={() => setDropdownVisible(!dropdownVisible)}>
-					{t('button.edit')}
-				</EditText>
-			</GasMenuWrapper>
-		</OutsideClickHandler>
-	);
+  return (
+    <OutsideClickHandler onOutsideClick={() => setDropdownVisible(false)}>
+      <GasMenuWrapper>
+        {dropdownVisible ? (
+          <SelectContainer hasErrorMessage={errorMessage != null}>
+            <List>
+              <ListElement>
+                <Input
+                  type="number"
+                  step=".01"
+                  placeholder={t('transactionSettings.placeholder')}
+                  onChange={e => setCustomGasPrice(e.target.value)}
+                  value={customGasPrice}
+                />
+              </ListElement>
+              {errorMessage && <StyledErrorMessage message={errorMessage} />}
+              {networkPrices && networkPrices[NETWORK_SPEEDS_TO_KEY.AVERAGE] ? (
+                <>
+                  <HoverListElement
+                    onClick={() => {
+                      setCurrentGasPrice({
+                        gasPrice: networkPrices[NETWORK_SPEEDS_TO_KEY.AVERAGE].price,
+                        time: networkPrices[NETWORK_SPEEDS_TO_KEY.AVERAGE].time,
+                      });
+                      setDropdownVisible(false);
+                    }}
+                  >
+                    <div>{t('transactionSettings.speed.average')}</div>
+                    <div>{networkPrices[NETWORK_SPEEDS_TO_KEY.AVERAGE].price}</div>
+                  </HoverListElement>
+                  <HoverListElement
+                    onClick={() => {
+                      setCurrentGasPrice({
+                        gasPrice: networkPrices[NETWORK_SPEEDS_TO_KEY.FAST].price,
+                        time: networkPrices[NETWORK_SPEEDS_TO_KEY.FAST].time,
+                      });
+                      setDropdownVisible(false);
+                    }}
+                  >
+                    <div>{t('transactionSettings.speed.fast')}</div>
+                    <div>{networkPrices[NETWORK_SPEEDS_TO_KEY.FAST].price}</div>
+                  </HoverListElement>
+                  <HoverListElement
+                    onClick={() => {
+                      setCurrentGasPrice({
+                        gasPrice: networkPrices[NETWORK_SPEEDS_TO_KEY.FASTEST].price,
+                        time: networkPrices[NETWORK_SPEEDS_TO_KEY.FASTEST].time,
+                      });
+                      setDropdownVisible(false);
+                    }}
+                  >
+                    <div>{t('transactionSettings.speed.fastest')}</div>
+                    <div>{networkPrices[NETWORK_SPEEDS_TO_KEY.FASTEST].price}</div>
+                  </HoverListElement>
+                </>
+              ) : null}
+            </List>
+          </SelectContainer>
+        ) : null}
+        <EditText cyan={cyan} onClick={() => setDropdownVisible(!dropdownVisible)}>
+          {t('button.edit')}
+        </EditText>
+      </GasMenuWrapper>
+    </OutsideClickHandler>
+  );
 };
 
 const GasMenuWrapper = styled.div`
-	width: 100%;
-	display: flex;
-	position: relative;
-	align-items: center;
-	margin-right: 16px;
+  width: 100%;
+  display: flex;
+  position: relative;
+  align-items: center;
+  margin-right: 16px;
 `;
 
 const EditText = styled.div`
-	padding-top: 16px;
-	padding-left: 10px;
-	font-family: 'apercu-bold', sans-serif;
-	border: none;
-	background-color: transparent;
-	font-size: 15px;
-	text-transform: uppercase;
-	cursor: pointer;
-	color: ${props => (props.cyan ? '#00e2df' : props.theme.colorStyles.hyperlink)};
-	:hover {
-		text-decoration: underline;
-	}
+  padding-top: 16px;
+  padding-left: 10px;
+  font-family: 'Roboto', sans-serif;
+  border: none;
+  background-color: transparent;
+  font-size: 15px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: ${props => (props.cyan ? '#00e2df' : props.theme.colorStyles.hyperlink)};
+  :hover {
+    text-decoration: underline;
+  }
 `;
 
 const SelectContainer = styled.div`
-	z-index: 10;
-	position: absolute;
-	${props => (props.hasErrorMessage ? 'top: calc(100% - 297px)' : 'top: calc(100% - 235px)')};
-	left: -20px;
-	width: 160px;
-	border: 1px solid ${props => props.theme.colorStyles.borders};
-	border-radius: 5px;
-	background-color: ${props => props.theme.colorStyles.panels};
+  z-index: 10;
+  position: absolute;
+  ${props => (props.hasErrorMessage ? 'top: calc(100% - 297px)' : 'top: calc(100% - 235px)')};
+  left: -20px;
+  width: 160px;
+  border: 1px solid ${props => props.theme.colorStyles.borders};
+  border-radius: 5px;
+  background-color: ${props => props.theme.colorStyles.panels};
 `;
 
 const Input = styled.input`
-	height: 40px;
-	padding: 10px;
-	font-size: 14px;
-	border-radius: 5px;
-	border: 1px solid ${props => props.theme.colorStyles.borders};
-	background-color: ${props => props.theme.colorStyles.panels};
-	color: ${props => props.theme.colorStyles.subtext};
-	width: 100%;
-	appearance: textfield;
-	&:focus {
-		outline: none;
-	}
-	&::-webkit-outer-spin-button,
-	&::-webkit-inner-spin-button {
-		appearance: none;
-		margin: 0;
-	}
+  height: 40px;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid ${props => props.theme.colorStyles.borders};
+  background-color: ${props => props.theme.colorStyles.panels};
+  color: ${props => props.theme.colorStyles.subtext};
+  width: 100%;
+  appearance: textfield;
+  &:focus {
+    outline: none;
+  }
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+  }
 `;
 
 const List = styled.ul`
-	list-style: none;
-	margin: 0;
-	padding: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 10px;
 `;
 
 const ListElement = styled.li`
-	padding: 10px 0;
-	display: flex;
-	justify-content: space-around;
-	cursor: pointer;
-	color: ${props => props.theme.colorStyles.subtext};
-	background-color: ${props => props.theme.colorStyles.panels};
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-around;
+  cursor: pointer;
+  color: ${props => props.theme.colorStyles.subtext};
+  background-color: ${props => props.theme.colorStyles.panels};
 `;
 const HoverListElement = styled(ListElement)`
-	&:hover {
-		background-color: ${props => props.theme.colorStyles.accentLight};
-	}
+  &:hover {
+    background-color: ${props => props.theme.colorStyles.accentLight};
+  }
 `;
 
 const StyledErrorMessage = styled(ErrorMessage)`
-	height: 30px;
+  height: 30px;
 `;
 
 const mapStateToProps = state => ({
-	networkPrices: getNetworkPrices(state),
-	currentGasPrice: getCurrentGasPrice(state),
+  networkPrices: getNetworkPrices(state),
+  currentGasPrice: getCurrentGasPrice(state),
 });
 
 const mapDispatchToProps = {
-	setCurrentGasPrice,
+  setCurrentGasPrice,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GasMenu);

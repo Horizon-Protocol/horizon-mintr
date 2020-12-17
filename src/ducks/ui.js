@@ -5,38 +5,38 @@ import { isLightTheme } from '../styles/themes';
 const persistedState = getPersistedState('ui');
 
 export const uiSlice = createSlice({
-	name: 'ui',
-	initialState: {
-		theme: 'light',
-		currentPage: 'landing',
-		currentTab: 'home',
-		tabParams: null,
-		gweiPopupIsVisible: false,
-		redirectToTrade: false,
-		...persistedState,
-	},
-	reducers: {
-		toggleTheme: state => {
-			const theme = isLightTheme(state.theme) ? 'dark' : 'light';
-			persistState('ui', { theme });
-			state.theme = theme;
-		},
-		setCurrentPage: (state, action) => {
-			state.currentPage = action.payload;
-		},
-		setCurrentTab: (state, action) => {
-			const { tab, params } = action.payload;
-			state.currentTab = tab;
-			state.tabParams = params;
-		},
-		setRedirectToTrade: (state, action) => {
-			if (action.payload) {
-				state.currentPage = 'MAIN';
-				state.currentTab = 'home';
-			}
-			state.redirectToTrade = action.payload;
-		},
-	},
+  name: 'ui',
+  initialState: {
+    theme: 'dark', // default theme
+    currentPage: 'landing',
+    currentTab: 'home',
+    tabParams: null,
+    gweiPopupIsVisible: false,
+    redirectToTrade: false,
+    ...persistedState,
+  },
+  reducers: {
+    toggleTheme: state => {
+      const theme = isLightTheme(state.theme) ? 'dark' : 'light';
+      persistState('ui', { theme });
+      state.theme = theme;
+    },
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
+    setCurrentTab: (state, action) => {
+      const { tab, params } = action.payload;
+      state.currentTab = tab;
+      state.tabParams = params;
+    },
+    setRedirectToTrade: (state, action) => {
+      if (action.payload) {
+        state.currentPage = 'MAIN';
+        state.currentTab = 'home';
+      }
+      state.redirectToTrade = action.payload;
+    },
+  },
 });
 
 const getUiState = state => state.ui;

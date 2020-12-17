@@ -18,145 +18,145 @@ import TransactionPriceIndicator from '../../../components/TransactionPriceIndic
 import ScheduleTable from './ScheduleTable';
 
 const RewardEscrow = ({ onPageChange, walletDetails: { currentWallet } }) => {
-	const { t } = useTranslation();
-	const [currentScenario, setCurrentScenario] = useState(null);
-	const [isFetchingGasLimit, setFetchingGasLimit] = useState(false);
-	const [vestingData, setVestingData] = useState({});
-	const [gasLimit, setGasLimit] = useState(0);
-	const [error, setError] = useState(null);
+  const { t } = useTranslation();
+  const [currentScenario, setCurrentScenario] = useState(null);
+  const [isFetchingGasLimit, setFetchingGasLimit] = useState(false);
+  const [vestingData, setVestingData] = useState({});
+  const [gasLimit, setGasLimit] = useState(0);
+  const [error, setError] = useState(null);
 
-	const hasNoVestingSchedule = !vestingData.totalEscrowed || vestingData.totalEscrowed.length === 0;
+  const hasNoVestingSchedule = !vestingData.totalEscrowed || vestingData.totalEscrowed.length === 0;
 
-	const fetchVestingData = useCallback(async () => {
-		if (!currentWallet) return;
-		const {
-			hznJS: { RewardEscrow },
-		} = hznJSConnector;
-		try {
-			let schedule = [];
+  const fetchVestingData = useCallback(async () => {
+    if (!currentWallet) return;
+    const {
+      hznJS: { RewardEscrow },
+    } = hznJSConnector;
+    try {
+      let schedule = [];
 
-			let canVest = 0;
-			const currentUnixTime = new Date().getTime();
+      let canVest = 0;
+      const currentUnixTime = new Date().getTime();
 
-			setVestingData({ loading: true });
+      setVestingData({ loading: true });
 
-			const [accountSchedule, totalEscrowed, totalVested] = await Promise.all([
-				RewardEscrow.checkAccountSchedule(currentWallet),
-				RewardEscrow.totalEscrowedAccountBalance(currentWallet),
-				RewardEscrow.totalVestedAccountBalance(currentWallet),
-			]);
-			for (let i = 0; i < accountSchedule.length; i += 2) {
-				const quantity = Number(bigNumberFormatter(accountSchedule[i + 1]));
+      const [accountSchedule, totalEscrowed, totalVested] = await Promise.all([
+        RewardEscrow.checkAccountSchedule(currentWallet),
+        RewardEscrow.totalEscrowedAccountBalance(currentWallet),
+        RewardEscrow.totalVestedAccountBalance(currentWallet),
+      ]);
+      for (let i = 0; i < accountSchedule.length; i += 2) {
+        const quantity = Number(bigNumberFormatter(accountSchedule[i + 1]));
 
-				if (!accountSchedule[i].isZero() && quantity) {
-					if (accountSchedule[i] * 1000 < currentUnixTime) {
-						canVest += quantity;
-					}
-					schedule.push({
-						date: new Date(Number(accountSchedule[i]) * 1000),
-						quantity,
-					});
-				}
-			}
+        if (!accountSchedule[i].isZero() && quantity) {
+          if (accountSchedule[i] * 1000 < currentUnixTime) {
+            canVest += quantity;
+          }
+          schedule.push({
+            date: new Date(Number(accountSchedule[i]) * 1000),
+            quantity,
+          });
+        }
+      }
 
-			setVestingData({
-				schedule,
-				loading: false,
-				canVest,
-				totalEscrowed: bigNumberFormatter(totalEscrowed),
-				totalVested: bigNumberFormatter(totalVested),
-			});
-		} catch (e) {
-			console.log(e);
-			setVestingData({ loading: false });
-		}
-	}, [currentWallet]);
+      setVestingData({
+        schedule,
+        loading: false,
+        canVest,
+        totalEscrowed: bigNumberFormatter(totalEscrowed),
+        totalVested: bigNumberFormatter(totalVested),
+      });
+    } catch (e) {
+      console.log(e);
+      setVestingData({ loading: false });
+    }
+  }, [currentWallet]);
 
-	const fetchGasLimit = useCallback(async () => {
-		setError(null);
-		setFetchingGasLimit(true);
-		const {
-			hznJS: { RewardEscrow },
-		} = hznJSConnector;
-		try {
-			const gasEstimate = await RewardEscrow.contract.estimate.vest();
-			setFetchingGasLimit(false);
-			setGasLimit(addBufferToGasLimit(gasEstimate));
-		} catch (e) {
-			console.log(e);
-			setFetchingGasLimit(false);
-			const errorMessage = (e && e.message) || 'error.type.gasEstimate';
-			setError(errorMessage);
-		}
-	}, []);
+  const fetchGasLimit = useCallback(async () => {
+    setError(null);
+    setFetchingGasLimit(true);
+    const {
+      hznJS: { RewardEscrow },
+    } = hznJSConnector;
+    try {
+      const gasEstimate = await RewardEscrow.contract.estimate.vest();
+      setFetchingGasLimit(false);
+      setGasLimit(addBufferToGasLimit(gasEstimate));
+    } catch (e) {
+      console.log(e);
+      setFetchingGasLimit(false);
+      const errorMessage = (e && e.message) || 'error.type.gasEstimate';
+      setError(errorMessage);
+    }
+  }, []);
 
-	useEffect(() => {
-		fetchVestingData();
-		fetchGasLimit();
-	}, [fetchVestingData, fetchGasLimit]);
+  useEffect(() => {
+    fetchVestingData();
+    fetchGasLimit();
+  }, [fetchVestingData, fetchGasLimit]);
 
-	useEffect(() => {
-		if (!currentWallet) return;
-		const {
-			hznJS: { RewardEscrow },
-		} = hznJSConnector;
+  useEffect(() => {
+    if (!currentWallet) return;
+    const {
+      hznJS: { RewardEscrow },
+    } = hznJSConnector;
 
-		RewardEscrow.contract.on('Vested', beneficiary => {
-			if (currentWallet === beneficiary) {
-				fetchVestingData();
-				fetchGasLimit();
-			}
-		});
-		return () => {
-			if (hznJSConnector.initialized) {
-				RewardEscrow.contract.removeAllListeners('Vested');
-			}
-		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentWallet]);
+    RewardEscrow.contract.on('Vested', beneficiary => {
+      if (currentWallet === beneficiary) {
+        fetchVestingData();
+        fetchGasLimit();
+      }
+    });
+    return () => {
+      if (hznJSConnector.initialized) {
+        RewardEscrow.contract.removeAllListeners('Vested');
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentWallet]);
 
-	return (
-		<Fragment>
-			<EscrowActions
-				action={currentScenario}
-				onDestroy={() => setCurrentScenario(null)}
-				vestAmount={vestingData.canVest}
-				gasLimit={gasLimit}
-				isFetchingGasLimit={isFetchingGasLimit}
-			/>
+  return (
+    <Fragment>
+      <EscrowActions
+        action={currentScenario}
+        onDestroy={() => setCurrentScenario(null)}
+        vestAmount={vestingData.canVest}
+        gasLimit={gasLimit}
+        isFetchingGasLimit={isFetchingGasLimit}
+      />
 
-			<PageTitle>{t('escrow.staking.title')}</PageTitle>
-			<PLarge>{t('escrow.staking.subtitle')}</PLarge>
-			<ScheduleTable {...vestingData} />
+      <PageTitle>{t('escrow.staking.title')}</PageTitle>
+      <PLarge>{t('escrow.staking.subtitle')}</PLarge>
+      <ScheduleTable {...vestingData} />
 
-			<TransactionPriceIndicator gasLimit={gasLimit} isFetchingGasLimit={isFetchingGasLimit} />
+      <TransactionPriceIndicator gasLimit={gasLimit} isFetchingGasLimit={isFetchingGasLimit} />
 
-			<ErrorMessage message={t(error)} />
-			<ButtonRow>
-				<ButtonSecondary width="48%" onClick={() => onPageChange('tokenSaleVesting')}>
-					{t('escrow.buttons.viewTokenSale')}
-				</ButtonSecondary>
-				<ButtonPrimary
-					disabled={hasNoVestingSchedule || error || !vestingData.canVest}
-					onClick={() => setCurrentScenario('rewardsVesting')}
-					width="48%"
-				>
-					{t('escrow.buttons.vest')}
-				</ButtonPrimary>
-			</ButtonRow>
-		</Fragment>
-	);
+      <ErrorMessage message={t(error)} />
+      <ButtonRow>
+        <ButtonSecondary width="48%" onClick={() => onPageChange('tokenSaleVesting')}>
+          {t('escrow.buttons.viewTokenSale')}
+        </ButtonSecondary>
+        <ButtonPrimary
+          disabled={hasNoVestingSchedule || error || !vestingData.canVest}
+          onClick={() => setCurrentScenario('rewardsVesting')}
+          width="48%"
+        >
+          {t('escrow.buttons.vest')}
+        </ButtonPrimary>
+      </ButtonRow>
+    </Fragment>
+  );
 };
 
 const ButtonRow = styled.div`
-	margin-top: 40px;
-	display: flex;
-	width: 100%;
-	justify-content: space-between;
+  margin-top: 40px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 `;
 
 const mapStateToProps = state => ({
-	walletDetails: getWalletDetails(state),
+  walletDetails: getWalletDetails(state),
 });
 
 const mapDispatchToProps = {};

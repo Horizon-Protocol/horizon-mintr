@@ -11,67 +11,67 @@ import { formatCurrency } from '../../helpers/formatters';
 import { CRYPTO_CURRENCY_TO_KEY } from '../../constants/currency';
 
 const Charts = ({ walletBalances: { crypto }, debtData, totalEscrow = 0 }) => {
-	const { t } = useTranslation();
-	const snxBalance = (crypto && crypto[CRYPTO_CURRENCY_TO_KEY.HZN]) || 0;
-	const snxLocked =
-		snxBalance &&
-		debtData &&
-		debtData.currentCRatio &&
-		debtData.targetCRatio &&
-		snxBalance * Math.min(1, debtData.currentCRatio / debtData.targetCRatio);
+  const { t } = useTranslation();
+  const snxBalance = (crypto && crypto[CRYPTO_CURRENCY_TO_KEY.HZN]) || 0;
+  const snxLocked =
+    snxBalance &&
+    debtData &&
+    debtData.currentCRatio &&
+    debtData.targetCRatio &&
+    snxBalance * Math.min(1, debtData.currentCRatio / debtData.targetCRatio);
 
-	const transferable = debtData ? debtData.transferable : 0;
+  const transferable = debtData ? debtData.transferable : 0;
 
-	const chartData = [
-		[
-			{
-				label: t('dashboard.holdings.locked'),
-				value: snxBalance - transferable,
-			},
-			{
-				label: t('dashboard.holdings.transferable'),
-				value: transferable,
-			},
-		],
-		[
-			{
-				label: t('dashboard.holdings.staking'),
-				value: snxLocked,
-			},
-			{
-				label: t('dashboard.holdings.nonStaking'),
-				value: snxBalance - snxLocked,
-			},
-		],
-		[
-			{
-				label: t('dashboard.holdings.escrowed'),
-				value: totalEscrow,
-			},
-			{
-				label: t('dashboard.holdings.nonEscrowed'),
-				value: snxBalance - totalEscrow,
-			},
-		],
-	];
+  const chartData = [
+    [
+      {
+        label: t('dashboard.holdings.locked'),
+        value: snxBalance - transferable,
+      },
+      {
+        label: t('dashboard.holdings.transferable'),
+        value: transferable,
+      },
+    ],
+    [
+      {
+        label: t('dashboard.holdings.staking'),
+        value: snxLocked,
+      },
+      {
+        label: t('dashboard.holdings.nonStaking'),
+        value: snxBalance - snxLocked,
+      },
+    ],
+    [
+      {
+        label: t('dashboard.holdings.escrowed'),
+        value: totalEscrow,
+      },
+      {
+        label: t('dashboard.holdings.nonEscrowed'),
+        value: snxBalance - totalEscrow,
+      },
+    ],
+  ];
 
-	return (
-		<Box full={true}>
-			<BoxInner>
-				<BoxHeading>
-					<H6 style={{ textTransform: 'uppercase' }}>{t('dashboard.holdings.title')}</H6>
-					<H6>{formatCurrency(snxBalance) || 0} HZN</H6>
-				</BoxHeading>
-				{chartData.map((data, i) => {
-					return <BarChart key={i} data={data} />;
-				})}
-			</BoxInner>
-		</Box>
-	);
+  return (
+    <Box full={true}>
+      <BoxInner>
+        <BoxHeading>
+          <H6 style={{ textTransform: 'uppercase' }}>{t('dashboard.holdings.title')}</H6>
+          <H6>{formatCurrency(snxBalance) || 0} HZN</H6>
+        </BoxHeading>
+        {chartData.map((data, i) => {
+          return <BarChart key={i} data={data} />;
+        })}
+      </BoxInner>
+    </Box>
+  );
 };
 
 const mapStateToProps = state => ({
-	walletBalances: getWalletBalances(state),
+  walletBalances: getWalletBalances(state),
 });
 
 export default connect(mapStateToProps, null)(Charts);

@@ -1,42 +1,40 @@
 import React from 'react';
-import { fontFamilies } from 'styles/themes';
 import styled from 'styled-components';
 
 interface HeaderIconProps {
-	icon: any;
-	title: string;
-	subtext: string;
+  icon: any;
+  title: string;
+  subtext: string;
 }
 
 export const HeaderIcon: React.FC<HeaderIconProps> = ({ icon, title, subtext }) => {
-	return (
-		<>
-			<Icon>{icon}</Icon>
-			<Header>{title}</Header>
-			<Subtext>{subtext}</Subtext>
-		</>
-	);
+  return (
+    <>
+      <Icon>{icon}</Icon>
+      <Header>{title}</Header>
+      <Subtext>{subtext}</Subtext>
+    </>
+  );
 };
 
 const Header = styled.p`
-	font-family: ${fontFamilies.bold};
-	font-size: 40px;
-	text-align: center;
-	letter-spacing: 0.2px;
-	color: #ffffff;
-	text-shadow: 0px 0px 10px #b47598;
-	margin: 0px;
+  font-weight: 500;
+  font-size: 40px;
+  text-align: center;
+  letter-spacing: 0.2px;
+  color: #ffffff;
+  text-shadow: 0px 0px 10px #b47598;
+  margin: 0px;
 `;
 
 const Subtext = styled.p`
-	font-family: ${fontFamilies.regular};
-	font-size: 16px;
-	text-align: center;
-	letter-spacing: 0.2px;
-	color: #cacaf1;
-	width: 600px;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 0.2px;
+  color: #cacaf1;
+  width: 600px;
 `;
 
 const Icon = styled.div`
-	margin: 16px;
+  margin: 16px;
 `;

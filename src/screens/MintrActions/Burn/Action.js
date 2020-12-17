@@ -11,235 +11,235 @@ import ErrorMessage from '../../../components/ErrorMessage';
 import { formatCurrency, secondsToTime } from '../../../helpers/formatters';
 
 const Action = ({
-	t,
-	onDestroy,
-	onBurn,
-	maxBurnAmount,
-	burnAmount,
-	setBurnAmount,
-	transferableAmount,
-	setTransferableAmount,
-	isFetchingGasLimit,
-	gasEstimateError,
-	gasLimit,
-	burnAmountToFixCRatio,
-	waitingPeriod,
-	onWaitingPeriodCheck,
-	issuanceDelay,
-	onIssuanceDelayCheck,
-	sUSDBalance,
+  t,
+  onDestroy,
+  onBurn,
+  maxBurnAmount,
+  burnAmount,
+  setBurnAmount,
+  transferableAmount,
+  setTransferableAmount,
+  isFetchingGasLimit,
+  gasEstimateError,
+  gasLimit,
+  burnAmountToFixCRatio,
+  waitingPeriod,
+  onWaitingPeriodCheck,
+  issuanceDelay,
+  onIssuanceDelayCheck,
+  sUSDBalance,
 }) => {
-	const renderSubmitButton = () => {
-		if (issuanceDelay) {
-			return (
-				<RetryButtonWrapper>
-					<ButtonPrimary
-						onClick={() => {
-							onIssuanceDelayCheck();
-							if (waitingPeriod) {
-								onWaitingPeriodCheck();
-							}
-						}}
-						margin="auto"
-					>
-						Retry
-					</ButtonPrimary>
-					<Subtext style={{ position: 'absolute', fontSize: '12px' }}>
-						There is a waiting period after minting before you can burn. Please wait{' '}
-						{secondsToTime(issuanceDelay)} before attempting to burn sUSD.
-					</Subtext>
-				</RetryButtonWrapper>
-			);
-		} else if (waitingPeriod) {
-			return (
-				<RetryButtonWrapper>
-					<ButtonPrimary onClick={onWaitingPeriodCheck} margin="auto">
-						Retry
-					</ButtonPrimary>
-					<Subtext style={{ position: 'absolute', fontSize: '12px' }}>
-						There is a waiting period after completing a trade. Please wait{' '}
-						{secondsToTime(waitingPeriod)} before attempting to burn sUSD.
-					</Subtext>
-				</RetryButtonWrapper>
-			);
-		} else {
-			return (
-				<ButtonPrimary
-					disabled={isFetchingGasLimit || gasEstimateError || sUSDBalance === 0}
-					onClick={onBurn}
-					margin="auto"
-				>
-					{t('mintrActions.burn.action.buttons.burn')}
-				</ButtonPrimary>
-			);
-		}
-	};
+  const renderSubmitButton = () => {
+    if (issuanceDelay) {
+      return (
+        <RetryButtonWrapper>
+          <ButtonPrimary
+            onClick={() => {
+              onIssuanceDelayCheck();
+              if (waitingPeriod) {
+                onWaitingPeriodCheck();
+              }
+            }}
+            margin="auto"
+          >
+            Retry
+          </ButtonPrimary>
+          <Subtext style={{ position: 'absolute', fontSize: '12px' }}>
+            There is a waiting period after minting before you can burn. Please wait{' '}
+            {secondsToTime(issuanceDelay)} before attempting to burn sUSD.
+          </Subtext>
+        </RetryButtonWrapper>
+      );
+    } else if (waitingPeriod) {
+      return (
+        <RetryButtonWrapper>
+          <ButtonPrimary onClick={onWaitingPeriodCheck} margin="auto">
+            Retry
+          </ButtonPrimary>
+          <Subtext style={{ position: 'absolute', fontSize: '12px' }}>
+            There is a waiting period after completing a trade. Please wait{' '}
+            {secondsToTime(waitingPeriod)} before attempting to burn sUSD.
+          </Subtext>
+        </RetryButtonWrapper>
+      );
+    } else {
+      return (
+        <ButtonPrimary
+          disabled={isFetchingGasLimit || gasEstimateError || sUSDBalance === 0}
+          onClick={onBurn}
+          margin="auto"
+        >
+          {t('mintrActions.burn.action.buttons.burn')}
+        </ButtonPrimary>
+      );
+    }
+  };
 
-	const [snxInputIsVisible, toggleSnxInput] = useState(false);
-	return (
-		<SlidePage>
-			<Container>
-				<Navigation>
-					<ButtonTertiary onClick={onDestroy}>{t('button.navigation.cancel')}</ButtonTertiary>
-				</Navigation>
-				<Top>
-					<Intro>
-						<ActionImage src="/images/actions/burn.svg" big />
-						<H1>{t('mintrActions.burn.action.title')}</H1>
-						<PLarge>{t('mintrActions.burn.action.subtitle')}</PLarge>
-					</Intro>
-					<Form>
-						<PLarge>{t('mintrActions.burn.action.instruction')}</PLarge>
-						<ButtonRow>
-							<AmountButton
-								onClick={() => {
-									setBurnAmount(maxBurnAmount);
-								}}
-								width="30%"
-							>
-								{t('button.burnMax')}
-							</AmountButton>
-							<AmountButton
-								disabled={
-									maxBurnAmount === 0 ||
-									burnAmountToFixCRatio === 0 ||
-									burnAmountToFixCRatio > maxBurnAmount
-								}
-								onClick={() => {
-									setBurnAmount(burnAmountToFixCRatio);
-									onBurn({ burnToTarget: true });
-								}}
-								width="66%"
-							>
-								{t('button.fixCRatio')}
-							</AmountButton>
-						</ButtonRow>
-						<SubtextRow>
-							<Subtext>${formatCurrency(maxBurnAmount)}</Subtext>
-							<Subtext>${formatCurrency(burnAmountToFixCRatio)}</Subtext>
-						</SubtextRow>
-						<Input
-							singleSynth={'sUSD'}
-							onChange={e => setBurnAmount(e.target.value)}
-							value={burnAmount}
-							placeholder="0.00"
-						/>
-						<ErrorMessage message={gasEstimateError} />
-						{snxInputIsVisible ? (
-							<Fragment>
-								<PLarge>{t('mintrActions.burn.action.transferrable.title')}</PLarge>
-								<Input
-									singleSynth={'HZN'}
-									onChange={e => setTransferableAmount(e.target.value)}
-									value={transferableAmount}
-									placeholder="0.00"
-								/>
-							</Fragment>
-						) : (
-							<ButtonToggleInput onClick={() => toggleSnxInput(true)}>
-								<HyperlinkSmall>
-									{t('mintrActions.burn.action.transferrable.button')}
-								</HyperlinkSmall>
-							</ButtonToggleInput>
-						)}
-					</Form>
-				</Top>
-				<Bottom>
-					<TransactionPriceIndicator isFetchingGasLimit={isFetchingGasLimit} gasLimit={gasLimit} />
-					{renderSubmitButton()}
-				</Bottom>
-			</Container>
-		</SlidePage>
-	);
+  const [snxInputIsVisible, toggleSnxInput] = useState(false);
+  return (
+    <SlidePage>
+      <Container>
+        <Navigation>
+          <ButtonTertiary onClick={onDestroy}>{t('button.navigation.cancel')}</ButtonTertiary>
+        </Navigation>
+        <Top>
+          <Intro>
+            <ActionImage src="/images/actions/burn.svg" big />
+            <H1>{t('mintrActions.burn.action.title')}</H1>
+            <PLarge>{t('mintrActions.burn.action.subtitle')}</PLarge>
+          </Intro>
+          <Form>
+            <PLarge>{t('mintrActions.burn.action.instruction')}</PLarge>
+            <ButtonRow>
+              <AmountButton
+                onClick={() => {
+                  setBurnAmount(maxBurnAmount);
+                }}
+                width="30%"
+              >
+                {t('button.burnMax')}
+              </AmountButton>
+              <AmountButton
+                disabled={
+                  maxBurnAmount === 0 ||
+                  burnAmountToFixCRatio === 0 ||
+                  burnAmountToFixCRatio > maxBurnAmount
+                }
+                onClick={() => {
+                  setBurnAmount(burnAmountToFixCRatio);
+                  onBurn({ burnToTarget: true });
+                }}
+                width="66%"
+              >
+                {t('button.fixCRatio')}
+              </AmountButton>
+            </ButtonRow>
+            <SubtextRow>
+              <Subtext>${formatCurrency(maxBurnAmount)}</Subtext>
+              <Subtext>${formatCurrency(burnAmountToFixCRatio)}</Subtext>
+            </SubtextRow>
+            <Input
+              singleSynth={'sUSD'}
+              onChange={e => setBurnAmount(e.target.value)}
+              value={burnAmount}
+              placeholder="0.00"
+            />
+            <ErrorMessage message={gasEstimateError} />
+            {snxInputIsVisible ? (
+              <Fragment>
+                <PLarge>{t('mintrActions.burn.action.transferrable.title')}</PLarge>
+                <Input
+                  singleSynth={'HZN'}
+                  onChange={e => setTransferableAmount(e.target.value)}
+                  value={transferableAmount}
+                  placeholder="0.00"
+                />
+              </Fragment>
+            ) : (
+              <ButtonToggleInput onClick={() => toggleSnxInput(true)}>
+                <HyperlinkSmall>
+                  {t('mintrActions.burn.action.transferrable.button')}
+                </HyperlinkSmall>
+              </ButtonToggleInput>
+            )}
+          </Form>
+        </Top>
+        <Bottom>
+          <TransactionPriceIndicator isFetchingGasLimit={isFetchingGasLimit} gasLimit={gasLimit} />
+          {renderSubmitButton()}
+        </Bottom>
+      </Container>
+    </SlidePage>
+  );
 };
 
 const Container = styled.div`
-	width: 100%;
-	height: 850px;
-	max-width: 720px;
-	margin: 0 auto;
-	overflow: hidden;
-	background-color: ${props => props.theme.colorStyles.panels};
-	border: 1px solid ${props => props.theme.colorStyles.borders};
-	border-radius: 5px;
-	box-shadow: 0px 5px 10px 5px ${props => props.theme.colorStyles.shadow1};
-	margin-bottom: 20px;
-	padding: 16px 64px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
-	justify-content: space-between;
+  width: 100%;
+  height: 850px;
+  max-width: 720px;
+  margin: 0 auto;
+  overflow: hidden;
+  background-color: ${props => props.theme.colorStyles.panels};
+  border: 1px solid ${props => props.theme.colorStyles.borders};
+  border-radius: 5px;
+  box-shadow: 0px 5px 10px 5px ${props => props.theme.colorStyles.shadow1};
+  margin-bottom: 20px;
+  padding: 16px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
 `;
 
 const Top = styled.div`
-	height: auto;
+  height: auto;
 `;
 
 const Bottom = styled.div`
-	height: auto;
-	margin-bottom: 64px;
+  height: auto;
+  margin-bottom: 64px;
 `;
 
 const Navigation = styled.div`
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	padding: 20px 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
 `;
 
 const Intro = styled.div`
-	max-width: 380px;
-	margin-bottom: 24px;
+  max-width: 380px;
+  margin-bottom: 24px;
 `;
 
 const ActionImage = styled.img`
-	height: ${props => (props.big ? '64px' : '48px')};
-	width: ${props => (props.big ? '64px' : '48px')};
-	margin-bottom: 8px;
+  height: ${props => (props.big ? '64px' : '48px')};
+  width: ${props => (props.big ? '64px' : '48px')};
+  margin-bottom: 8px;
 `;
 
 const Form = styled.div`
-	width: 400px;
+  width: 400px;
 `;
 
 const ButtonToggleInput = styled.button`
-	border: none;
-	margin: 10px 0;
-	cursor: pointer;
-	background-color: transparent;
+  border: none;
+  margin: 10px 0;
+  cursor: pointer;
+  background-color: transparent;
 `;
 
 const ButtonRow = styled.div`
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const SubtextRow = styled.div`
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const AmountButton = styled.button`
-	padding: 8px 4px;
-	width: ${props => (props.width ? props.width : '100%')};
-	border: 1px solid ${props => props.theme.colorStyles.borders};
-	border-radius: 3px;
-	color: ${props => props.theme.colorStyles.buttonPrimaryText};
-	font-family: 'apercu-medium';
-	font-size: 16px;
-	background-color: ${props => props.theme.colorStyles.buttonPrimaryBg};
-	cursor: pointer;
-	white-space: no-wrap;
-	&:disabled {
-		opacity: 0.5;
-		pointer-events: none;
-	}
+  padding: 8px 4px;
+  width: ${props => (props.width ? props.width : '100%')};
+  border: 1px solid ${props => props.theme.colorStyles.borders};
+  border-radius: 3px;
+  color: ${props => props.theme.colorStyles.buttonPrimaryText};
+  font-family: 'Roboto';
+  font-size: 16px;
+  background-color: ${props => props.theme.colorStyles.buttonPrimaryBg};
+  cursor: pointer;
+  white-space: no-wrap;
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 `;
 
 const RetryButtonWrapper = styled.div`
-	position: relative;
+  position: relative;
 `;
 
 export default withTranslation()(Action);

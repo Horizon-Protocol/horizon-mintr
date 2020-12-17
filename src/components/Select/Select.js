@@ -9,257 +9,257 @@ import { formatCurrency } from '../../helpers/formatters';
 
 import { ButtonTertiaryLabel, InputLabelSmall, DataLarge } from '../Typography';
 const DropdownSelect = ({ data = [], onSelect, selected = [] }) => {
-	const { t } = useTranslation();
-	const handleSelect = element => {
-		if (selected.includes(element)) {
-			return onSelect(selected.filter(s => s !== element));
-		} else {
-			return onSelect([element, ...selected]);
-		}
-	};
-	return (
-		<SelectContainer autoWidth>
-			<List>
-				{data.map(event => {
-					return (
-						<ListElement key={`li-${event}`} onClick={() => handleSelect(event)}>
-							<ListElementInner>
-								<input
-									type="checkbox"
-									onChange={() => null}
-									checked={selected.includes(event)}
-								></input>
-								<ListElementIcon src={`/images/transactions/${event}.svg`}></ListElementIcon>
-								<ListElementLabel style={{ whiteSpace: 'nowrap' }}>
-									{t(`transactions.events.${event}`)}
-								</ListElementLabel>
-							</ListElementInner>
-						</ListElement>
-					);
-				})}
-			</List>
-		</SelectContainer>
-	);
+  const { t } = useTranslation();
+  const handleSelect = element => {
+    if (selected.includes(element)) {
+      return onSelect(selected.filter(s => s !== element));
+    } else {
+      return onSelect([element, ...selected]);
+    }
+  };
+  return (
+    <SelectContainer autoWidth>
+      <List>
+        {data.map(event => {
+          return (
+            <ListElement key={`li-${event}`} onClick={() => handleSelect(event)}>
+              <ListElementInner>
+                <input
+                  type="checkbox"
+                  onChange={() => null}
+                  checked={selected.includes(event)}
+                ></input>
+                <ListElementIcon src={`/images/transactions/${event}.svg`}></ListElementIcon>
+                <ListElementLabel style={{ whiteSpace: 'nowrap' }}>
+                  {t(`transactions.events.${event}`)}
+                </ListElementLabel>
+              </ListElementInner>
+            </ListElement>
+          );
+        })}
+      </List>
+    </SelectContainer>
+  );
 };
 
 const CalendarFilter = ({ onSelect }) => {
-	return (
-		<SelectContainer autoWidth>
-			<Calendar
-				returnValue="range"
-				selectRange={true}
-				onChange={([from, to]) => onSelect({ from, to })}
-			/>
-		</SelectContainer>
-	);
+  return (
+    <SelectContainer autoWidth>
+      <Calendar
+        returnValue="range"
+        selectRange={true}
+        onChange={([from, to]) => onSelect({ from, to })}
+      />
+    </SelectContainer>
+  );
 };
 
 const RangeFilter = ({ onSelect, selected }) => {
-	const { t } = useTranslation();
-	const [filters, setFilters] = useState(selected);
-	let updateTimeout;
+  const { t } = useTranslation();
+  const [filters, setFilters] = useState(selected);
+  let updateTimeout;
 
-	const onChange = e => {
-		const { value, name } = e.target;
-		setFilters({ ...filters, ...{ [name]: value } });
-	};
+  const onChange = e => {
+    const { value, name } = e.target;
+    setFilters({ ...filters, ...{ [name]: value } });
+  };
 
-	const handleKey = e => {
-		if (e.key === 'Enter') {
-			update();
-		}
-	};
+  const handleKey = e => {
+    if (e.key === 'Enter') {
+      update();
+    }
+  };
 
-	const update = () => {
-		clearTimeout(updateTimeout);
-		if (filters.from !== selected.from || filters.to !== selected.to) {
-			onSelect(filters);
-		}
-	};
+  const update = () => {
+    clearTimeout(updateTimeout);
+    if (filters.from !== selected.from || filters.to !== selected.to) {
+      onSelect(filters);
+    }
+  };
 
-	return (
-		<SelectContainer>
-			<RangeContainer>
-				<InputLabelSmall htmlFor="from">{t('transactions.inputs.from')}</InputLabelSmall>
-				<Input
-					name="from"
-					type="number"
-					onChange={onChange}
-					onBlur={update}
-					onKeyDown={handleKey}
-					value={filters.from}
-				/>
-				<InputLabelSmall htmlFor="to">{t('transactions.inputs.to')}</InputLabelSmall>
-				<Input
-					name="to"
-					type="number"
-					onChange={onChange}
-					onBlur={update}
-					onKeyDown={handleKey}
-					value={filters.to}
-				/>
-			</RangeContainer>
-		</SelectContainer>
-	);
+  return (
+    <SelectContainer>
+      <RangeContainer>
+        <InputLabelSmall htmlFor="from">{t('transactions.inputs.from')}</InputLabelSmall>
+        <Input
+          name="from"
+          type="number"
+          onChange={onChange}
+          onBlur={update}
+          onKeyDown={handleKey}
+          value={filters.from}
+        />
+        <InputLabelSmall htmlFor="to">{t('transactions.inputs.to')}</InputLabelSmall>
+        <Input
+          name="to"
+          type="number"
+          onChange={onChange}
+          onBlur={update}
+          onKeyDown={handleKey}
+          value={filters.to}
+        />
+      </RangeContainer>
+    </SelectContainer>
+  );
 };
 
 const Dropdown = ({ type, data, onSelect, selected }) => {
-	const props = { data, onSelect, selected };
-	switch (type) {
-		case 'select':
-			return <DropdownSelect {...props} />;
-		case 'calendar':
-			return <CalendarFilter {...props} />;
-		case 'range':
-			return <RangeFilter {...props} />;
-		default:
-			return null;
-	}
+  const props = { data, onSelect, selected };
+  switch (type) {
+    case 'select':
+      return <DropdownSelect {...props} />;
+    case 'calendar':
+      return <CalendarFilter {...props} />;
+    case 'range':
+      return <RangeFilter {...props} />;
+    default:
+      return null;
+  }
 };
 
 const Select = ({ placeholder, type = 'select', data = null, onSelect, selected }) => {
-	const [dropdownVisible, setDropdownVisible] = useState(false);
-	return (
-		<OutsideClickHandler onOutsideClick={() => setDropdownVisible(false)}>
-			<Container>
-				<Button onClick={() => setDropdownVisible(!dropdownVisible)}>
-					<ButtonInner>
-						{selected.length || selected.from ? (
-							<SelectedValue type={type} selected={selected} data={data} />
-						) : (
-							<ButtonTertiaryLabel>{placeholder}</ButtonTertiaryLabel>
-						)}
-						<ButtonImage src={'/images/caret-down.svg'}></ButtonImage>
-					</ButtonInner>
-				</Button>
-				{dropdownVisible ? (
-					<Dropdown type={type} data={data} onSelect={onSelect} selected={selected}></Dropdown>
-				) : null}
-			</Container>
-		</OutsideClickHandler>
-	);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  return (
+    <OutsideClickHandler onOutsideClick={() => setDropdownVisible(false)}>
+      <Container>
+        <Button onClick={() => setDropdownVisible(!dropdownVisible)}>
+          <ButtonInner>
+            {selected.length || selected.from ? (
+              <SelectedValue type={type} selected={selected} data={data} />
+            ) : (
+              <ButtonTertiaryLabel>{placeholder}</ButtonTertiaryLabel>
+            )}
+            <ButtonImage src={'/images/caret-down.svg'}></ButtonImage>
+          </ButtonInner>
+        </Button>
+        {dropdownVisible ? (
+          <Dropdown type={type} data={data} onSelect={onSelect} selected={selected}></Dropdown>
+        ) : null}
+      </Container>
+    </OutsideClickHandler>
+  );
 };
 
 const SelectedValue = ({ type, data, selected }) => {
-	let text;
-	switch (type) {
-		case 'select': {
-			const elements = data.filter(event => selected.includes(event));
-			return (
-				<span>
-					{elements.map(event => (
-						<ListElementIcon
-							src={`/images/transactions/${event}.svg`}
-							key={event}
-						></ListElementIcon>
-					))}
-				</span>
-			);
-		}
-		case 'calendar':
-			text = `${format(new Date(selected.from), 'dd-MM-yy')} → ${format(
-				new Date(selected.to),
-				'dd-MM-yy'
-			)}`;
-			return <ButtonTertiaryLabel>{text}</ButtonTertiaryLabel>;
-		case 'range':
-			text = `${formatCurrency(selected.from)} → ${formatCurrency(selected.to)}`;
-			return <ButtonTertiaryLabel>{text}</ButtonTertiaryLabel>;
-		default:
-			return null;
-	}
+  let text;
+  switch (type) {
+    case 'select': {
+      const elements = data.filter(event => selected.includes(event));
+      return (
+        <span>
+          {elements.map(event => (
+            <ListElementIcon
+              src={`/images/transactions/${event}.svg`}
+              key={event}
+            ></ListElementIcon>
+          ))}
+        </span>
+      );
+    }
+    case 'calendar':
+      text = `${format(new Date(selected.from), 'dd-MM-yy')} → ${format(
+        new Date(selected.to),
+        'dd-MM-yy'
+      )}`;
+      return <ButtonTertiaryLabel>{text}</ButtonTertiaryLabel>;
+    case 'range':
+      text = `${formatCurrency(selected.from)} → ${formatCurrency(selected.to)}`;
+      return <ButtonTertiaryLabel>{text}</ButtonTertiaryLabel>;
+    default:
+      return null;
+  }
 };
 
 const Container = styled.div`
-	width: 100%;
-	display: flex;
-	position: relative;
-	align-items: center;
-	margin-right: 16px;
+  width: 100%;
+  display: flex;
+  position: relative;
+  align-items: center;
+  margin-right: 16px;
 `;
 
 const Button = styled.button`
-	border: 1px solid ${props => props.theme.colorStyles.borders};
-	height: 40px;
-	background: transparent;
-	border-radius: 5px;
-	width: 100%;
-	cursor: pointer;
-	&:hover {
-		background-color: ${props => props.theme.colorStyles.buttonTertiaryBgFocus};
-	}
+  border: 1px solid ${props => props.theme.colorStyles.borders};
+  height: 40px;
+  background: transparent;
+  border-radius: 5px;
+  width: 100%;
+  cursor: pointer;
+  &:hover {
+    background-color: ${props => props.theme.colorStyles.buttonTertiaryBgFocus};
+  }
 `;
 
 const ButtonInner = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-transform: uppercase;
 `;
 
 const ButtonImage = styled.img``;
 
 const SelectContainer = styled.div`
-	z-index: 10;
-	position: absolute;
-	top: calc(100% + 10px);
-	left: 0;
-	width: ${props => (props.autoWidth ? 'auto' : '100%')};
-	border: 1px solid ${props => props.theme.colorStyles.borders};
-	border-radius: 5px;
-	background-color: ${props => props.theme.colorStyles.panels};
+  z-index: 10;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: ${props => (props.autoWidth ? 'auto' : '100%')};
+  border: 1px solid ${props => props.theme.colorStyles.borders};
+  border-radius: 5px;
+  background-color: ${props => props.theme.colorStyles.panels};
 `;
 
 const List = styled.ul`
-	list-style: none;
-	margin: 0;
-	padding: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 10px;
 `;
 
 const ListElement = styled.li`
-	padding: 10px 0;
-	cursor: pointer;
-	&:hover {
-		background-color: ${props => props.theme.colorStyles.buttonTertiaryBgFocus};
-	}
+  padding: 10px 0;
+  cursor: pointer;
+  &:hover {
+    background-color: ${props => props.theme.colorStyles.buttonTertiaryBgFocus};
+  }
 `;
 
 const ListElementInner = styled.div`
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 `;
 
 const ListElementLabel = styled(DataLarge)`
-	width: 100%;
-	overflow: hidden;
+  width: 100%;
+  overflow: hidden;
 `;
 
 const ListElementIcon = styled.img`
-	margin: 0 5px;
-	vertical-align: text-bottom;
-	width: 16px;
+  margin: 0 5px;
+  vertical-align: text-bottom;
+  width: 16px;
 `;
 
 const RangeContainer = styled.div`
-	height: 178px;
-	padding: 16px 24px;
+  height: 178px;
+  padding: 16px 24px;
 `;
 
 const Input = styled.input`
-	height: 32px;
-	margin: 8px 0 25px 0;
-	padding: 0 10px;
-	border-radius: 5px;
-	border: 1px solid ${props => props.theme.colorStyles.borders};
-	background-color: ${props => props.theme.colorStyles.panels};
-	color: ${props => props.theme.colorStyles.heading};
-	width: 100%;
-	appearance: textfield;
-	&::-webkit-outer-spin-button,
-	&::-webkit-inner-spin-button {
-		appearance: none;
-		margin: 0;
-	}
+  height: 32px;
+  margin: 8px 0 25px 0;
+  padding: 0 10px;
+  border-radius: 5px;
+  border: 1px solid ${props => props.theme.colorStyles.borders};
+  background-color: ${props => props.theme.colorStyles.panels};
+  color: ${props => props.theme.colorStyles.heading};
+  width: 100%;
+  appearance: textfield;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+  }
 `;
 
 export default Select;
