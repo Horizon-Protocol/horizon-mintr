@@ -12,7 +12,6 @@ import { DelegateModal } from '../../components/Modal';
 import { MODAL_TYPES_TO_KEY } from '../../constants/modal';
 
 import { getWalletDetails } from '../../ducks/wallet';
-import { SUPPORTED_NETWORKS_MAP } from 'helpers/networkHelper';
 
 const renderScreen = screen => {
 	switch (screen) {
@@ -28,15 +27,6 @@ const renderScreen = screen => {
 		case 'lpRewards':
 			return <LPRewards />;
 	}
-};
-
-const RESTRICTED_TABS = {
-	[SUPPORTED_NETWORKS_MAP.GOERLI]: {
-		depot: true,
-		escrow: true,
-		lpRewards: true,
-		transactionsHistory: true,
-	},
 };
 
 // const tabs = ['home', 'depot', 'transactionsHistory', 'escrow', 'lpRewards']
@@ -61,7 +51,6 @@ const MainContainer = ({
 								key={tab}
 								isSelected={tab === currentTab}
 								onClick={() => setCurrentTab({ tab })}
-								disabled={RESTRICTED_TABS[networkId] && RESTRICTED_TABS[networkId][tab]}
 							>
 								{/* i18next-extract-disable-next-line */}
 								{t(`mainNavigation.tabs.${tab}`)}
