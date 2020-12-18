@@ -9,7 +9,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@phoenix-global/horizon-data": "^2.1.40",
-    "@phoenix-global/horizon-js": "^3.0.2",
+    "@phoenix-global/horizon-js": "^3.0.4",
     "@reduxjs/toolkit": "^1.5.0",
     "@rehooks/component-size": "^1.0.3",
     "axios": "^0.21.0",
