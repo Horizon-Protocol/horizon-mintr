@@ -1,12 +1,11 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Tabs, Tab, Container, Grid, Typography } from '@material-ui/core';
+import { Box, Tabs, Tab, Container, Typography } from '@material-ui/core';
 
 import { isMainNet } from 'helpers/networkHelper';
 import { getWalletDetails } from 'ducks/wallet';
-import { getRedirectToTrade } from 'ducks/ui';
 
 import MintrAction from '../MintrActions';
 
@@ -15,24 +14,51 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
+  tabs: {
+    border: '1px solid black',
+    borderTopLeftRadius: '20px',
+    borderTopRightRadius: '20px',
+    overflow: 'hidden',
+  },
   tab: {
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
+    height: 105,
+    padding: '26px 20px 14px 20px',
+    backgroundSize: '40%',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right 10px bottom 0',
+    borderColor: 'black',
+    borderStyle: 'solid',
+    textTransform: 'none',
+    '&:first-child': {
+      borderRightWidth: 1,
+    },
+    '&:last-child': {
+      borderLeftWidth: 1,
+    },
   },
-  actionTab: {
-    borderBottom: 2,
-    color: theme.palette.primary.contrastText,
-    background: ({ action }) => `url(/images/actions/${action}.svg)`,
+  tabSelected: {},
+  tabWrapper: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    whiteSpace: 'nowrap',
   },
   actionTitle: {
+    display: 'block',
     lineHeight: '28px',
+    fontSize: 24,
   },
-  actionDesc: {},
-  actionAmount: {},
+  actionDesc: {
+    display: 'block',
+  },
+  actionAmount: {
+    display: 'block',
+  },
   content: {
     position: 'relative',
-    maxWidth: 720,
     overflow: 'hidden',
     width: '100%',
     height: 640,
@@ -42,27 +68,30 @@ const useStyles = makeStyles(theme => ({
 const tabs = [
   {
     key: 'mint',
-    description: 'home.actions.mint.description',
+    desc: 'home.actions.mint.description',
     title: 'home.actions.mint.title',
+    color: '#10BA97',
   },
   {
     key: 'burn',
-    description: 'home.actions.burn.description',
+    desc: 'home.actions.burn.description',
     title: 'home.actions.burn.title',
+    color: '#FFA539',
   },
   {
     key: 'claim',
-    description: 'home.actions.claim.description',
+    desc: 'home.actions.claim.description',
     title: 'home.actions.claim.title',
+    color: '#92B2FF',
   },
 ];
 
 const initialAction = tabs[0].key;
 
-const ActionTab = ({ title, value, desc, amountLabel, ...props }) => {
+const ActionTab = ({ title, desc, amountLabel }) => {
   const classes = useStyles();
   return (
-    <Box className={classes.actionTab} {...props}>
+    <>
       <Typography
         component="span"
         variant="subtitle1"
@@ -73,7 +102,7 @@ const ActionTab = ({ title, value, desc, amountLabel, ...props }) => {
       </Typography>
       <span className={classes.actionDesc}>{desc}</span>
       <span className={classes.actionAmount}>{amountLabel}</span>
-    </Box>
+    </>
   );
 };
 
@@ -87,21 +116,37 @@ const Home = ({ walletDetails: { networkId } }) => {
     setCurrentAction(newValue);
   };
 
+  const activeTab = useMemo(() => tabs.find(({ key }) => key === currentAction), [currentAction]);
+
   return (
-    <Container maxWidth="sm">
-      <Tabs variant="fullWidth" value={currentAction} onChange={handleChangeAction}>
-        {tabs.map(({ key, title }) => (
+    <Container style={{ maxWidth: 768 }}>
+      <Tabs
+        variant="fullWidth"
+        TabIndicatorProps={{ style: { height: 4, backgroundColor: activeTab.color } }}
+        value={currentAction}
+        onChange={handleChangeAction}
+        className={classes.tabs}
+      >
+        {tabs.map(({ key, title, desc, color }) => (
           <Tab
             key={key}
-            label={<ActionTab title={t(title)} />}
+            label={<ActionTab title={t(title)} desc={t(desc)} />}
             value={key}
-            className={classes.tab}
+            classes={{
+              root: classes.tab,
+              selected: classes.tabSelected,
+              wrapper: classes.tabWrapper,
+            }}
+            style={{
+              color,
+              backgroundImage: `url(/images/actions/${key}.png)`,
+            }}
           />
         ))}
       </Tabs>
-      <Grid className={classes.content}>
+      <Box width="full" className={classes.content}>
         <MintrAction action={currentAction} />
-      </Grid>
+      </Box>
       {/* <Tab>
         {ACTIONS.map(action => {
           return (
@@ -119,7 +164,6 @@ const Home = ({ walletDetails: { networkId } }) => {
 
 const mapStateToProps = state => ({
   walletDetails: getWalletDetails(state),
-  redirectToTrade: getRedirectToTrade(state),
 });
 
 export default connect(mapStateToProps, null)(Home);

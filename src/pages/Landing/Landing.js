@@ -267,7 +267,7 @@ const Button = styled.button`
   align-items: center;
   background-color: ${props => props.theme.colorStyles.panelButton};
   border: 1px solid ${props => props.theme.colorStyles.borders};
-  box-shadow: 0px 5px 10px 5px ${props => props.theme.colorStyles.shadow1};
+
   opacity: ${props => (props.disabled ? '0.4' : 1)};
   cursor: pointer;
   transition: all 0.1s ease;

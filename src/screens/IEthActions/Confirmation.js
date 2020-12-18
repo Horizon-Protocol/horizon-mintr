@@ -53,7 +53,7 @@ const Container = styled.div`
   background-color: ${props => props.theme.colorStyles.panels};
   border: 1px solid ${props => props.theme.colorStyles.borders};
   border-radius: 5px;
-  box-shadow: 0px 5px 10px 5px ${props => props.theme.colorStyles.shadow1};
+
   margin-bottom: 20px;
   padding: 48px 64px;
   display: flex;

@@ -192,7 +192,7 @@ const Button = styled.button`
   background-color: ${props => props.theme.colorStyles.panelButton};
   border: 1px solid ${props => props.theme.colorStyles.borders};
   border-radius: 5px;
-  box-shadow: 0px 5px 10px 5px ${props => props.theme.colorStyles.shadow1};
+
   transition: transform ease-in 0.2s;
   &:hover {
     background-color: ${props => props.theme.colorStyles.panelButtonHover};

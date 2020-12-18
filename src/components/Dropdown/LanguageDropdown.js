@@ -55,7 +55,7 @@ const Wrapper = styled.div`
   padding: 16px;
   background-color: ${props => props.theme.colorStyles.panels};
   border: 1px solid ${props => props.theme.colorStyles.borders};
-  box-shadow: 0px 5px 10px 5px ${props => props.theme.colorStyles.shadow1};
+
   border-radius: 5px;
   display: flex;
   flex-direction: column;
