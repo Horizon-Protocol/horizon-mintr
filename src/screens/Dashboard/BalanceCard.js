@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 // import { useTranslation } from 'react-i18next';
 import isEmpty from 'lodash/isEmpty';
-import { Typography } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 
 import { getWalletBalances } from 'ducks/balances';
 import { getCurrentTheme } from 'ducks/ui';
@@ -41,6 +41,31 @@ const mapBalanceData = (loading, walletBalances, debtData) => {
   });
 };
 
+const useStyles = makeStyles(theme => ({
+  network: {
+    whiteSpace: 'nowrap',
+    fontSize: 14,
+  },
+  dot: {
+    marginRight: 6,
+    display: 'inline-block',
+    height: 12,
+    width: 12,
+    backgroundColor: '#3481B7',
+    borderRadius: '50%',
+  },
+}));
+
+const Network = ({ currentWallet }) => {
+  const classes = useStyles();
+  return (
+    <Typography variant="body2" className={classes.network}>
+      <i className={classes.dot} />
+      {shortenAddress(currentWallet)}
+    </Typography>
+  );
+};
+
 const BalanceCard = ({ loading, currentWallet, walletBalances, debtData }) => {
   const rows = mapBalanceData(loading, walletBalances, debtData).map(({ name, balance }) => ({
     name: `${name} Balance`,
@@ -52,7 +77,7 @@ const BalanceCard = ({ loading, currentWallet, walletBalances, debtData }) => {
       width={150}
       loading={loading}
       rows={rows}
-      title={<Typography variant="body2">{shortenAddress(currentWallet)}</Typography>}
+      title={<Network currentWallet={currentWallet} />}
       style={{ marginLeft: 8 }}
     />
   );

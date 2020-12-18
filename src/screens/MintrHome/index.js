@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Tabs, Tab, Container, Typography } from '@material-ui/core';
+import { Box, Fade, Grid, Tabs, Tab, Container, Typography } from '@material-ui/core';
 
 import { isMainNet } from 'helpers/networkHelper';
 import { getWalletDetails } from 'ducks/wallet';
@@ -15,11 +15,18 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
   },
-  tabs: {
-    border: '1px solid black',
-    borderTopLeftRadius: '20px',
-    borderTopRightRadius: '20px',
+  container: {
+    maxWidth: 768,
+  },
+  body: {
+    maxWidth: 768,
+    borderRadius: 20,
+    border: '1px solid #1E4267',
     overflow: 'hidden',
+    backgroundColor: 'rgba(16,38,55,0.3)',
+  },
+  tabs: {
+    borderBottom: '1px solid #1E4267',
   },
   tab: {
     flexDirection: 'column',
@@ -30,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: '40%',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'right 10px bottom 0',
-    borderColor: 'black',
+    borderColor: '#1E4267',
     borderStyle: 'solid',
     textTransform: 'none',
     '&:first-child': {
@@ -112,44 +119,63 @@ const Home = ({ walletDetails: { networkId } }) => {
   const { t } = useTranslation();
 
   const [currentAction, setCurrentAction] = useState(initialAction);
+  const [switched, setSwitched] = useState(false);
 
   const handleChangeAction = (_, newValue) => {
+    setSwitched(false);
     setCurrentAction(newValue);
   };
+
+  useEffect(() => {
+    if (!switched) {
+      setTimeout(() => {
+        setSwitched(true);
+      }, 50);
+    }
+  }, [switched]);
 
   const activeTab = useMemo(() => tabs.find(({ key }) => key === currentAction), [currentAction]);
 
   return (
     <Box className={classes.root}>
-      <Container style={{ maxWidth: 768 }}>
-        <Tabs
-          variant="fullWidth"
-          TabIndicatorProps={{ style: { height: 4, backgroundColor: activeTab.color } }}
-          value={currentAction}
-          onChange={handleChangeAction}
-          className={classes.tabs}
-        >
-          {tabs.map(({ key, title, desc, color }) => (
-            <Tab
-              key={key}
-              label={<ActionTab title={t(title)} desc={t(desc)} />}
-              value={key}
-              classes={{
-                root: classes.tab,
-                selected: classes.tabSelected,
-                wrapper: classes.tabWrapper,
-              }}
-              style={{
-                color,
-                backgroundImage: `url(/images/actions/${key}.png)`,
-              }}
-            />
-          ))}
-        </Tabs>
-        <Box width="full" className={classes.content}>
-          <MintrAction action={currentAction} />
-        </Box>
-        {/* <Tab>
+      <Container className={classes.container}>
+        <Grid className={classes.body}>
+          <Tabs
+            variant="fullWidth"
+            TabIndicatorProps={{ style: { height: 4, backgroundColor: activeTab.color } }}
+            value={currentAction}
+            onChange={handleChangeAction}
+            className={classes.tabs}
+          >
+            {tabs.map(({ key, title, desc, color }) => (
+              <Tab
+                key={key}
+                label={<ActionTab title={t(title)} desc={t(desc)} />}
+                value={key}
+                classes={{
+                  root: classes.tab,
+                  selected: classes.tabSelected,
+                  wrapper: classes.tabWrapper,
+                }}
+                style={{
+                  color,
+                  backgroundImage: `url(/images/actions/${key}.png)`,
+                }}
+              />
+            ))}
+          </Tabs>
+          <Fade
+            in={switched}
+            timeout={{
+              enter: 500,
+              exit: 0,
+            }}
+          >
+            <Box width="full" className={classes.content}>
+              <MintrAction action={currentAction} />
+            </Box>
+          </Fade>
+          {/* <Tab>
         {ACTIONS.map(action => {
           return (
             <Button key={action} onClick={() => setCurrentScenario(action)} big>
@@ -160,6 +186,7 @@ const Home = ({ walletDetails: { networkId } }) => {
           );
         })}
       </Tab> */}
+        </Grid>
       </Container>
     </Box>
   );

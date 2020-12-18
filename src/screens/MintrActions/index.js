@@ -1,11 +1,12 @@
+import { ACTIONS_MAP } from 'constants/actions';
+import Slider from 'components/ScreenSlider';
+
 import Mint from './Mint';
 import Burn from './Burn';
 import Claim from './Claim';
 import Trade from './Trade';
 import Send from './Transfer';
 import Track from './Track';
-import Slider from '../../components/ScreenSlider';
-import { ACTIONS_MAP } from '../../constants/actions';
 
 const getActionComponent = action => {
   switch (action) {
@@ -27,11 +28,13 @@ const getActionComponent = action => {
 };
 
 const MintrAction = ({ action, onDestroy }) => {
-  if (!action) return null;
   const ActionComponent = getActionComponent(action);
+
+  if (!action) return null;
+
   return (
-    <Slider>
-      <ActionComponent onDestroy={onDestroy} />
+    <Slider screen={action}>
+      <ActionComponent onDestory={onDestroy} />
     </Slider>
   );
 };

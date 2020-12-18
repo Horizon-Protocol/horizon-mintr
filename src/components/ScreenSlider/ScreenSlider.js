@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components';
 import ScreenSliderContext from './Context';
 import useComponentSize from '@rehooks/component-size';
 
-const useSliding = containerWidth => {
+const useSliding = (containerWidth, screen) => {
   const containerRef = useRef(null);
   const [distance, setDistance] = useState(0);
   const [hasLoaded, setHasLoading] = useState(false);
@@ -12,7 +12,7 @@ const useSliding = containerWidth => {
   useLayoutEffect(() => {
     setDistance(-containerWidth);
     setHasLoading(true);
-  }, [containerWidth]);
+  }, [containerWidth, screen]);
 
   const handlePrev = count => {
     setDistance(distance + count * containerWidth);
@@ -22,11 +22,16 @@ const useSliding = containerWidth => {
     setDistance(distance - count * containerWidth);
   };
 
+  const handleReset = () => {
+    setDistance(-containerWidth);
+  };
+
   const slideProps = {
     style: { transform: `translate3d(${distance}px, 0, 0)` },
   };
 
   return {
+    handleReset,
     handlePrev,
     handleNext,
     slideProps,
@@ -35,13 +40,18 @@ const useSliding = containerWidth => {
   };
 };
 
-const ScreenSlider = ({ children, isVisible }) => {
+const ScreenSlider = ({ screen, children, isVisible }) => {
   const elementRef = useRef(null);
   const size = useComponentSize(elementRef);
 
-  const { slideProps, containerRef, handleNext, handlePrev, hasLoaded } = useSliding(size.width);
+  const { slideProps, containerRef, handleReset, handleNext, handlePrev, hasLoaded } = useSliding(
+    size.width,
+    screen
+  );
+
   const contextValue = {
     elementRef,
+    handleReset,
     handleNext,
     handlePrev,
     hasLoaded,

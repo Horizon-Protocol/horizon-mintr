@@ -93,7 +93,7 @@ const Mint = ({
   fetchDebtStatusRequest,
   fetchBalancesRequest,
 }) => {
-  const { handleNext, handlePrev } = useContext(SliderContext);
+  const { handleReset, handleNext, handlePrev } = useContext(SliderContext);
   const [mintAmount, setMintAmount] = useState('');
   const { currentWallet, walletType, networkName, networkId } = walletDetails;
   const [transactionInfo, setTransactionInfo] = useState({});
@@ -157,7 +157,7 @@ const Mint = ({
   };
 
   const props = {
-    onDestroy,
+    onDestroy: onDestroy || handleReset,
     onMint,
     issuableHassets,
     goBack: handlePrev,

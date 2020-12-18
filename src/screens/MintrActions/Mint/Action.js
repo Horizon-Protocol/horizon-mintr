@@ -10,6 +10,7 @@ import { PLarge, H1, Subtext } from 'components/Typography';
 import Input from 'components/Input';
 import ErrorMessage from 'components/ErrorMessage';
 import { getStakingAmount, estimateCRatio } from './mint-helpers';
+import { Typography } from '@material-ui/core';
 
 const Action = ({
   t,
@@ -32,7 +33,7 @@ const Action = ({
         <Top>
           <Intro>
             <ActionImage src="/images/actions/mint.svg" big />
-            <H1>{t('mintrActions.mint.action.title')}</H1>
+            <Typography variant="body1">{t('mintrActions.mint.action.title')}</Typography>
             <PLarge>{t('mintrActions.mint.action.subtitle')}</PLarge>
           </Intro>
 
