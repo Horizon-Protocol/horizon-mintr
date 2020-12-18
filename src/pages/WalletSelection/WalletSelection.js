@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled, { keyframes } from 'styled-components';
-import hznJSConnector from '../../helpers/hznJSConnector';
+
 import { useTranslation, Trans } from 'react-i18next';
 
-import { bigNumberFormatter, formatCurrency } from '../../helpers/formatters';
-import { PAGES_BY_KEY } from '../../constants/ui';
-
-import { setCurrentPage } from '../../ducks/ui';
+import hznJSConnector from 'helpers/hznJSConnector';
+import { bigNumberFormatter, formatCurrency } from 'helpers/formatters';
+import { PAGES_BY_KEY } from 'constants/ui';
+import { setCurrentPage } from 'ducks/ui';
 import {
   updateWalletStatus,
   updateWalletPaginatorIndex,
   derivationPathChange,
   getWalletDetails,
-} from '../../ducks/wallet';
+} from 'ducks/wallet';
 
-import { SimpleInput } from '../../components/Input';
-import Spinner, { MicroSpinner } from '../../components/Spinner';
-import SimpleSelect from '../../components/SimpleSelect';
+import { SimpleInput } from 'components/Input';
+import Spinner, { MicroSpinner } from 'components/Spinner';
+import SimpleSelect from 'components/SimpleSelect';
 
 import {
   List,
@@ -27,12 +27,12 @@ import {
   ListBodyRow,
   ListCell,
   ListHeaderCell,
-} from '../../components/List';
-import WalletPaginator from '../../components/WalletPaginator';
-import OnBoardingPageContainer from '../../components/OnBoardingPageContainer';
+} from 'components/List';
+import WalletPaginator from 'components/WalletPaginator';
+import OnBoardingPageContainer from 'components/OnBoardingPageContainer';
 
-import { H1, PMega, TableHeaderMedium, TableDataMedium } from '../../components/Typography';
-import { ButtonPrimaryMedium } from '../../components/Button';
+import { H1, PMega, TableHeaderMedium, TableDataMedium } from 'components/Typography';
+import { ButtonPrimaryMedium } from 'components/Button';
 
 const WALLET_PAGE_SIZE = 15;
 const LEDGER_DERIVATION_PATHS = [
@@ -66,7 +66,7 @@ const useGetWallets = (paginatorIndex, derivationPath, availableWallets, updateW
         const getBalanceForWallet = async wallet => {
           return {
             snxBalance: await hznJSConnector.hznJS.Synthetix.collateral(wallet.address),
-            sUSDBalance: await hznJSConnector.hznJS.sUSD.balanceOf(wallet.address),
+            sUSDBalance: await hznJSConnector.hznJS.hUSD.balanceOf(wallet.address),
             ethBalance: await hznJSConnector.provider.getBalance(wallet.address),
           };
         };

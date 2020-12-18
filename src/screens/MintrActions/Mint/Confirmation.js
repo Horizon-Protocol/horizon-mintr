@@ -18,7 +18,7 @@ const Confirmation = ({
   walletType,
   mintAmount,
   issuanceRatio,
-  SNXPrice,
+  hznPrice,
   isFetchingGasLimit,
   gasLimit,
 }) => {
@@ -56,7 +56,7 @@ const Confirmation = ({
               {getStakingAmount({
                 issuanceRatio,
                 mintAmount,
-                SNXPrice,
+                hznPrice,
               })}
               {' HZN'}
             </Amount>

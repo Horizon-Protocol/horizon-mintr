@@ -81,16 +81,17 @@ const useGetGasEstimate = (setFetchingGasLimit, setGasLimit) => {
     const getGasEstimate = async () => {
       setError(null);
       try {
-        const {
-          hznJS: { FeePool },
-        } = hznJSConnector;
-        setFetchingGasLimit(true);
-        const gasEstimate = await FeePool.contract.estimate.claimFees();
-        setFetchingGasLimit(false);
+        const gasEstimate = 150000;
+        // const {
+        //   hznJS: { FeePool },
+        // } = hznJSConnector;
+        // setFetchingGasLimit(true);
+        // const gasEstimate = await FeePool.contract.estimate.claimFees();
+        // setFetchingGasLimit(false);
         setGasLimit(addBufferToGasLimit(gasEstimate));
       } catch (e) {
         console.log(e);
-        setFetchingGasLimit(false);
+        // setFetchingGasLimit(false);
         const errorMessage = (e && e.message) || 'Error while getting gas estimate';
         setError(errorMessage);
       }

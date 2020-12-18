@@ -18,7 +18,7 @@ const getBalance = (column, walletBalances, debtData) => {
   if (!AGGREGATED_COLUMNS.includes(column)) {
     return walletBalances[column];
   } else if (column === 'Hassets') {
-    return { ...walletBalances.totalSynths, tooltip: 'synths' };
+    return { ...walletBalances.totalSynths, tooltip: 'hassets' };
   } else {
     return {
       balance: debtData.debtBalance,

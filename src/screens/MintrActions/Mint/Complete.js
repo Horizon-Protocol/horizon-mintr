@@ -16,7 +16,7 @@ const Success = ({
   onDestroy,
   networkName,
   transactionHash,
-  SNXPrice,
+  hznPrice,
 }) => {
   return (
     <>
@@ -33,7 +33,7 @@ const Success = ({
         <Box>
           <Typography>{t('mintrActions.mint.confirmation.subActionDescription')}</Typography>
           <Amount>
-            {issuanceRatio ? formatCurrency(mintAmount / issuanceRatio / SNXPrice) : '--'} HZN
+            {issuanceRatio ? formatCurrency(mintAmount / issuanceRatio / hznPrice) : '--'} HZN
           </Amount>
         </Box>
       </Details>
@@ -95,13 +95,6 @@ const Amount = styled.span`
   font-family: 'Roboto';
   font-size: 24px;
   margin: 16px 0px 0px 0px;
-`;
-
-const Buttons = styled.div`
-  height: auto;
-  & > :last-child {
-    margin-top: 24px;
-  }
 `;
 
 export default withTranslation()(Complete);

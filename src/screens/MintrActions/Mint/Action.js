@@ -1,4 +1,4 @@
-import { Box, Chip, Grid, Typography } from '@material-ui/core';
+import { Box, Chip, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import Big from 'big.js';
@@ -36,9 +36,9 @@ const Action = ({
   isFetchingGasLimit,
   gasEstimateError,
   issuanceRatio,
-  SNXPrice,
+  hznPrice,
   debtBalance,
-  snxBalance,
+  hznBalance,
   // gasLimit,
 }) => {
   const classes = useStyles({ color });
@@ -80,7 +80,7 @@ const Action = ({
               {getStakingAmount({
                 issuanceRatio,
                 mintAmount,
-                SNXPrice,
+                hznPrice,
               })}
               {' HZN'}
             </Body2>
@@ -88,7 +88,7 @@ const Action = ({
           <Grid item xs={6}>
             <Body2 align="right">
               {t('mintrActions.mint.action.estimateCRatio')}:{' '}
-              {estimateCRatio({ SNXPrice, debtBalance, snxBalance, mintAmount })}%
+              {estimateCRatio({ hznPrice, debtBalance, hznBalance, mintAmount })}%
             </Body2>
           </Grid>
         </Grid>

@@ -27,7 +27,7 @@ const useGetDebtData = (walletAddress, sUSDBytes) => {
       try {
         const results = await Promise.all([
           hznJSConnector.hznJS.Synthetix.debtBalanceOf(walletAddress, sUSDBytes),
-          hznJSConnector.hznJS.sUSD.balanceOf(walletAddress),
+          hznJSConnector.hznJS.hUSD.balanceOf(walletAddress),
           hznJSConnector.hznJS.SystemSettings.issuanceRatio(),
           hznJSConnector.hznJS.ExchangeRates.rateForCurrency(SNXBytes),
           hznJSConnector.hznJS.RewardEscrow.totalEscrowedAccountBalance(walletAddress),
@@ -91,10 +91,12 @@ const useGetGasEstimate = (
     if (!burnAmount) return;
     const getGasEstimate = async () => {
       setError(null);
-      let gasEstimate;
+
+      let gasEstimate = 5000000;
+
       try {
         if (!parseFloat(burnAmount)) throw new Error('input.error.invalidAmount');
-        if (waitingPeriod) throw new Error('Waiting period for sUSD is still ongoing');
+        if (waitingPeriod) throw new Error('Waiting period for hUSD is still ongoing');
         if (issuanceDelay) throw new Error('Waiting period to burn is still ongoing');
         if (burnAmount > sUSDBalance || maxBurnAmount === 0)
           throw new Error('input.error.notEnoughToBurn');
@@ -106,10 +108,14 @@ const useGetGasEstimate = (
             burnAmount === maxBurnAmount
               ? maxBurnAmountBN
               : hznJSConnector.utils.parseEther(burnAmount.toString());
-        } else amountToBurn = 0;
-        gasEstimate = await hznJSConnector.hznJS.Synthetix.contract.estimate.burnSynths(
-          amountToBurn
-        );
+        } else {
+          amountToBurn = 0;
+        }
+
+        // gasEstimate = await hznJSConnector.hznJS.Synthetix.contract.estimate.burnSynths(
+        //   amountToBurn
+        // );
+
         setGasLimit(addBufferToGasLimit(gasEstimate));
       } catch (e) {
         console.log(e);
@@ -143,7 +149,7 @@ const Burn = ({
   const [gasLimit, setGasLimit] = useState(0);
   const { notify } = useNotifyContext();
 
-  const sUSDBytes = bytesFormatter('sUSD');
+  const sUSDBytes = bytesFormatter('hUSD');
   const {
     maxBurnAmount,
     maxBurnAmountBN,
@@ -161,7 +167,7 @@ const Burn = ({
     try {
       const maxSecsLeftInWaitingPeriod = await Exchanger.maxSecsLeftInWaitingPeriod(
         currentWallet,
-        bytesFormatter('sUSD')
+        bytesFormatter('hUSD')
       );
       setWaitingPeriod(Number(maxSecsLeftInWaitingPeriod));
     } catch (e) {
@@ -216,8 +222,8 @@ const Burn = ({
       hznJS: { Synthetix, Issuer },
     } = hznJSConnector;
     try {
-      if (await Synthetix.isWaitingPeriod(bytesFormatter('sUSD')))
-        throw new Error('Waiting period for sUSD is still ongoing');
+      if (await Synthetix.isWaitingPeriod(bytesFormatter('hUSD')))
+        throw new Error('Waiting period for hUSD is still ongoing');
 
       if (!burnToTarget && !(await Issuer.canBurnSynths(currentWallet)))
         throw new Error('Waiting period to burn is still ongoing');
@@ -251,7 +257,7 @@ const Burn = ({
 
         const message = `Burnt ${formatCurrency(
           burnToTarget ? burnAmountToFixCRatio : burnAmount
-        )} sUSD`;
+        )} hUSD`;
         setTransactionInfo({ transactionHash: transaction.hash });
         notifyHandler(notify, transaction.hash, networkId, refetch, message);
         handleNext(2);

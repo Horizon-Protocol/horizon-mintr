@@ -1,18 +1,18 @@
 import { formatCurrency } from '../../../helpers/formatters';
 import { toNumber, isFinite, isNil } from 'lodash';
 
-export function getStakingAmount({ issuanceRatio, mintAmount, SNXPrice }) {
-  if (!mintAmount || !issuanceRatio || !SNXPrice) return '0';
-  return formatCurrency(mintAmount / issuanceRatio / SNXPrice);
+export function getStakingAmount({ issuanceRatio, mintAmount, hznPrice }) {
+  if (!mintAmount || !issuanceRatio || !hznPrice) return '0';
+  return formatCurrency(mintAmount / issuanceRatio / hznPrice);
 }
 
-export function estimateCRatio({ SNXPrice, debtBalance, snxBalance, mintAmount }) {
-  if (isNil(SNXPrice) || isNil(debtBalance) || isNil(snxBalance)) {
+export function estimateCRatio({ hznPrice, debtBalance, hznBalance, mintAmount }) {
+  if (isNil(hznPrice) || isNil(debtBalance) || isNil(hznBalance)) {
     return 0;
   }
 
   const parsedMintAmount = toNumber(mintAmount);
   const mintAmountNumber = isFinite(parsedMintAmount) ? parsedMintAmount : 0;
-  const snxValue = snxBalance * SNXPrice;
-  return Math.round((snxValue / (debtBalance + mintAmountNumber)) * 100);
+  const hznValue = hznBalance * hznPrice;
+  return Math.round((hznValue / (debtBalance + mintAmountNumber)) * 100);
 }

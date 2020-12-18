@@ -31,11 +31,11 @@ const useGetIssuanceData = (walletAddress, hUSDBytes) => {
           hznJSConnector.hznJS.ExchangeRates.rateForCurrency(HZNBytes),
           hznJSConnector.hznJS.Synthetix.collateral(walletAddress),
         ]);
-        const [maxIssuableHassets, debtBalance, issuanceRatio, HZNPrice, hznBalance] = results.map(
+        const [maxIssuableHassets, debtBalance, issuanceRatio, hznPrice, hznBalance] = results.map(
           bigNumberFormatter
         );
         const issuableHassets = Math.max(0, maxIssuableHassets - debtBalance);
-        setData({ issuableHassets, debtBalance, issuanceRatio, HZNPrice, hznBalance });
+        setData({ issuableHassets, debtBalance, issuanceRatio, hznPrice, hznBalance });
       } catch (e) {
         console.log(e);
       }
@@ -102,8 +102,8 @@ const Mint = ({
   const [gasLimit, setGasLimit] = useState(0);
   const { notify } = useNotifyContext();
 
-  const hUSDBytes = bytesFormatter('sUSD');
-  const { issuableHassets, issuanceRatio, HZNPrice, debtBalance, hznBalance } = useGetIssuanceData(
+  const hUSDBytes = bytesFormatter('hUSD');
+  const { issuableHassets, issuanceRatio, hznPrice, debtBalance, hznBalance } = useGetIssuanceData(
     currentWallet,
     hUSDBytes
   );
@@ -167,7 +167,7 @@ const Mint = ({
     mintAmount,
     setMintAmount,
     issuanceRatio,
-    HZNPrice,
+    hznPrice,
     isFetchingGasLimit,
     gasLimit,
     gasEstimateError,

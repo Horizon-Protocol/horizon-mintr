@@ -1,7 +1,7 @@
-export default {
+const synthSummary = {
   addresses: {
     56: '0xf87A0587Fe48Ca05dd68a514Ce387C0d4d3AE31C',
-    97: '0x2ccB4a4e22Dd910968bB3aC0b347C8b1198f0D8E',
+    97: '0x4E37eC1Ca219e37f9d218CbaBb2CC36a1F0EE84F',
   },
   abi: [
     {
@@ -80,3 +80,5 @@ export default {
     },
   ],
 };
+
+export default synthSummary;

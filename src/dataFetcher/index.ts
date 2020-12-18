@@ -9,13 +9,13 @@ export const getDebtStatus = async (walletAddress: string) => {
   const {
     hznJS: { SystemSettings, Synthetix, Liquidations },
   } = hznJSConnector as any;
-  const debtBalanceBN = await Synthetix.debtBalanceOf(walletAddress, bytesFormatter('sUSD'));
+  const debtBalanceBN = await Synthetix.debtBalanceOf(walletAddress, bytesFormatter('hUSD'));
 
   const result = await Promise.all([
     SystemSettings.issuanceRatio(),
     Synthetix.collateralisationRatio(walletAddress),
     Synthetix.transferableSynthetix(walletAddress),
-    Synthetix.debtBalanceOf(walletAddress, bytesFormatter('sUSD')),
+    Synthetix.debtBalanceOf(walletAddress, bytesFormatter('hUSD')),
     Liquidations.liquidationRatio(),
     Liquidations.liquidationDelay(),
     Liquidations.getLiquidationDeadlineForAccount(walletAddress),
@@ -91,10 +91,10 @@ export const getExchangeRates = async () => {
   keys.forEach((key: string, i: number) => {
     const synthName = parseBytes32String(key);
     const rate = rates[i] / 1e18;
-    if (synthName === CRYPTO_CURRENCY_TO_KEY.sUSD) {
-      exchangeRates[CRYPTO_CURRENCY_TO_KEY.sUSD] = curveSUSDRate;
-    } else if (synthName === CRYPTO_CURRENCY_TO_KEY.sETH) {
-      exchangeRates[CRYPTO_CURRENCY_TO_KEY.sETH] = rate;
+    if (synthName === CRYPTO_CURRENCY_TO_KEY.hUSD) {
+      exchangeRates[CRYPTO_CURRENCY_TO_KEY.hUSD] = curveSUSDRate;
+    } else if (synthName === CRYPTO_CURRENCY_TO_KEY.hETH) {
+      exchangeRates[CRYPTO_CURRENCY_TO_KEY.hETH] = rate;
       exchangeRates[CRYPTO_CURRENCY_TO_KEY.ETH] = rate;
     } else {
       exchangeRates[synthName] = rate;
@@ -118,7 +118,7 @@ export const getBalances = async (walletAddress: string) => {
     synthSummaryUtilContract.synthsBalances(walletAddress),
     synthSummaryUtilContract.totalSynthsInKey(
       walletAddress,
-      bytesFormatter(CRYPTO_CURRENCY_TO_KEY.sUSD)
+      bytesFormatter(CRYPTO_CURRENCY_TO_KEY.hUSD)
     ),
     Synthetix.collateral(walletAddress),
     provider.getBalance(walletAddress),
@@ -136,7 +136,7 @@ export const getBalances = async (walletAddress: string) => {
     })
     .filter((synth: any) => synth.balance);
 
-  const sUSDBalance = synths.find((synth: any) => synth.name === CRYPTO_CURRENCY_TO_KEY.sUSD);
+  const sUSDBalance = synths.find((synth: any) => synth.name === CRYPTO_CURRENCY_TO_KEY.hUSD);
   const cryptoToArray = [
     {
       name: CRYPTO_CURRENCY_TO_KEY.HZN,
@@ -154,7 +154,7 @@ export const getBalances = async (walletAddress: string) => {
     crypto: {
       [CRYPTO_CURRENCY_TO_KEY.HZN]: bigNumberFormatter(snxBalanceResults),
       [CRYPTO_CURRENCY_TO_KEY.ETH]: bigNumberFormatter(ethBalanceResults),
-      [CRYPTO_CURRENCY_TO_KEY.sUSD]: sUSDBalance ? sUSDBalance.balance : 0,
+      [CRYPTO_CURRENCY_TO_KEY.hUSD]: sUSDBalance ? sUSDBalance.balance : 0,
     },
     synths,
     totalSynths: bigNumberFormatter(totalSynthsBalanceResults),
