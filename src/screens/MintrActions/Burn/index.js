@@ -98,19 +98,20 @@ const useGetGasEstimate = (
         if (!parseFloat(burnAmount)) throw new Error('input.error.invalidAmount');
         if (waitingPeriod) throw new Error('Waiting period for hUSD is still ongoing');
         if (issuanceDelay) throw new Error('Waiting period to burn is still ongoing');
-        if (burnAmount > sUSDBalance || maxBurnAmount === 0)
+        if (burnAmount > sUSDBalance || maxBurnAmount === 0) {
           throw new Error('input.error.notEnoughToBurn');
-        setFetchingGasLimit(true);
-
-        let amountToBurn;
-        if (burnAmount && maxBurnAmount) {
-          amountToBurn =
-            burnAmount === maxBurnAmount
-              ? maxBurnAmountBN
-              : hznJSConnector.utils.parseEther(burnAmount.toString());
-        } else {
-          amountToBurn = 0;
         }
+        // setFetchingGasLimit(true);
+
+        // let amountToBurn;
+        // if (burnAmount && maxBurnAmount) {
+        //   amountToBurn =
+        //     burnAmount === maxBurnAmount
+        //       ? maxBurnAmountBN
+        //       : hznJSConnector.utils.parseEther(burnAmount.toString());
+        // } else {
+        //   amountToBurn = 0;
+        // }
 
         // gasEstimate = await hznJSConnector.hznJS.Synthetix.contract.estimate.burnSynths(
         //   amountToBurn

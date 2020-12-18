@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
 import { getWalletDetails } from 'ducks/wallet';
 
-import { PageTitle, PLarge, H2 } from 'components/Typography';
+import { PLarge, H2 } from 'components/Typography';
 import PageContainer from 'components/PageContainer';
 
 import MintrAction from '../../MintrActions';

@@ -137,13 +137,6 @@ const Button = styled.button`
 //   margin-right: 8px;
 // `;
 
-const CaretDownIcon = styled.img`
-  height: 12px;
-  width: 12px;
-  margin-left: 8px;
-  visibility: ${props => (props.isHidden ? 'hidden' : 'visible')};
-`;
-
 const InputWrapper = styled.div`
   position: relative;
   width: 100%;

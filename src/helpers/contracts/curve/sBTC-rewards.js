@@ -1,4 +1,4 @@
-export default {
+const contract = {
   address: '0x13C1542A468319688B89E323fe9A3Be3A90EBb27',
   abi: [
     {
@@ -317,3 +317,5 @@ export default {
     },
   ],
 };
+
+export default contract;

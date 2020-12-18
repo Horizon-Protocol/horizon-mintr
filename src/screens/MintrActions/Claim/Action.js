@@ -129,14 +129,6 @@ const Action = ({
   );
 };
 
-const Highlighted = styled.span`
-  text-transform: uppercase;
-  font-family: 'Roboto';
-  margin: 0px 8px;
-  color: ${props =>
-    props.red ? props.theme.colorStyles.brandRed : props.theme.colorStyles.hyperlink};
-`;
-
 const Note = styled.div`
   margin-top: 16px;
   max-width: 420px;

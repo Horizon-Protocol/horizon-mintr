@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
+// import { useState } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 
 import { shortenAddress } from '../../helpers/formatters';
 
 import { getWalletDetails } from '../../ducks/wallet';
 
 import { WalletStatusButton } from '../Button';
-import ThemeSwitcher from '../ThemeSwitcher';
+// import ThemeSwitcher from '../ThemeSwitcher';
 
 import { setCurrentPage } from '../../ducks/ui';
-import { Globe, SupportBubble } from '../Icons';
-import { LanguageDropdown } from '../../components/Dropdown';
-import Logo from '../../components/Logo';
+// import { Globe, SupportBubble } from '../Icons';
+// import { LanguageDropdown } from '../../components/Dropdown';
+// import Logo from '../../components/Logo';
 
 import { PAGES_BY_KEY } from '../../constants/ui';
-import { LINKS } from 'constants/links';
+// import { LINKS } from 'constants/links';
 
 const Header = ({ walletDetails, setCurrentPage }) => {
   //   const { t } = useTranslation();
@@ -67,32 +67,32 @@ const HeaderBlock = styled.div`
   display: flex;
 `;
 
-const H1 = styled.h1`
-  font-size: 16px;
-`;
+// const H1 = styled.h1`
+//   font-size: 16px;
+// `;
 
-const SmallLogo = styled(Logo)`
-  width: 104px;
-  margin-right: 8px;
-`;
+// const SmallLogo = styled(Logo)`
+//   width: 104px;
+//   margin-right: 8px;
+// `;
 
-const RoundButton = styled.button`
-  margin: 0 5px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 30px;
-  padding: 0;
-  height: 40px;
-  width: 40px;
-  border: 1px solid ${props => props.theme.colorStyles.borders};
-  background-color: ${props => props.theme.colorStyles.buttonTertiaryBgFocus};
-`;
+// const RoundButton = styled.button`
+//   margin: 0 5px;
+//   cursor: pointer;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   border-radius: 30px;
+//   padding: 0;
+//   height: 40px;
+//   width: 40px;
+//   border: 1px solid ${props => props.theme.colorStyles.borders};
+//   background-color: ${props => props.theme.colorStyles.buttonTertiaryBgFocus};
+// `;
 
-const LanguageButtonWrapper = styled.div`
-  position: relative;
-`;
+// const LanguageButtonWrapper = styled.div`
+//   position: relative;
+// `;
 
 const Network = styled.div`
   margin-top: 4px;

@@ -1,4 +1,4 @@
-export default {
+const colors = {
   white: '#FFFFFF',
   brandGreen: '#10BA97',
   brandYellow: '#F4C14D',
@@ -42,3 +42,5 @@ export default {
   // shadows:
   darkShadow1: 'rgba(18, 18, 43, 0.3)',
 };
+
+export default colors;

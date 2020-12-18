@@ -164,14 +164,14 @@ const connectToMetamask = async (networkId, networkName) => {
   }
 };
 
-const connectToHardwareWallet = (networkId, networkName, walletType) => {
-  return {
-    walletType,
-    unlocked: true,
-    networkId,
-    networkName: networkName.toLowerCase(),
-  };
-};
+// const connectToHardwareWallet = (networkId, networkName, walletType) => {
+//   return {
+//     walletType,
+//     unlocked: true,
+//     networkId,
+//     networkName: networkName.toLowerCase(),
+//   };
+// };
 
 const getSignerConfig = ({ type, networkId, derivationPath, networkName }) => {
   const customProvider = getProvider({ networkId });

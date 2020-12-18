@@ -1,4 +1,4 @@
-export default {
+const balancerpool = {
   address: '0x815F8eF4863451f4Faf34FBc860034812E7377d9',
   abi: [
     { inputs: [], payable: false, stateMutability: 'nonpayable', type: 'constructor' },
@@ -772,3 +772,5 @@ export default {
     },
   ],
 };
+
+export default balancerpool;

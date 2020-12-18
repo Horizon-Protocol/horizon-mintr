@@ -16,7 +16,7 @@ const defaultState = {
   dataFetchers: {},
 };
 
-export default (state = defaultState, action) => {
+export default function transactionsReducer(state = defaultState, action) {
   switch (action.type) {
     case CREATE_TRANSACTION: {
       const transactions = state.currentTransactions;
@@ -38,7 +38,7 @@ export default (state = defaultState, action) => {
     default:
       return state;
   }
-};
+}
 
 export const createTransaction = transaction => {
   return {

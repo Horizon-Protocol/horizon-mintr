@@ -1,6 +1,6 @@
 import { SUPPORTED_NETWORKS_MAP } from 'helpers/networkHelper';
 
-export default {
+const contract = {
   addresses: {
     [SUPPORTED_NETWORKS_MAP.MAINNET]: '0xC586BeF4a0992C495Cf22e1aeEE4E446CECDee0E',
   },
@@ -262,3 +262,5 @@ export default {
     },
   ],
 };
+
+export default contract;

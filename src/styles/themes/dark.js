@@ -1,6 +1,6 @@
 import COLORS from '../colors';
 
-export default {
+const darkTheme = {
   heading: COLORS.white,
   body: COLORS.dark6,
   subtext: COLORS.dark5,
@@ -54,3 +54,5 @@ export default {
   errorMessageBackground: COLORS.dark9,
   errorMessageColor: COLORS.white,
 };
+
+export default darkTheme;

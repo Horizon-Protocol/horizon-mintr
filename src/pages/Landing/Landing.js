@@ -319,23 +319,23 @@ const Header = styled.div`
   align-items: center;
 `;
 
-const RoundButton = styled.button`
-  margin: 0 5px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 30px;
-  padding: 0;
-  height: 40px;
-  width: 40px;
-  border: 1px solid ${props => props.theme.colorStyles.borders};
-  background-color: ${props => props.theme.colorStyles.buttonTertiaryBgFocus};
-`;
+// const RoundButton = styled.button`
+//   margin: 0 5px;
+//   cursor: pointer;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   border-radius: 30px;
+//   padding: 0;
+//   height: 40px;
+//   width: 40px;
+//   border: 1px solid ${props => props.theme.colorStyles.borders};
+//   background-color: ${props => props.theme.colorStyles.buttonTertiaryBgFocus};
+// `;
 
-const LanguageButtonWrapper = styled.div`
-  position: relative;
-`;
+// const LanguageButtonWrapper = styled.div`
+//   position: relative;
+// `;
 
 // const VersionLabel = styled.div`
 // 	text-align: right;

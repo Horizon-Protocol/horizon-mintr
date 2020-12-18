@@ -87,7 +87,7 @@ export const ErrorDetail = props => {
   return <Typography classes={classes} {...props} />;
 };
 
-const useAmountCardStyles = makeStyles(({}) => ({
+const useAmountCardStyles = makeStyles(() => ({
   root: {
     padding: 12,
     backgroundColor: '#0A171F',

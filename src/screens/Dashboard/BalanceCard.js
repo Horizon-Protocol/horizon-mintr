@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 // import { useTranslation } from 'react-i18next';
-import isEmpty from 'lodash/isEmpty';
 import { makeStyles, Typography } from '@material-ui/core';
 
 import { getWalletBalances } from 'ducks/balances';
 import { getCurrentTheme } from 'ducks/ui';
-import { shortenAddress, formatCurrency } from 'helpers/formatters';
+import { shortenAddress } from 'helpers/formatters';
 
 import Card from './Card';
 

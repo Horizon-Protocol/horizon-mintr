@@ -1,4 +1,4 @@
-export default {
+const balancerSNXRewards = {
   address: '0xFBaEdde70732540cE2B11A8AC58Eb2dC0D69dE10',
   abi: [
     {
@@ -286,3 +286,5 @@ export default {
     },
   ],
 };
+
+export default balancerSNXRewards;
