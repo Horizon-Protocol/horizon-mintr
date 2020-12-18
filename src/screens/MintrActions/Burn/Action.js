@@ -1,12 +1,12 @@
-import React, { Fragment, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { SlidePage } from 'components/ScreenSlider';
 import { withTranslation } from 'react-i18next';
 import Big from 'big.js';
 
 import { ButtonPrimary, ButtonMax } from 'components/Button';
-import { PLarge, H1, HyperlinkSmall, Subtext } from 'components/Typography';
-import TransactionPriceIndicator from 'components/TransactionPriceIndicator';
+import { PLarge, H1, Subtext } from 'components/Typography';
+// import TransactionPriceIndicator from 'components/TransactionPriceIndicator';
 import Input from 'components/Input';
 import ErrorMessage from 'components/ErrorMessage';
 import { formatCurrency, secondsToTime } from 'helpers/formatters';
@@ -164,8 +164,6 @@ const Container = styled.div`
   max-width: 720px;
   margin: 0 auto;
   overflow: hidden;
-  background-color: ${props => props.theme.colorStyles.panels};
-  border: 1px solid ${props => props.theme.colorStyles.borders};
   border-radius: 5px;
 
   margin-bottom: 20px;

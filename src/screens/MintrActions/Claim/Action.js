@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { formatCurrency } from 'helpers/formatters';
 
 import { SlidePage } from 'components/ScreenSlider';
-import TransactionPriceIndicator from 'components/TransactionPriceIndicator';
+// import TransactionPriceIndicator from 'components/TransactionPriceIndicator';
 import { ButtonPrimary, ButtonTertiary } from 'components/Button';
 import { PLarge, H1, Subtext, DataHeaderLarge, TableHeaderMedium, H2 } from 'components/Typography';
 
@@ -97,8 +97,6 @@ const Container = styled.div`
   max-width: 720px;
   margin: 0 auto;
   overflow: hidden;
-  background-color: ${props => props.theme.colorStyles.panels};
-  border: 1px solid ${props => props.theme.colorStyles.borders};
   border-radius: 5px;
 
   margin-bottom: 20px;
