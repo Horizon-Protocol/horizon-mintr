@@ -1,26 +1,32 @@
-import React from 'react';
 import styled from 'styled-components';
 import { withTranslation, Trans } from 'react-i18next';
-import { Button, Grid, Paper } from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
 
 import { formatCurrency } from 'helpers/formatters';
 import { SlidePage } from 'components/ScreenSlider';
 // import TransactionPriceIndicator from 'components/TransactionPriceIndicator';
-import { DataHeaderLarge, Subtext } from 'components/Typography';
 import Spinner from 'components/Spinner';
-
-import { Container, Intro, IntroTitle, IntroDesc, ActionImage, Navigation } from '../common';
+import {
+  Container,
+  Intro,
+  IntroTitle,
+  IntroDesc,
+  ActionImage,
+  Navigation,
+  AmountCard,
+} from '../common';
 import { getStakingAmount } from './mint-helpers';
 
 const Confirmation = ({
   t,
+  color,
   goBack,
   walletType,
   mintAmount,
   issuanceRatio,
   hznPrice,
-  isFetchingGasLimit,
-  gasLimit,
+  // isFetchingGasLimit,
+  // gasLimit,
 }) => {
   return (
     <SlidePage>
@@ -39,32 +45,33 @@ const Confirmation = ({
             </Trans>
           </IntroDesc>
         </Intro>
-        <Grid container spacing={4}>
-          <Grid item>
-            <Paper variant="outlined">
-              <DataHeaderLarge>
-                {t('mintrActions.mint.confirmation.actionDescription')}
-              </DataHeaderLarge>
-              <Amount>{formatCurrency(mintAmount)} sUSD</Amount>
-            </Paper>
+        <Grid container spacing={1}>
+          <Grid item xs={6}>
+            <AmountCard
+              label={t('mintrActions.mint.confirmation.actionDescription')}
+              value={`${formatCurrency(mintAmount)} hUSD`}
+              color={color}
+              small
+            />
           </Grid>
-          <Grid item>
-            <DataHeaderLarge>
-              {t('mintrActions.mint.confirmation.subActionDescription')}
-            </DataHeaderLarge>
-            <Amount>
-              {getStakingAmount({
+          <Grid item xs={6}>
+            <AmountCard
+              label={t('mintrActions.mint.confirmation.subActionDescription')}
+              value={`${getStakingAmount({
                 issuanceRatio,
                 mintAmount,
                 hznPrice,
-              })}
-              {' HZN'}
-            </Amount>
+              })} HZN`}
+              color={color}
+              small
+            />
           </Grid>
         </Grid>
         <Loading>
           <Spinner margin="auto" />
-          <Subtext>{t('transactionProcessing.confirmation.loading')}</Subtext>
+          <Typography variant="caption" color="textSecondary">
+            {t('transactionProcessing.confirmation.loading')}
+          </Typography>
         </Loading>
         {/* <TransactionPriceIndicator
             isFetchingGasLimit={isFetchingGasLimit}
@@ -76,13 +83,6 @@ const Confirmation = ({
     </SlidePage>
   );
 };
-
-const Amount = styled.span`
-  color: ${props => props.theme.colorStyles.hyperlink};
-  font-family: 'Roboto';
-  font-size: 24px;
-  margin: 16px 0px 0px 0px;
-`;
 
 const Loading = styled.div`
   align-items: center;

@@ -53,7 +53,7 @@ const NotificationSpinnerWrapper = styled.div`
 const Wrapper = styled.div`
   width: 60px;
   height: 60px;
-  margin: 40px auto;
+  margin: 24px auto;
   transition: all 0.3s ease-out;
   z-index: 3;
 `;

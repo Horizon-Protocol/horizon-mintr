@@ -1,4 +1,5 @@
 import { Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import { withTranslation } from 'react-i18next';
 
@@ -7,7 +8,14 @@ import { ButtonPrimary } from 'components/Button';
 import { formatCurrency } from 'helpers/formatters';
 import EtherScanBtn from 'components/EtherscanBtn';
 
-import { Container, ActionImage, Intro, IntroTitle, IntroDesc } from '../common';
+import { Container, ActionImage, Intro, IntroTitle, IntroDesc, ErrorDetail } from '../common';
+
+const useStyles = makeStyles(({ palette }) => ({
+  error: {
+    marginTop: 12,
+    color: 'red',
+  },
+}));
 
 const Success = ({
   t,
@@ -18,12 +26,16 @@ const Success = ({
   transactionHash,
   hznPrice,
 }) => {
+  const classes = useStyles();
+
   return (
     <>
       <Intro>
         <ActionImage src="/images/success.svg" big />
         <IntroTitle>{t('mintrActions.mint.complete.title')}</IntroTitle>
-        <IntroDesc>{t('transactionProcessing.complete.subtitle')}</IntroDesc>
+        <IntroDesc className={classes.error}>
+          {t('transactionProcessing.complete.subtitle')}
+        </IntroDesc>
       </Intro>
       <Details>
         <Box>
@@ -52,11 +64,11 @@ const Failure = ({ t, transactionError, onDestroy }) => {
         <ActionImage src="/images/failure.svg" big />
         <Typography variant="h6">{t('transactionProcessing.error.title')}</Typography>
         {transactionError.code ? (
-          <Typography>
+          <ErrorDetail>
             {t('transactionProcessing.error.subtitle')} {transactionError.code}
-          </Typography>
+          </ErrorDetail>
         ) : null}
-        <Typography>{t(transactionError.message)}</Typography>
+        <ErrorDetail>{t(transactionError.message)}</ErrorDetail>
       </Intro>
       <ButtonPrimary onClick={onDestroy}>{t('button.navigation.ok')}</ButtonPrimary>
     </>

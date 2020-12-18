@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Chip, Grid, Typography } from '@material-ui/core';
+import { Box, Chip, Grid } from '@material-ui/core';
 
 import { getWalletDetails } from 'ducks/wallet';
 import { showModal } from 'ducks/modal';
@@ -57,10 +57,10 @@ const useStyles = makeStyles(({ palette }) => ({
 
 const Dashboard = ({
   walletDetails,
-  showModal,
-  rates,
+  // showModal,
+  // rates,
   debtStatusData,
-  totalEscrowedBalances,
+  // totalEscrowedBalances,
   fetchEscrowRequest,
   fetchDebtStatusRequest,
   fetchBalancesRequest,
