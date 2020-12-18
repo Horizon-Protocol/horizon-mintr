@@ -11,8 +11,9 @@ import MintrAction from '../MintrActions';
 
 const useStyles = makeStyles(theme => ({
   root: {
+    paddingTop: 48,
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.default,
   },
   tabs: {
     border: '1px solid black',
@@ -119,35 +120,36 @@ const Home = ({ walletDetails: { networkId } }) => {
   const activeTab = useMemo(() => tabs.find(({ key }) => key === currentAction), [currentAction]);
 
   return (
-    <Container style={{ maxWidth: 768 }}>
-      <Tabs
-        variant="fullWidth"
-        TabIndicatorProps={{ style: { height: 4, backgroundColor: activeTab.color } }}
-        value={currentAction}
-        onChange={handleChangeAction}
-        className={classes.tabs}
-      >
-        {tabs.map(({ key, title, desc, color }) => (
-          <Tab
-            key={key}
-            label={<ActionTab title={t(title)} desc={t(desc)} />}
-            value={key}
-            classes={{
-              root: classes.tab,
-              selected: classes.tabSelected,
-              wrapper: classes.tabWrapper,
-            }}
-            style={{
-              color,
-              backgroundImage: `url(/images/actions/${key}.png)`,
-            }}
-          />
-        ))}
-      </Tabs>
-      <Box width="full" className={classes.content}>
-        <MintrAction action={currentAction} />
-      </Box>
-      {/* <Tab>
+    <Box className={classes.root}>
+      <Container style={{ maxWidth: 768 }}>
+        <Tabs
+          variant="fullWidth"
+          TabIndicatorProps={{ style: { height: 4, backgroundColor: activeTab.color } }}
+          value={currentAction}
+          onChange={handleChangeAction}
+          className={classes.tabs}
+        >
+          {tabs.map(({ key, title, desc, color }) => (
+            <Tab
+              key={key}
+              label={<ActionTab title={t(title)} desc={t(desc)} />}
+              value={key}
+              classes={{
+                root: classes.tab,
+                selected: classes.tabSelected,
+                wrapper: classes.tabWrapper,
+              }}
+              style={{
+                color,
+                backgroundImage: `url(/images/actions/${key}.png)`,
+              }}
+            />
+          ))}
+        </Tabs>
+        <Box width="full" className={classes.content}>
+          <MintrAction action={currentAction} />
+        </Box>
+        {/* <Tab>
         {ACTIONS.map(action => {
           return (
             <Button key={action} onClick={() => setCurrentScenario(action)} big>
@@ -158,7 +160,8 @@ const Home = ({ walletDetails: { networkId } }) => {
           );
         })}
       </Tab> */}
-    </Container>
+      </Container>
+    </Box>
   );
 };
 

@@ -98,8 +98,8 @@ const Container = styled.div`
   max-width: 720px;
   margin: 0 auto;
   overflow: hidden;
-  background-color: ${props => props.theme.colorStyles.panels};
-  border: 1px solid ${props => props.theme.colorStyles.borders};
+  /* background-color: ${props => props.theme.colorStyles.panels}; */
+  /* border: 1px solid ${props => props.theme.colorStyles.borders}; */
   border-radius: 5px;
 
   margin-bottom: 20px;

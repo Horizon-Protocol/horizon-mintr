@@ -65,7 +65,7 @@ const fadeIn = keyframes`
 `;
 
 const ScreenSliderWrapper = styled.div`
-  background: ${props => props.theme.colorStyles.background};
+  /* background: ${props => props.theme.colorStyles.background}; */
   transition: opacity ease-in 0.2s, transform ease-in 0.2s;
   position: absolute;
   animation: ${fadeIn} 0.25s linear both;
