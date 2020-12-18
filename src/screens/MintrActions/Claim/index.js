@@ -1,27 +1,28 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { connect } from 'react-redux';
 import { addSeconds, formatDistanceToNow } from 'date-fns';
-import hznJSConnector from 'helpers/hznJSConnector';
 
 import { SliderContext } from 'components/ScreenSlider';
+import { TRANSACTION_EVENTS_MAP } from 'constants/transactionHistory';
+
+import hznJSConnector from 'helpers/hznJSConnector';
+import { bigNumberFormatter } from 'helpers/formatters';
+import { addBufferToGasLimit } from 'helpers/networkHelper';
+import errorMapper from 'helpers/errorMapper';
+import { notifyHandler } from 'helpers/notifyHelper';
+import { useNotifyContext } from 'contexts/NotifyContext';
+
 import { setCurrentTab, getCurrentTheme } from 'ducks/ui';
+import { fetchBalancesRequest } from 'ducks/balances';
+import { fetchDebtStatusRequest } from 'ducks/debtStatus';
+import { fetchEscrowRequest } from 'ducks/escrow';
+import { createTransaction } from 'ducks/transactions';
+import { getCurrentGasPrice } from 'ducks/network';
+import { getWalletDetails } from 'ducks/wallet';
 
 import Action from './Action';
 import Confirmation from './Confirmation';
 import Complete from './Complete';
-import { bigNumberFormatter } from 'helpers/formatters';
-import { addBufferToGasLimit } from 'helpers/networkHelper';
-import { TRANSACTION_EVENTS_MAP } from 'constants/transactionHistory';
-import { fetchBalancesRequest } from 'ducks/balances';
-import { fetchDebtStatusRequest } from 'ducks/debtStatus';
-import { fetchEscrowRequest } from 'ducks/escrow';
-
-import { createTransaction } from 'ducks/transactions';
-import { getCurrentGasPrice } from 'ducks/network';
-import { getWalletDetails } from 'ducks/wallet';
-import errorMapper from 'helpers/errorMapper';
-import { useNotifyContext } from 'contexts/NotifyContext';
-import { notifyHandler } from 'helpers/notifyHelper';
 
 const FEE_PERIOD = 0;
 
@@ -109,6 +110,7 @@ const Claim = ({
   fetchBalancesRequest,
   fetchDebtStatusRequest,
   fetchEscrowRequest,
+  ...props
 }) => {
   const { handleNext, handlePrev } = useContext(SliderContext);
   const [transactionInfo, setTransactionInfo] = useState({});
@@ -164,7 +166,7 @@ const Claim = ({
     });
   };
 
-  const props = {
+  const commonProps = {
     onDestroy,
     onClaim,
     onClaimHistory,
@@ -180,9 +182,10 @@ const Claim = ({
     networkName,
     gasLimit,
     theme: currentTheme,
+    ...props,
   };
   return [Action, Confirmation, Complete].map((SlideContent, i) => (
-    <SlideContent key={i} {...props} />
+    <SlideContent key={i} {...commonProps} />
   ));
 };
 

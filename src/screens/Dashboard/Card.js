@@ -9,6 +9,7 @@ import {
   TableContainer,
   TableRow,
 } from '@material-ui/core';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -30,6 +31,9 @@ const useStyles = makeStyles(theme => ({
     '&:last-child': {
       paddingRight: 8,
     },
+  },
+  cellLabel: {
+    color: '#88ABC3',
   },
   loading: {
     position: 'absolute',
@@ -54,7 +58,7 @@ export default function HeaderCard({ loading = true, width, height, rows = [], t
                 <TableCell align="right" className={classes.cell}>
                   {value}
                 </TableCell>
-                <TableCell align="right" className={classes.cell}>
+                <TableCell align="right" className={clsx(classes.cell, classes.cellLabel)}>
                   {name}
                 </TableCell>
               </TableRow>

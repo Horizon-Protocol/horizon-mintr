@@ -1,25 +1,23 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import { useContext, useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { addSeconds, differenceInSeconds } from 'date-fns';
-
-import Action from './Action';
-import Confirmation from './Confirmation';
-import Complete from './Complete';
-
-import hznJSConnector from '../../../helpers/hznJSConnector';
-import { addBufferToGasLimit } from '../../../helpers/networkHelper';
-
-import { SliderContext } from '../../../components/ScreenSlider';
-
-import { bytesFormatter, bigNumberFormatter, formatCurrency } from '../../../helpers/formatters';
-import errorMapper from '../../../helpers/errorMapper';
-import { getCurrentGasPrice } from '../../../ducks/network';
-import { getWalletDetails } from '../../../ducks/wallet';
 import { useTranslation } from 'react-i18next';
+
+import { SliderContext } from 'components/ScreenSlider';
+import hznJSConnector from 'helpers/hznJSConnector';
+import { addBufferToGasLimit } from 'helpers/networkHelper';
+import { bytesFormatter, bigNumberFormatter, formatCurrency } from 'helpers/formatters';
+import errorMapper from 'helpers/errorMapper';
+import { getCurrentGasPrice } from 'ducks/network';
+import { getWalletDetails } from 'ducks/wallet';
 import { notifyHandler } from 'helpers/notifyHelper';
 import { useNotifyContext } from 'contexts/NotifyContext';
 import { fetchBalancesRequest } from 'ducks/balances';
 import { fetchDebtStatusRequest } from 'ducks/debtStatus';
+
+import Action from './Action';
+import Confirmation from './Confirmation';
+import Complete from './Complete';
 
 const useGetDebtData = (walletAddress, sUSDBytes) => {
   const [data, setData] = useState({});
@@ -132,6 +130,7 @@ const Burn = ({
   currentGasPrice,
   fetchDebtStatusRequest,
   fetchBalancesRequest,
+  ...props
 }) => {
   const { handleNext, handlePrev } = useContext(SliderContext);
   const [burnAmount, setBurnAmount] = useState('');
@@ -269,7 +268,7 @@ const Burn = ({
     }
   };
 
-  const props = {
+  const commonProps = {
     onDestroy,
     onBurn,
     goBack: handlePrev,
@@ -302,10 +301,11 @@ const Burn = ({
     sUSDBalance,
     onWaitingPeriodCheck: getMaxSecsLeftInWaitingPeriod,
     onIssuanceDelayCheck: getIssuanceDelay,
+    ...props,
   };
 
   return [Action, Confirmation, Complete].map((SlideContent, i) => (
-    <SlideContent key={i} {...props} />
+    <SlideContent key={i} {...commonProps} />
   ));
 };
 

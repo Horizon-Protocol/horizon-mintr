@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 
@@ -69,6 +69,7 @@ const App: FC<AppProps> = ({
   return (
     <StyledThemeProvider theme={themeStyle}>
       <ThemeProvider theme={muiTheme}>
+        <CssBaseline />
         {appIsReady && (
           <NotifyProvider networkId={networkId ? networkId : 56}>
             <GlobalEventsGate />

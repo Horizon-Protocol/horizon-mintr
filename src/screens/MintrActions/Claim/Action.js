@@ -1,30 +1,64 @@
-import React from 'react';
+import { Box, Button, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
-import { useTranslation } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { formatCurrency } from 'helpers/formatters';
 
 import { SlidePage } from 'components/ScreenSlider';
+import { ButtonPrimary } from 'components/Button';
 // import TransactionPriceIndicator from 'components/TransactionPriceIndicator';
-import { ButtonPrimary, ButtonTertiary } from 'components/Button';
-import { PLarge, H1, Subtext, DataHeaderLarge, TableHeaderMedium, H2 } from 'components/Typography';
+// import Tooltip from 'components/Tooltip';
+// import { Info } from 'components/Icons';
 
-import Tooltip from 'components/Tooltip';
-import { Info } from 'components/Icons';
+import { Container, Intro, IntroTitle, IntroDesc, ActionImage, Body2 } from '../common';
+
+const useStyles = makeStyles(({ shape }) => ({
+  available: {
+    padding: 12,
+    backgroundColor: '#0A171F',
+    border: '1px solid #11263B',
+    lineHeight: '16px',
+    borderRadius: shape.borderRadius,
+  },
+  amount: {
+    marginTop: 8,
+    fontSize: 24,
+    lineHeight: '28px',
+    color: ({ color }) => color,
+  },
+  timeLeft: {
+    marginBottom: 10,
+    fontSize: 12,
+    textTransform: 'uppercase',
+    color: ({ color }) => color,
+  },
+}));
+
+const useStatuStyles = makeStyles(() => ({
+  root: {
+    fontWeight: 900,
+  },
+  textPrimary: {
+    color: ({ color }) => color,
+  },
+}));
 
 const Action = ({
-  onDestroy,
+  t,
+  color,
   onClaim,
-  onClaimHistory,
+  // onClaimHistory,
   closeIn,
   feesAreClaimable,
   feesAvailable,
   isFetchingGasLimit,
   gasEstimateError,
-  gasLimit,
+  // gasLimit,
   theme,
 }) => {
-  const { t } = useTranslation();
+  const classes = useStyles({ color });
+  const statusClasses = useStatuStyles({ color });
   return (
     <SlidePage>
       <Container>
@@ -35,41 +69,45 @@ const Action = ({
         </Navigation> */}
         <Intro>
           <ActionImage src="/images/actions/claim.svg" big />
-          <H1 m={'10px 0'}>{t('mintrActions.claim.action.title')}</H1>
-          <Subtitle>{t('mintrActions.claim.action.subtitle')}</Subtitle>
+          <IntroTitle>{t('mintrActions.claim.action.title')}</IntroTitle>
+          <IntroDesc>{t('mintrActions.claim.action.subtitle')}</IntroDesc>
         </Intro>
-        <BoxRow>
-          {/* <Box>
-            <DataHeaderLarge>{t('mintrActions.claim.action.tradingRewards')}</DataHeaderLarge>
-            <Amount>
-              {feesAvailable && feesAvailable[0] ? formatCurrency(feesAvailable[0]) : 0} sUSD
-            </Amount>
-          </Box> */}
-          <Box>
-            <DataHeaderLarge>{t('mintrActions.claim.action.stakingRewards')}</DataHeaderLarge>
-            <Amount>
-              {feesAvailable && feesAvailable[1] ? formatCurrency(feesAvailable[1]) : 0} HZN
-            </Amount>
-          </Box>
-        </BoxRow>
-        <TimeLeftRow>
-          <TimeLeftHeading>{t('mintrActions.claim.action.timeLeft')}</TimeLeftHeading>
-          <StyledH2>{closeIn}</StyledH2>
-        </TimeLeftRow>
-        <Bottom>
-          <Status>
-            <Subtext>{t('mintrActions.claim.action.table.status')}:</Subtext>
-            <Highlighted red={!feesAreClaimable} marginRight="8px">
+        {/* <Box>
+          <DataHeaderLarge>{t('mintrActions.claim.action.tradingRewards')}</DataHeaderLarge>
+          <Amount>
+            {feesAvailable && feesAvailable[0] ? formatCurrency(feesAvailable[0]) : 0} sUSD
+          </Amount>
+        </Box> */}
+        <Box mb={4} className={classes.available}>
+          <Body2>{t('mintrActions.claim.action.stakingRewards')}</Body2>
+          <Typography classes={{ root: classes.amount }}>
+            {feesAvailable && feesAvailable[1] ? formatCurrency(feesAvailable[1]) : 0} HZN
+          </Typography>
+        </Box>
+        <Box mb={4}>
+          <Body2 className={classes.timeLeft}>{t('mintrActions.claim.action.timeLeft')}</Body2>
+          <Typography variant="h5">{closeIn}</Typography>
+        </Box>
+        <Box mb={1}>
+          <Body2 noWrap>
+            {t('mintrActions.claim.action.table.status')}:
+            <Button
+              size="small"
+              color={feesAreClaimable ? 'primary' : 'secondary'}
+              classes={statusClasses}
+            >
               {feesAreClaimable
                 ? t('mintrActions.claim.action.table.open')
                 : t('mintrActions.claim.action.table.blocked')}
-            </Highlighted>
-            <Tooltip mode={theme} title={t(`tooltip.claim`)} placement="top">
-              <IconContainer>
-                <Info />
-              </IconContainer>
-            </Tooltip>
-          </Status>
+              {/* <Tooltip mode={theme} title={t(`tooltip.claim`)} placement="top">
+                <IconContainer>
+                  <Info />
+                </IconContainer>
+              </Tooltip> */}
+            </Button>
+          </Body2>
+        </Box>
+        <Box mb={2}>
           {/* <TransactionPriceIndicator
             isFetchingGasLimit={isFetchingGasLimit}
             gasLimit={gasLimit}
@@ -83,100 +121,13 @@ const Action = ({
             {t('mintrActions.claim.action.buttons.claim')}
           </ButtonPrimary>
           <Note>
-            <Subtext>{t('mintrActions.claim.action.note')}</Subtext>
+            <Body2>{t('mintrActions.claim.action.note')}</Body2>
           </Note>
-        </Bottom>
+        </Box>
       </Container>
     </SlidePage>
   );
 };
-const WrapTableBreakpoint = 1340;
-const Container = styled.div`
-  width: 100%;
-  height: 640px;
-  max-width: 720px;
-  margin: 0 auto;
-  overflow: hidden;
-  border-radius: 5px;
-
-  margin-bottom: 20px;
-  padding: 0 64px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  justify-content: space-around;
-`;
-
-const Bottom = styled.div``;
-
-const StyledH2 = styled(H2)`
-  margin-top: 14px;
-`;
-
-const Navigation = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 0;
-`;
-
-const Intro = styled.div`
-  width: 100%;
-  margin: 0px auto;
-`;
-
-const ActionImage = styled.img`
-  height: ${props => (props.big ? '64px' : '48px')};
-  width: ${props => (props.big ? '64px' : '48px')};
-  @media (max-width: ${WrapTableBreakpoint}px) {
-    width: 48px;
-    height: 48px;
-  }
-`;
-
-const Status = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  & > p {
-    margin: 0;
-  }
-`;
-
-const BoxRow = styled.div`
-  display: flex;
-`;
-
-const TimeLeftRow = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-`;
-
-const TimeLeftHeading = styled(TableHeaderMedium)`
-  text-transform: uppercase;
-`;
-
-const Box = styled.div`
-  flex: 1;
-  padding: 24px;
-  margin: 8px 0px;
-  border: 1px solid ${props => props.theme.colorStyles.borders};
-  border-radius: 2px;
-  display: flex;
-  flex-direction: column;
-  &:last-child {
-    margin-left: 32px;
-  }
-`;
-
-const Amount = styled.span`
-  color: ${props => props.theme.colorStyles.hyperlink};
-  font-family: 'Roboto';
-  font-size: 24px;
-  margin: 12px 0px 0px 0px;
-`;
 
 const Highlighted = styled.span`
   text-transform: uppercase;
@@ -191,17 +142,4 @@ const Note = styled.div`
   max-width: 420px;
 `;
 
-const IconContainer = styled.div`
-  margin-left: 10px;
-  width: 23px;
-  height: 23px;
-`;
-
-const Subtitle = styled(PLarge)`
-  @media (max-width: ${WrapTableBreakpoint}px) {
-    font-size: 14px;
-    line-height: 18px;
-  }
-`;
-
-export default Action;
+export default withTranslation()(Action);

@@ -4,16 +4,16 @@ import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Fade, Grid, Tabs, Tab, Container, Typography } from '@material-ui/core';
 
-import { isMainNet } from 'helpers/networkHelper';
+// import { isMainNet } from 'helpers/networkHelper';
 import { getWalletDetails } from 'ducks/wallet';
 
 import MintrAction from '../MintrActions';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    paddingTop: 48,
     flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
+    paddingTop: 48,
+    paddingBottom: 56,
   },
   container: {
     maxWidth: 768,
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    height: 105,
+    height: 106,
     padding: '26px 20px 14px 20px',
     backgroundSize: '40%',
     backgroundRepeat: 'no-repeat',
@@ -40,6 +40,7 @@ const useStyles = makeStyles(theme => ({
     borderColor: '#1E4267',
     borderStyle: 'solid',
     textTransform: 'none',
+    color: theme.palette.text.primary,
     '&:first-child': {
       borderRightWidth: 1,
     },
@@ -47,7 +48,9 @@ const useStyles = makeStyles(theme => ({
       borderLeftWidth: 1,
     },
   },
-  tabSelected: {},
+  tabSelected: {
+    backgroundColor: 'rgba(0,0,0,0.1)',
+  },
   tabWrapper: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -55,15 +58,17 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
   },
   actionTitle: {
-    display: 'block',
-    lineHeight: '28px',
     fontSize: 24,
+    lineHeight: '28px',
   },
   actionDesc: {
-    display: 'block',
+    fontSize: 14,
+    lineHeight: '22px',
   },
   actionAmount: {
-    display: 'block',
+    fontSize: 12,
+    lineHeight: '14px',
+    color: theme.palette.text.secondary,
   },
   content: {
     position: 'relative',
@@ -96,25 +101,20 @@ const tabs = [
 
 const initialAction = tabs[0].key;
 
-const ActionTab = ({ title, desc, amountLabel }) => {
+const ActionTab = ({ color, title, desc, amountLabel }) => {
   const classes = useStyles();
   return (
     <>
-      <Typography
-        component="span"
-        variant="subtitle1"
-        color="inherit"
-        className={classes.actionTitle}
-      >
+      <Typography component="span" className={classes.actionTitle} style={{ color }}>
         {title}
       </Typography>
-      <span className={classes.actionDesc}>{desc}</span>
-      <span className={classes.actionAmount}>{amountLabel}</span>
+      <Typography className={classes.actionDesc}>{desc}</Typography>
+      <Typography className={classes.actionAmount}>0 HZN</Typography>
     </>
   );
 };
 
-const Home = ({ walletDetails: { networkId } }) => {
+const Home = () => {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -150,7 +150,7 @@ const Home = ({ walletDetails: { networkId } }) => {
             {tabs.map(({ key, title, desc, color }) => (
               <Tab
                 key={key}
-                label={<ActionTab title={t(title)} desc={t(desc)} />}
+                label={<ActionTab color={color} title={t(title)} desc={t(desc)} />}
                 value={key}
                 classes={{
                   root: classes.tab,
@@ -158,7 +158,6 @@ const Home = ({ walletDetails: { networkId } }) => {
                   wrapper: classes.tabWrapper,
                 }}
                 style={{
-                  color,
                   backgroundImage: `url(/images/actions/${key}.png)`,
                 }}
               />
@@ -172,7 +171,7 @@ const Home = ({ walletDetails: { networkId } }) => {
             }}
           >
             <Box width="full" className={classes.content}>
-              <MintrAction action={currentAction} />
+              <MintrAction action={currentAction} color={activeTab.color} />
             </Box>
           </Fade>
           {/* <Tab>

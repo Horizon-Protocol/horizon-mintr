@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Typography } from '@material-ui/core';
+import { ArrowDropDown } from '@material-ui/icons';
 import OutsideClickHandler from 'react-outside-click-handler';
 import styled, { keyframes } from 'styled-components';
-
-import { PLarge } from '../Typography';
 
 import { withTranslation } from 'react-i18next';
 
@@ -66,8 +66,8 @@ const Input = ({
                         toggleList(false);
                       }}
                     >
-                      <CurrencyIcon src={`/images/currencies/${synth.name}.svg`} />
-                      <PLarge>{synth.name}</PLarge>
+                      {/* <CurrencyIcon src={`/images/currencies/${synth.name}.svg`} /> */}
+                      <Typography>{synth.name}</Typography>
                     </SynthListElement>
                   );
                 })}
@@ -83,9 +83,9 @@ const Dropdown = ({ onClick, synth, singleSynth }) => {
   const synthName = singleSynth || synth || 'sUSD';
   return (
     <Button disabled={singleSynth} onClick={onClick}>
-      <CurrencyIcon src={`/images/currencies/${synthName}.svg`} />
-      <PLarge>{synthName}</PLarge>
-      <CaretDownIcon isHidden={singleSynth} src="/images/caret-down.svg" />
+      {/* <CurrencyIcon src={`/images/currencies/${synthName}.svg`} /> */}
+      <Typography>{synthName}</Typography>
+      {!singleSynth && <ArrowDropDown />}
     </Button>
   );
 };
@@ -124,17 +124,18 @@ const Button = styled.button`
   text-align: center;
   padding: 0 16px;
   height: 100%;
-  border: none;
-  border-right: 1px solid ${props => props.theme.colorStyles.borders};
   justify-content: space-between;
-  background-color: ${props => props.theme.colorStyles.buttonTertiaryBgFocus};
+  background-color: transparent;
+  border: none;
+  border-right: 1px solid #1e4267;
+  color: white;
 `;
 
-const CurrencyIcon = styled.img`
-  height: 28px;
-  width: 28px;
-  margin-right: 8px;
-`;
+// const CurrencyIcon = styled.img`
+//   height: 28px;
+//   width: 28px;
+//   margin-right: 8px;
+// `;
 
 const CaretDownIcon = styled.img`
   height: 12px;
@@ -145,9 +146,11 @@ const CaretDownIcon = styled.img`
 
 const InputWrapper = styled.div`
   position: relative;
-  width: 400px;
+  width: 100%;
   margin: 0 auto;
   opacity: ${props => (props.disabled ? '0.6' : 1)};
+  border-radius: 10px;
+  overflow: 'hidden';
   & input {
     pointer-events: ${props => (props.disabled ? 'none' : 'auto')};
   }
@@ -156,10 +159,11 @@ const InputWrapper = styled.div`
 const InputInner = styled.div`
   display: flex;
   width: 100%;
-  border-radius: 5px;
+  border-radius: 10px;
+  overflow: 'hidden';
   height: 64px;
-  border: 1px solid ${props => props.theme.colorStyles.borders};
-  background-color: ${props => props.theme.colorStyles.panelButton};
+  border: 1px solid #1e4267;
+  background-color: #091320;
   align-items: center;
   justify-content: center;
 `;
@@ -180,10 +184,11 @@ const List = styled.div`
   left: 0;
   width: 100%;
   animation: ${fadeIn} 0.25s ease-in-out both;
-  background-color: ${props => props.theme.colorStyles.panelButton};
-  border: 1px solid ${props => props.theme.colorStyles.borders};
+  background-color: #091320;
+  border: 1px solid #1e4267;
   padding: 16px;
-  border-radius: 5px;
+  border-radius: 10px;
+  overflow: 'hidden';
 `;
 
 const RightComponentWrapper = styled.div`
@@ -199,10 +204,10 @@ const InputElement = styled.input`
   height: 100%;
   padding: 16px;
   border: none;
-  background-color: ${props => props.theme.colorStyles.panelButton};
+  background-color: #091320;
+  color: white;
   outline: none;
   font-size: 24px;
-  color: ${props => props.theme.colorStyles.heading};
 `;
 
 const ListInputWrapper = styled.div`
@@ -229,12 +234,11 @@ const ListInput = styled.input`
   width: 100%;
   height: 100%;
   padding: 16px 48px;
-  background-color: ${props => props.theme.colorStyles.panelButton};
+  background-color: #091320;
   outline: none;
   font-size: 16px;
-  color: ${props => props.theme.colorStyles.heading};
-  border: 1px solid ${props => props.theme.colorStyles.borders};
-  border-radius: 5px;
+  border: 1px solid #1e4267;
+  border-radius: 10px;
 `;
 
 const SynthList = styled.ul`
@@ -250,10 +254,10 @@ const SynthListElement = styled.li`
   height: 45px;
   display: flex;
   align-items: center;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   &:hover {
-    background-color: ${props => props.theme.colorStyles.paginatorButtonBackgroundHover};
+    background-color: #091320;
   }
 `;
 

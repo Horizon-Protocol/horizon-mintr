@@ -57,11 +57,11 @@
       "blocked": "Claiming rewards is <1>blocked</1>"
     },
     "liquidation": {
-      "title": "Liquidation ratio"
+      "title": "Liquidation Ratio"
     },
     "ratio": {
-      "current": "Current collateralization ratio",
-      "target": "Target collateralization ratio"
+      "current": "Current Collateralization Ratio",
+      "target": "Target Collateralization Ratio"
     },
     "holdings": {
       "title": "Total HZN:",
@@ -129,7 +129,7 @@
       "action": {
         "title": "Mint",
         "subtitle": "Mint hUSD by staking your HZN. This gives you a Collateralization Ratio and a debt, allowing you to earn staking rewards.",
-        "instruction": "Confirm or enter amount to mint:",
+        "instruction": "Enter an amount to mint:",
         "staking": "Staking",
         "estimateCRatio": "Estimated C-Ratio",
         "buttons": {
@@ -148,7 +148,7 @@
       "action": {
         "title": "Burn",
         "subtitle": "Burn hUSD to unlock your staked HZN. This increases your Collateralization Ratio and reduces your debt, allowing you to transfer your non-escrowed HZN.",
-        "instruction": "Confirm or enter amount to burn:",
+        "instruction": "Enter an amount to burn:",
         "transferrable": {
           "title": "Transferable HZN being unlocked:",
           "button": "View transferable HZN"

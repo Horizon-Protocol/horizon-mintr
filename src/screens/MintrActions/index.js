@@ -27,14 +27,14 @@ const getActionComponent = action => {
   }
 };
 
-const MintrAction = ({ action, onDestroy }) => {
+const MintrAction = ({ action, ...props }) => {
   const ActionComponent = getActionComponent(action);
 
   if (!action) return null;
 
   return (
     <Slider screen={action}>
-      <ActionComponent onDestory={onDestroy} />
+      <ActionComponent {...props} />
     </Slider>
   );
 };

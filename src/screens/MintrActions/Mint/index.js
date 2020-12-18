@@ -92,6 +92,7 @@ const Mint = ({
   currentGasPrice,
   fetchDebtStatusRequest,
   fetchBalancesRequest,
+  ...props
 }) => {
   const { handleReset, handleNext, handlePrev } = useContext(SliderContext);
   const [mintAmount, setMintAmount] = useState('');
@@ -156,7 +157,7 @@ const Mint = ({
     }
   };
 
-  const props = {
+  const commonProps = {
     onDestroy: onDestroy || handleReset,
     onMint,
     issuableHassets,
@@ -167,16 +168,17 @@ const Mint = ({
     setMintAmount,
     issuanceRatio,
     HZNPrice,
-    ...transactionInfo,
     isFetchingGasLimit,
     gasLimit,
     gasEstimateError,
     debtBalance,
     hznBalance,
+    ...transactionInfo,
+    ...props,
   };
 
   return [Action, Confirmation, Complete].map((SlideContent, i) => (
-    <SlideContent key={i} {...props} />
+    <SlideContent key={i} {...commonProps} />
   ));
 };
 

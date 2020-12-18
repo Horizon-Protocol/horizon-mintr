@@ -23,12 +23,11 @@ import { MicroSpinner } from 'components/Spinner';
 import BalanceCard from './BalanceCard';
 import RatiosCard from './RatiosCard';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(({ palette }) => ({
   container: {
     minWidth: 1080,
     position: 'relative',
     padding: '42px 0',
-    backgroundColor: theme.palette.background.default,
     borderBottom: '1px solid #11263B',
   },
   logo: {
@@ -49,6 +48,10 @@ const useStyles = makeStyles(theme => ({
     zIndex: 1,
     position: 'absolute',
     bottom: -16,
+    color: palette.text.secondary,
+    backgroundColor: '#0A171F',
+    border: '1px solid #11263B',
+    textTransform: 'capitalize',
   },
 }));
 

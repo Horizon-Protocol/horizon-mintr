@@ -1,10 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Button } from '@material-ui/core';
 import { ButtonPrimaryLabel, ButtonPrimaryLabelMedium } from '../Typography';
 
-export const ButtonPrimary = ({ children, onClick, disabled, width, height, ...rest }) => {
+export const ButtonPrimary = ({ children, onClick, disabled, ...props }) => {
   return (
-    <Button onClick={onClick} disabled={disabled} width={width} height={height} {...rest}>
+    <Button
+      variant="contained"
+      color="primary"
+      size="large"
+      fullWidth
+      onClick={onClick}
+      disabled={disabled}
+      {...props}
+    >
       <ButtonPrimaryLabel>{children}</ButtonPrimaryLabel>
     </Button>
   );
@@ -18,23 +27,23 @@ export const ButtonPrimaryMedium = ({ children, onClick, disabled }) => {
   );
 };
 
-const Button = styled.button`
-  width: ${props => (props.width ? props.width : '400px')};
-  height: ${props => (props.height ? props.height : '56px')};
-  border-radius: 5px;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-  background-color: ${props => props.theme.colorStyles.buttonPrimaryBg};
-  transition: all ease-in 0.1s;
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  &:hover:not(:disabled) {
-    background-color: ${props => props.theme.colorStyles.buttonPrimaryBgFocus};
-  }
-`;
+// const Button = styled.button`
+//   width: ${props => (props.width ? props.width : '400px')};
+//   height: ${props => (props.height ? props.height : '56px')};
+//   border-radius: 5px;
+//   text-transform: uppercase;
+//   border: none;
+//   cursor: pointer;
+//   background-color: ${props => props.theme.colorStyles.buttonPrimaryBg};
+//   transition: all ease-in 0.1s;
+//   &:disabled {
+//     opacity: 0.5;
+//     cursor: not-allowed;
+//   }
+//   &:hover:not(:disabled) {
+//     background-color: ${props => props.theme.colorStyles.buttonPrimaryBgFocus};
+//   }
+// `;
 
 const ButtonMedium = styled(Button)`
   width: 162px;

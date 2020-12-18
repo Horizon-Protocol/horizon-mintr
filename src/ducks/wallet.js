@@ -13,7 +13,7 @@ const defaultState = {
 };
 
 // Reducer
-export default (state = defaultState, action) => {
+export default function walletReducer(state = defaultState, action) {
   switch (action.type) {
     case UPDATE_WALLET_STATUS: {
       return { ...state, ...action.payload };
@@ -32,7 +32,7 @@ export default (state = defaultState, action) => {
     default:
       return state;
   }
-};
+}
 
 // Actions
 const setDerivationPath = path => {

@@ -1,12 +1,13 @@
-import React, { Fragment } from 'react';
+import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import { withTranslation } from 'react-i18next';
 
-import { SlidePage } from '../../../components/ScreenSlider';
-import { ButtonPrimary } from '../../../components/Button';
-import { PLarge, PageTitle, DataHeaderLarge } from '../../../components/Typography';
-import { formatCurrency } from '../../../helpers/formatters';
-import EtherScanBtn from '../../../components/EtherscanBtn';
+import { SlidePage } from 'components/ScreenSlider';
+import { ButtonPrimary } from 'components/Button';
+import { formatCurrency } from 'helpers/formatters';
+import EtherScanBtn from 'components/EtherscanBtn';
+
+import { Container, ActionImage, Intro, IntroTitle, IntroDesc } from '../common';
 
 const Success = ({
   t,
@@ -18,63 +19,47 @@ const Success = ({
   SNXPrice,
 }) => {
   return (
-    <Fragment>
-      <Top>
-        <Intro>
-          <ActionImage src="/images/success.svg" big />
-          <PageTitle>{t('mintrActions.mint.complete.title')}</PageTitle>
-          <PLarge>{t('transactionProcessing.complete.subtitle')}</PLarge>
-        </Intro>
-        <Details>
-          <Box>
-            <DataHeaderLarge>
-              {t('mintrActions.mint.confirmation.actionDescription')}
-            </DataHeaderLarge>
-            <Amount>{formatCurrency(mintAmount)} sUSD</Amount>
-          </Box>
-          <Box>
-            <DataHeaderLarge>
-              {t('mintrActions.mint.confirmation.subActionDescription')}
-            </DataHeaderLarge>
-            <Amount>
-              {issuanceRatio ? formatCurrency(mintAmount / issuanceRatio / SNXPrice) : '--'} HZN
-            </Amount>
-          </Box>
-        </Details>
-      </Top>
-      <Bottom>
-        <Buttons>
-          <EtherScanBtn networkName={networkName} transactionHash={transactionHash}>
-            {t('button.navigation.etherscan')}
-          </EtherScanBtn>
-          <ButtonPrimary onClick={onDestroy}>{t('button.navigation.finish')}</ButtonPrimary>
-        </Buttons>
-      </Bottom>
-    </Fragment>
+    <>
+      <Intro>
+        <ActionImage src="/images/success.svg" big />
+        <IntroTitle>{t('mintrActions.mint.complete.title')}</IntroTitle>
+        <IntroDesc>{t('transactionProcessing.complete.subtitle')}</IntroDesc>
+      </Intro>
+      <Details>
+        <Box>
+          <Typography>{t('mintrActions.mint.confirmation.actionDescription')}</Typography>
+          <Amount>{formatCurrency(mintAmount)} hUSD</Amount>
+        </Box>
+        <Box>
+          <Typography>{t('mintrActions.mint.confirmation.subActionDescription')}</Typography>
+          <Amount>
+            {issuanceRatio ? formatCurrency(mintAmount / issuanceRatio / SNXPrice) : '--'} HZN
+          </Amount>
+        </Box>
+      </Details>
+      <EtherScanBtn networkName={networkName} transactionHash={transactionHash}>
+        {t('button.navigation.etherscan')}
+      </EtherScanBtn>
+      <ButtonPrimary onClick={onDestroy}>{t('button.navigation.finish')}</ButtonPrimary>
+    </>
   );
 };
 
 const Failure = ({ t, transactionError, onDestroy }) => {
   return (
-    <Fragment>
-      <Top>
-        <Intro>
-          <ActionImage src="/images/failure.svg" big />
-          <PageTitle>{t('transactionProcessing.error.title')}</PageTitle>
-          {transactionError.code ? (
-            <PLarge>
-              {t('transactionProcessing.error.subtitle')} {transactionError.code}
-            </PLarge>
-          ) : null}
-          <PLarge>{t(transactionError.message)}</PLarge>
-        </Intro>
-      </Top>
-      <Bottom>
-        <Buttons>
-          <ButtonPrimary onClick={onDestroy}>{t('button.navigation.ok')}</ButtonPrimary>
-        </Buttons>
-      </Bottom>
-    </Fragment>
+    <>
+      <Intro>
+        <ActionImage src="/images/failure.svg" big />
+        <Typography variant="h6">{t('transactionProcessing.error.title')}</Typography>
+        {transactionError.code ? (
+          <Typography>
+            {t('transactionProcessing.error.subtitle')} {transactionError.code}
+          </Typography>
+        ) : null}
+        <Typography>{t(transactionError.message)}</Typography>
+      </Intro>
+      <ButtonPrimary onClick={onDestroy}>{t('button.navigation.ok')}</ButtonPrimary>
+    </>
   );
 };
 
@@ -87,34 +72,6 @@ const Complete = props => {
     </SlidePage>
   );
 };
-
-const Container = styled.div`
-  width: 100%;
-  height: 640px;
-  max-width: 720px;
-  margin: 0 auto;
-  overflow: hidden;
-
-  margin-bottom: 20px;
-  padding: 40px 64px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  justify-content: space-around;
-`;
-
-const Intro = styled.div`
-  max-width: 530px;
-  margin-top: 24px;
-  margin-bottom: 48px;
-`;
-
-const ActionImage = styled.img`
-  height: ${props => (props.big ? '64px' : '48px')};
-  width: ${props => (props.big ? '64px' : '48px')};
-  margin-bottom: 24px;
-`;
 
 const Details = styled.div`
   display: flex;
@@ -145,15 +102,6 @@ const Buttons = styled.div`
   & > :last-child {
     margin-top: 24px;
   }
-`;
-
-const Top = styled.div`
-  height: auto;
-`;
-
-const Bottom = styled.div`
-  height: auto;
-  margin-bottom: 32px;
 `;
 
 export default withTranslation()(Complete);
