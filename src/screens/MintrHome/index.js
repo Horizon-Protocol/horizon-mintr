@@ -84,24 +84,27 @@ const tabs = [
     desc: 'home.actions.mint.description',
     title: 'home.actions.mint.title',
     color: '#10BA97',
+    amountLabel: 'HZN Staked',
   },
   {
     key: 'burn',
     desc: 'home.actions.burn.description',
     title: 'home.actions.burn.title',
     color: '#FFA539',
+    amountLabel: 'hUSD Debt',
   },
   {
     key: 'claim',
     desc: 'home.actions.claim.description',
     title: 'home.actions.claim.title',
     color: '#92B2FF',
+    amountLabel: 'HZN Rewards',
   },
 ];
 
 const initialAction = tabs[0].key;
 
-const ActionTab = ({ color, title, desc, amountLabel }) => {
+const ActionTab = ({ color, title, desc, amount, amountLabel }) => {
   const classes = useStyles();
   return (
     <>
@@ -109,7 +112,9 @@ const ActionTab = ({ color, title, desc, amountLabel }) => {
         {title}
       </Typography>
       <Typography className={classes.actionDesc}>{desc}</Typography>
-      <Typography className={classes.actionAmount}>0 HZN</Typography>
+      <Typography className={classes.actionAmount}>
+        {amount} {amountLabel}
+      </Typography>
     </>
   );
 };
@@ -147,10 +152,18 @@ const Home = () => {
             onChange={handleChangeAction}
             className={classes.tabs}
           >
-            {tabs.map(({ key, title, desc, color }) => (
+            {tabs.map(({ key, title, desc, color, amount = 0, amountLabel }) => (
               <Tab
                 key={key}
-                label={<ActionTab color={color} title={t(title)} desc={t(desc)} />}
+                label={
+                  <ActionTab
+                    color={color}
+                    title={t(title)}
+                    desc={t(desc)}
+                    amount={amount}
+                    amountLabel={amountLabel}
+                  />
+                }
                 value={key}
                 classes={{
                   root: classes.tab,
