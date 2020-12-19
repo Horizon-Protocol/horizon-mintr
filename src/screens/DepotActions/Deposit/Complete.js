@@ -27,7 +27,7 @@ const Success = ({ t, depositAmount, onDestroy, networkName, transactionHash }) 
       <Bottom>
         <Buttons>
           <EtherScanBtn networkName={networkName} transactionHash={transactionHash}>
-            {t('button.navigation.etherscan')}
+            {t('button.navigation.bscscan')}
           </EtherScanBtn>
           <ButtonPrimary onClick={onDestroy}>{t('button.navigation.finish')}</ButtonPrimary>
         </Buttons>

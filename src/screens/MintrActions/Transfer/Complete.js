@@ -45,7 +45,7 @@ const Success = ({
       <Bottom>
         <Buttons>
           <EtherScanBtn networkName={networkName} transactionHash={transactionHash}>
-            {t('button.navigation.etherscan')}
+            {t('button.navigation.bscscan')}
           </EtherScanBtn>
           <ButtonPrimary onClick={onDestroy}>{t('button.navigation.finish')}</ButtonPrimary>
         </Buttons>

@@ -1,16 +1,15 @@
-import React from 'react';
-import { ButtonSecondary } from '../../components/Button';
+import { Button } from '@material-ui/core';
 
-export default function EtherScanBtn({ networkName, transactionHash, children }) {
+export default function BscScanBtn({ networkName, transactionHash, children }) {
   return (
-    <ButtonSecondary
+    <Button
+      variant="outlined"
       href={`https://${
         networkName === 'mainnet' ? '' : networkName + '.'
-      }etherscan.io/tx/${transactionHash}`}
-      as="a"
+      }bscscan.com/tx/${transactionHash}`}
       target="_blank"
     >
       {children}
-    </ButtonSecondary>
+    </Button>
   );
 }

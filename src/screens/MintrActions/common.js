@@ -76,15 +76,32 @@ export const IntroDesc = props => {
 };
 
 const useErrorStyles = makeStyles(({ palette }) => ({
-  root: {
+  h5: {
     marginTop: 12,
-    color: palette.error.main,
+    textTransform: 'none',
+    marginBottom: 16,
+  },
+  h6: {
+    marginBottom: 16,
+    color: palette.error.light,
+  },
+  body1: {
+    marginBottom: 16,
+    color: palette.text.hint,
   },
 }));
 
-export const ErrorDetail = props => {
+export const ErrorTitle = props => {
   const classes = useErrorStyles();
-  return <Typography classes={classes} {...props} />;
+  return <Typography variant="h5" classes={classes} {...props} />;
+};
+export const ErrorCode = props => {
+  const classes = useErrorStyles();
+  return <Typography variant="h6" classes={classes} {...props} />;
+};
+export const ErrorDesc = props => {
+  const classes = useErrorStyles();
+  return <Typography variant="body1" classes={classes} {...props} />;
 };
 
 const useAmountCardStyles = makeStyles(() => ({
