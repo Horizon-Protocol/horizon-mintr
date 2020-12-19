@@ -139,7 +139,7 @@ const Burn = ({
   fetchBalancesRequest,
   ...props
 }) => {
-  const { handleNext, handlePrev } = useContext(SliderContext);
+  const { handleReset, handleNext, handlePrev } = useContext(SliderContext);
   const [burnAmount, setBurnAmount] = useState('');
   const [transferableAmount, setTransferableAmount] = useState('');
   const [waitingPeriod, setWaitingPeriod] = useState(0);
@@ -276,7 +276,7 @@ const Burn = ({
   };
 
   const commonProps = {
-    onDestroy,
+    onDestroy: onDestroy || handleReset,
     onBurn,
     goBack: handlePrev,
     maxBurnAmount,

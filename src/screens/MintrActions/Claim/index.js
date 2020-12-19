@@ -113,7 +113,7 @@ const Claim = ({
   fetchEscrowRequest,
   ...props
 }) => {
-  const { handleNext, handlePrev } = useContext(SliderContext);
+  const { handleReset, handleNext, handlePrev } = useContext(SliderContext);
   const [transactionInfo, setTransactionInfo] = useState({});
   const { currentWallet, walletType, networkName, networkId } = walletDetails;
   const [isFetchingGasLimit, setFetchingGasLimit] = useState(false);
@@ -168,7 +168,7 @@ const Claim = ({
   };
 
   const commonProps = {
-    onDestroy,
+    onDestroy: onDestroy || handleReset,
     onClaim,
     onClaimHistory,
     goBack: handlePrev,

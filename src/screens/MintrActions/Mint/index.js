@@ -48,7 +48,6 @@ const useGetIssuanceData = (walletAddress, hUSDBytes) => {
 
 // TODO: replace it with BSC.
 const useGetGasEstimate = (mintAmount, issuableHassets, setFetchingGasLimit, setGasLimit) => {
-  console.log({ mintAmount, issuableHassets });
   const { t } = useTranslation();
   const [error, setError] = useState(null);
   useEffect(() => {

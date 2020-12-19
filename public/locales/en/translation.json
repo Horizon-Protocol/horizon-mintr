@@ -169,7 +169,7 @@
     "claim": {
       "action": {
         "title": "Claim",
-        "subtitle": "If you have staked your HZN and minted hUSD, you are eligible to collect two kinds of rewards: HZN staking rewards, and Synth exchange rewards generated on Kwenta.io.",
+        "subtitle": "If you have staked your HZN and minted hUSD, you are eligible to collect HZN Staking rewards.",
         "timeLeft": "Time left to claim",
         "table": {
           "title": "Claimable periods:",
