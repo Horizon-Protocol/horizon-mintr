@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import hznJSConnector from 'helpers/hznJSConnector';
 import { addBufferToGasLimit } from 'helpers/networkHelper';
 import { SliderContext } from 'components/ScreenSlider';
-import { bytesFormatter, bigNumberFormatter, formatCurrency } from 'helpers/formatters';
+import { formatCurrency } from 'helpers/formatters';
 import errorMapper from 'helpers/errorMapper';
 import { getCurrentGasPrice } from 'ducks/network';
 import { getWalletDetails } from 'ducks/wallet';
@@ -58,7 +58,7 @@ const useGetGasEstimate = (mintAmount, issuableHassets, setFetchingGasLimit, set
 const Mint = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }) => {
   const { handleReset, handleNext, handlePrev } = useContext(SliderContext);
   const [mintAmount, setMintAmount] = useState('');
-  const { currentWallet, walletType, networkName, networkId } = walletDetails;
+  const { walletType, networkName, networkId } = walletDetails;
   const [transactionInfo, setTransactionInfo] = useState({});
   const [isFetchingGasLimit, setFetchingGasLimit] = useState(false);
   const [gasLimit, setGasLimit] = useState(0);

@@ -14,7 +14,7 @@ export const getDebtStatus = async (walletAddress: string) => {
   const hznBytes = bytesFormatter('HZN');
 
   const result = await Promise.all([
-    Synthetix.maxIssuableSynths(walletAddress, hUSDBytes),
+    Synthetix.maxIssuableSynths(walletAddress),
     SystemSettings.issuanceRatio(),
     Synthetix.collateralisationRatio(walletAddress),
     Synthetix.transferableSynthetix(walletAddress),

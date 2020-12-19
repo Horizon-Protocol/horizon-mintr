@@ -33,10 +33,10 @@ const Banner: FC<PropsFromRedux> = ({ debtStatus }) => {
   );
 };
 
-const Link = styled.a`
-  text-decoration: underline;
-  color: white;
-`;
+// const Link = styled.a`
+//   text-decoration: underline;
+//   color: white;
+// `;
 
 const ContainerBanner = styled.div`
   display: flex;

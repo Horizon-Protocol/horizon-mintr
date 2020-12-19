@@ -12,56 +12,47 @@ import { getCurrentGasPrice } from 'ducks/network';
 import { getWalletDetails } from 'ducks/wallet';
 import { notifyHandler } from 'helpers/notifyHelper';
 import { useNotifyContext } from 'contexts/NotifyContext';
-import { fetchBalancesRequest } from 'ducks/balances';
-import { fetchDebtStatusRequest } from 'ducks/debtStatus';
 
 import Action from './Action';
 import Confirmation from './Confirmation';
 import Complete from './Complete';
 
-const useGetDebtData = (walletAddress, sUSDBytes) => {
+const useGetDebtData = (walletAddress, debtStatusData) => {
   const [data, setData] = useState({});
-  const SNXBytes = bytesFormatter('HZN');
   useEffect(() => {
     const getDebtData = async () => {
       try {
         const results = await Promise.all([
-          hznJSConnector.hznJS.Synthetix.debtBalanceOf(walletAddress, sUSDBytes),
           hznJSConnector.hznJS.hUSD.balanceOf(walletAddress),
-          hznJSConnector.hznJS.SystemSettings.issuanceRatio(),
-          hznJSConnector.hznJS.ExchangeRates.rateForCurrency(SNXBytes),
           hznJSConnector.hznJS.RewardEscrow.totalEscrowedAccountBalance(walletAddress),
           hznJSConnector.hznJS.SynthetixEscrow.balanceOf(walletAddress),
-          hznJSConnector.hznJS.Synthetix.maxIssuableSynths(walletAddress),
         ]);
-        const [
-          debt,
-          sUSDBalance,
-          issuanceRatio,
-          SNXPrice,
-          totalRewardEscrow,
-          totalTokenSaleEscrow,
-          issuableHassets,
-        ] = results.map(bigNumberFormatter);
+        const [hUSDBalance, totalRewardEscrow, totalTokenSaleEscrow] = results.map(
+          bigNumberFormatter
+        );
+
+        const { debtBalance, debtBalanceBN, issuanceRatio, maxIssuableSynths, hznPrice } =
+          debtStatusData || {};
+
         let maxBurnAmount, maxBurnAmountBN;
-        if (debt > sUSDBalance) {
-          maxBurnAmount = sUSDBalance;
-          maxBurnAmountBN = results[1];
-        } else {
-          maxBurnAmount = debt;
+        if (debtBalance > hUSDBalance) {
+          maxBurnAmount = hUSDBalance;
           maxBurnAmountBN = results[0];
+        } else {
+          maxBurnAmount = debtBalance;
+          maxBurnAmountBN = debtBalanceBN;
         }
 
         const escrowBalance = totalRewardEscrow + totalTokenSaleEscrow;
         setData({
           issuanceRatio,
-          sUSDBalance,
+          hUSDBalance,
           maxBurnAmount,
           maxBurnAmountBN,
-          SNXPrice,
-          burnAmountToFixCRatio: Math.max(debt - issuableHassets, 0),
+          hznPrice,
+          burnAmountToFixCRatio: Math.max(debtBalance - maxIssuableSynths, 0),
           debtEscrow: Math.max(
-            escrowBalance * SNXPrice * issuanceRatio + debt - issuableHassets,
+            escrowBalance * hznPrice * issuanceRatio + debtBalance - maxIssuableSynths,
             0
           ),
         });
@@ -71,15 +62,14 @@ const useGetDebtData = (walletAddress, sUSDBytes) => {
     };
     getDebtData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [walletAddress]);
+  }, [walletAddress, debtStatusData]);
   return data;
 };
 
 const useGetGasEstimate = (
   burnAmount,
   maxBurnAmount,
-  maxBurnAmountBN,
-  sUSDBalance,
+  hUSDBalance,
   waitingPeriod,
   issuanceDelay,
   setFetchingGasLimit,
@@ -98,7 +88,7 @@ const useGetGasEstimate = (
         if (!parseFloat(burnAmount)) throw new Error('input.error.invalidAmount');
         if (waitingPeriod) throw new Error('Waiting period for hUSD is still ongoing');
         if (issuanceDelay) throw new Error('Waiting period to burn is still ongoing');
-        if (burnAmount > sUSDBalance || maxBurnAmount === 0) {
+        if (burnAmount > hUSDBalance || maxBurnAmount === 0) {
           throw new Error('input.error.notEnoughToBurn');
         }
         // setFetchingGasLimit(true);
@@ -131,14 +121,7 @@ const useGetGasEstimate = (
   return error;
 };
 
-const Burn = ({
-  onDestroy,
-  walletDetails,
-  currentGasPrice,
-  fetchDebtStatusRequest,
-  fetchBalancesRequest,
-  ...props
-}) => {
+const Burn = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }) => {
   const { handleReset, handleNext, handlePrev } = useContext(SliderContext);
   const [burnAmount, setBurnAmount] = useState('');
   const [transferableAmount, setTransferableAmount] = useState('');
@@ -150,16 +133,15 @@ const Burn = ({
   const [gasLimit, setGasLimit] = useState(0);
   const { notify } = useNotifyContext();
 
-  const sUSDBytes = bytesFormatter('hUSD');
   const {
     maxBurnAmount,
     maxBurnAmountBN,
-    sUSDBalance,
+    hUSDBalance,
     issuanceRatio,
-    SNXPrice,
+    hznPrice,
     burnAmountToFixCRatio,
     debtEscrow,
-  } = useGetDebtData(currentWallet, sUSDBytes);
+  } = useGetDebtData(currentWallet, props.debtStatusData);
 
   const getMaxSecsLeftInWaitingPeriod = useCallback(async () => {
     const {
@@ -210,8 +192,7 @@ const Burn = ({
   const gasEstimateError = useGetGasEstimate(
     burnAmount,
     maxBurnAmount,
-    maxBurnAmountBN,
-    sUSDBalance,
+    hUSDBalance,
     waitingPeriod,
     issuanceDelay,
     setFetchingGasLimit,
@@ -251,16 +232,11 @@ const Burn = ({
       }
 
       if (notify && transaction) {
-        const refetch = () => {
-          fetchDebtStatusRequest();
-          fetchBalancesRequest();
-        };
-
         const message = `Burnt ${formatCurrency(
           burnToTarget ? burnAmountToFixCRatio : burnAmount
         )} hUSD`;
         setTransactionInfo({ transactionHash: transaction.hash });
-        notifyHandler(notify, transaction.hash, networkId, refetch, message);
+        notifyHandler(notify, transaction.hash, networkId, onSuccess, message);
         handleNext(2);
       }
     } catch (e) {
@@ -286,18 +262,18 @@ const Burn = ({
       const amountNB = Number(amount);
       setBurnAmount(amount);
       setTransferableAmount(
-        amountNB ? Math.max((amountNB - debtEscrow) / issuanceRatio / SNXPrice, 0) : 0
+        amountNB ? Math.max((amountNB - debtEscrow) / issuanceRatio / hznPrice, 0) : 0
       );
     },
     transferableAmount,
     setTransferableAmount: amount => {
       const amountNB = Number(amount);
-      setBurnAmount(amountNB > 0 ? debtEscrow + amountNB * issuanceRatio * SNXPrice : '');
+      setBurnAmount(amountNB > 0 ? debtEscrow + amountNB * issuanceRatio * hznPrice : '');
       setTransferableAmount(amount);
     },
     walletType,
     networkName,
-    SNXPrice,
+    hznPrice,
     ...transactionInfo,
     isFetchingGasLimit,
     gasLimit,
@@ -305,7 +281,7 @@ const Burn = ({
     burnAmountToFixCRatio,
     waitingPeriod,
     issuanceDelay,
-    sUSDBalance,
+    hUSDBalance,
     onWaitingPeriodCheck: getMaxSecsLeftInWaitingPeriod,
     onIssuanceDelayCheck: getIssuanceDelay,
     ...props,
@@ -321,9 +297,4 @@ const mapStateToProps = state => ({
   currentGasPrice: getCurrentGasPrice(state),
 });
 
-const mapDispatchToProps = {
-  fetchDebtStatusRequest,
-  fetchBalancesRequest,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Burn);
+export default connect(mapStateToProps, null)(Burn);

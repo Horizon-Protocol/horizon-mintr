@@ -13,8 +13,6 @@ import { notifyHandler } from 'helpers/notifyHelper';
 import { useNotifyContext } from 'contexts/NotifyContext';
 
 import { setCurrentTab, getCurrentTheme } from 'ducks/ui';
-import { fetchBalancesRequest } from 'ducks/balances';
-import { fetchDebtStatusRequest } from 'ducks/debtStatus';
 import { fetchEscrowRequest } from 'ducks/escrow';
 import { createTransaction } from 'ducks/transactions';
 import { getCurrentGasPrice } from 'ducks/network';
@@ -108,9 +106,8 @@ const Claim = ({
   currentGasPrice,
   setCurrentTab,
   currentTheme,
-  fetchBalancesRequest,
-  fetchDebtStatusRequest,
   fetchEscrowRequest,
+  onSuccess,
   ...props
 }) => {
   const { handleReset, handleNext, handlePrev } = useContext(SliderContext);
@@ -136,8 +133,7 @@ const Claim = ({
 
       if (notify && transaction) {
         const refetch = () => {
-          fetchBalancesRequest();
-          fetchDebtStatusRequest();
+          onSuccess();
           fetchEscrowRequest();
         };
         const message = `Claimed rewards`;
@@ -199,8 +195,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   createTransaction,
   setCurrentTab,
-  fetchDebtStatusRequest,
-  fetchBalancesRequest,
   fetchEscrowRequest,
 };
 
