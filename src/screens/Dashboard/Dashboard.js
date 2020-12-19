@@ -1,24 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Chip, Grid } from '@material-ui/core';
 
 import { getWalletDetails } from 'ducks/wallet';
-import { showModal } from 'ducks/modal';
+// import { showModal } from 'ducks/modal';
 import { getCurrentTheme } from 'ducks/ui';
-import { getWalletBalances, fetchBalancesRequest, getIsFetchingBalances } from 'ducks/balances';
-import {
-  getDebtStatusData,
-  fetchDebtStatusRequest,
-  getIsFetchingBDebtData,
-} from 'ducks/debtStatus';
-import { getRates } from 'ducks/rates';
-import { getTotalEscrowedBalance, fetchEscrowRequest, getIsFetchingEscrowData } from 'ducks/escrow';
+
+// import { getRates } from 'ducks/rates';
+// import { getTotalEscrowedBalance, fetchEscrowRequest, getIsFetchingEscrowData } from 'ducks/escrow';
 
 // import { MODAL_TYPES_TO_KEY } from 'constants/modal';
-
-import { MicroSpinner } from 'components/Spinner';
+// import { MicroSpinner } from 'components/Spinner';
 
 import BalanceCard from './BalanceCard';
 import RatiosCard from './RatiosCard';
@@ -57,24 +50,19 @@ const useStyles = makeStyles(({ palette }) => ({
 
 const Dashboard = ({
   walletDetails,
+  debtStatusData,
+  loading,
+  // totalEscrowedBalances,
+  // fetchEscrowRequest,
+  // isFetchingEscrowData,
   // showModal,
   // rates,
-  debtStatusData,
-  // totalEscrowedBalances,
-  fetchEscrowRequest,
-  fetchDebtStatusRequest,
-  fetchBalancesRequest,
-  isFetchingBalances,
-  isFetchingDebtData,
-  isFetchingEscrowData,
+  refresh,
   currentTheme,
 }) => {
   const classes = useStyles();
 
-  const { t } = useTranslation();
-
   const { currentWallet, networkName } = walletDetails;
-  const isDashboardRefreshing = isFetchingBalances || isFetchingDebtData || isFetchingEscrowData;
 
   return (
     <Grid
@@ -86,39 +74,14 @@ const Dashboard = ({
     >
       <img className={classes.logo} src="/images/logo.png" alt="Horizon Mintr" />
       <Box className={classes.stats}>
-        <RatiosCard
-          loading={isFetchingDebtData}
-          currentTheme={currentTheme}
-          debtStatusData={debtStatusData}
-        />
+        <RatiosCard loading={loading} currentTheme={currentTheme} debtStatusData={debtStatusData} />
         <BalanceCard
-          loading={isFetchingBalances}
+          loading={loading}
           currentTheme={currentTheme}
           currentWallet={currentWallet}
           debtData={debtStatusData}
         />
       </Box>
-      {false && (
-        <div>
-          <div>
-            {/* <ButtonTertiary onClick={() => showModal({ modalType: MODAL_TYPES_TO_KEY.DELEGATE })}>
-                {t('dashboard.buttons.delegate')}
-              </ButtonTertiary> */}
-            <div
-              disabled={isDashboardRefreshing}
-              style={{ minWidth: '102px' }}
-              onClick={() => {
-                fetchDebtStatusRequest();
-                fetchBalancesRequest();
-                fetchEscrowRequest();
-              }}
-            >
-              {isDashboardRefreshing ? <MicroSpinner /> : t('dashboard.buttons.refresh')}
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* <PricesContainer>
           {['HZN', 'ETH'].map(asset => {
             return (
@@ -145,28 +108,26 @@ const Dashboard = ({
               <ButtonTertiaryLabel>{t('dashboard.buttons.synthetixDashboard')}</ButtonTertiaryLabel>
             </StyledExternalLink>
           </Row> */}
-      <Chip label={networkName} className={classes.network} />
+      <Chip label={networkName} className={classes.network} onClick={refresh} />
     </Grid>
   );
 };
 
 const mapStateToProps = state => ({
   walletDetails: getWalletDetails(state),
-  walletBalances: getWalletBalances(state),
-  rates: getRates(state),
-  debtStatusData: getDebtStatusData(state),
-  totalEscrowedBalances: getTotalEscrowedBalance(state),
-  isFetchingBalances: getIsFetchingBalances(state),
-  isFetchingDebtData: getIsFetchingBDebtData(state),
-  isFetchingEscrowData: getIsFetchingEscrowData(state),
+  // walletBalances: getWalletBalances(state),
+  // rates: getRates(state),
+  // debtStatusData: getDebtStatusData(state),
+  // totalEscrowedBalances: getTotalEscrowedBalance(state),
+  // isFetchingEscrowData: getIsFetchingEscrowData(state),
   currentTheme: getCurrentTheme(state),
 });
 
 const mapDispatchToProps = {
-  showModal,
-  fetchBalancesRequest,
-  fetchDebtStatusRequest,
-  fetchEscrowRequest,
+  // showModal,
+  // fetchBalancesRequest,
+  // fetchDebtStatusRequest,
+  // fetchEscrowRequest,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

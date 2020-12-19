@@ -7,32 +7,45 @@ const DEFAULT_SUSD_RATE = 1;
 
 export const getDebtStatus = async (walletAddress: string) => {
   const {
-    hznJS: { SystemSettings, Synthetix, Liquidations },
+    hznJS: { SystemSettings, Synthetix, ExchangeRates, Liquidations },
   } = hznJSConnector as any;
-  const debtBalanceBN = await Synthetix.debtBalanceOf(walletAddress, bytesFormatter('hUSD'));
+
+  const hUSDBytes = bytesFormatter('hUSD');
+  const hznBytes = bytesFormatter('HZN');
 
   const result = await Promise.all([
+    Synthetix.maxIssuableSynths(walletAddress, hUSDBytes),
     SystemSettings.issuanceRatio(),
     Synthetix.collateralisationRatio(walletAddress),
     Synthetix.transferableSynthetix(walletAddress),
-    Synthetix.debtBalanceOf(walletAddress, bytesFormatter('hUSD')),
+    Synthetix.debtBalanceOf(walletAddress, hUSDBytes),
+    ExchangeRates.rateForCurrency(hznBytes),
     Liquidations.liquidationRatio(),
     Liquidations.liquidationDelay(),
     Liquidations.getLiquidationDeadlineForAccount(walletAddress),
   ]);
-  const [targetCRatio, currentCRatio, transferable, debtBalance, liquidationRatio] = result.map(
-    bigNumberFormatter
-  );
 
-  return {
+  const [
+    maxIssuableSynths,
     targetCRatio,
     currentCRatio,
     transferable,
     debtBalance,
-    debtBalanceBN,
+    hznPrice,
+    liquidationRatio,
+  ] = result.map(bigNumberFormatter);
+
+  return {
+    issuableHassets: maxIssuableSynths - debtBalance,
+    targetCRatio,
+    currentCRatio,
+    transferable,
+    debtBalance,
+    debtBalanceBN: result[3],
+    hznPrice,
     liquidationRatio: 100 / liquidationRatio,
-    liquidationDelay: Number(result[5]),
-    liquidationDeadline: Number(result[6]),
+    liquidationDelay: Number(result[6]),
+    liquidationDeadline: Number(result[7]),
   };
 };
 

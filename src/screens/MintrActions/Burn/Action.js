@@ -1,7 +1,6 @@
-import styled from 'styled-components';
 import { SlidePage } from 'components/ScreenSlider';
 import { withTranslation } from 'react-i18next';
-import { Box, Chip, Typography } from '@material-ui/core';
+import { Box, Chip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Big from 'big.js';
 
@@ -48,7 +47,7 @@ const Action = ({
   const renderSubmitButton = () => {
     if (issuanceDelay) {
       return (
-        <RetryButtonWrapper>
+        <>
           <ButtonPrimary
             onClick={() => {
               onIssuanceDelayCheck();
@@ -60,23 +59,23 @@ const Action = ({
           >
             Retry
           </ButtonPrimary>
-          <Typography style={{ position: 'absolute', fontSize: '12px' }}>
+          <Body2>
             There is a waiting period after minting before you can burn. Please wait{' '}
             {secondsToTime(issuanceDelay)} before attempting to burn hUSD.
-          </Typography>
-        </RetryButtonWrapper>
+          </Body2>
+        </>
       );
     } else if (waitingPeriod) {
       return (
-        <RetryButtonWrapper>
+        <>
           <ButtonPrimary onClick={onWaitingPeriodCheck} margin="auto">
             Retry
           </ButtonPrimary>
-          <Typography style={{ position: 'absolute', fontSize: '12px' }}>
+          <Body2>
             There is a waiting period after completing a trade. Please wait{' '}
             {secondsToTime(waitingPeriod)} before attempting to burn hUSD.
-          </Typography>
-        </RetryButtonWrapper>
+          </Body2>
+        </>
       );
     } else {
       return (
@@ -155,9 +154,5 @@ const Action = ({
     </SlidePage>
   );
 };
-
-const RetryButtonWrapper = styled.div`
-  position: relative;
-`;
 
 export default withTranslation()(Action);

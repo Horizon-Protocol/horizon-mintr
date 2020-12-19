@@ -13,7 +13,6 @@ import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   card: {
-    width: props => props.width || 230,
     height: props => props.height || 90,
     borderRadius: 16,
     padding: '8px 0',
@@ -44,8 +43,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function HeaderCard({ loading = true, width, height, rows = [], title, style }) {
-  const classes = useStyles({ width, height });
+export default function HeaderCard({ loading = true, height, rows = [], title, style }) {
+  const classes = useStyles({ height });
 
   return (
     <Card variant="outlined" className={classes.card} style={style}>

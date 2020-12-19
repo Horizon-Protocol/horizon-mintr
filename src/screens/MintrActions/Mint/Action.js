@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import Big from 'big.js';
 
+import { formatCurrency } from 'helpers/formatters';
 import { SlidePage } from 'components/ScreenSlider';
 // import TransactionPriceIndicator from 'components/TransactionPriceIndicator';
 import { ButtonPrimary, ButtonMax } from 'components/Button';
@@ -31,6 +32,7 @@ const Action = ({
   color,
   onMint,
   issuableHassets,
+  issuableAmount,
   mintAmount,
   setMintAmount,
   isFetchingGasLimit,
@@ -52,7 +54,10 @@ const Action = ({
           <IntroDesc>{t('mintrActions.mint.action.subtitle')}</IntroDesc>
         </Intro>
         <Box mb={2}>
-          <Chip label="xxx HZN Available" className={classes.available} />
+          <Chip
+            label={`${formatCurrency(issuableAmount)} HZN Available`}
+            className={classes.available}
+          />
         </Box>
         <Box mb={1}>
           <Body2>{t('mintrActions.mint.action.instruction')}</Body2>

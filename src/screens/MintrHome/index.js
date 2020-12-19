@@ -1,13 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Fade, Grid, Tabs, Tab, Container, Typography } from '@material-ui/core';
 
 // import { isMainNet } from 'helpers/networkHelper';
-import { getWalletDetails } from 'ducks/wallet';
 
 import MintrAction from '../MintrActions';
+import { formatCurrency } from 'helpers/formatters';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -113,13 +112,13 @@ const ActionTab = ({ color, title, desc, amount, amountLabel }) => {
       </Typography>
       <Typography className={classes.actionDesc}>{desc}</Typography>
       <Typography className={classes.actionAmount}>
-        {amount} {amountLabel}
+        {formatCurrency(amount)} {amountLabel}
       </Typography>
     </>
   );
 };
 
-const Home = () => {
+const Home = ({ walletBalances, debtStatusData, onSuccess }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -141,6 +140,15 @@ const Home = () => {
 
   const activeTab = useMemo(() => tabs.find(({ key }) => key === currentAction), [currentAction]);
 
+  const actionAmounts = useMemo(() => {
+    const { debtBalance, targetCRatio, hznPrice } = debtStatusData || {};
+    return {
+      mint: debtBalance ? debtBalance / targetCRatio / hznPrice : 0,
+      burn: debtStatusData?.debtBalance,
+      claim: 0,
+    };
+  }, [debtStatusData]);
+
   return (
     <Box className={classes.root}>
       <Container className={classes.container}>
@@ -152,7 +160,7 @@ const Home = () => {
             onChange={handleChangeAction}
             className={classes.tabs}
           >
-            {tabs.map(({ key, title, desc, color, amount = 0, amountLabel }) => (
+            {tabs.map(({ key, title, desc, color, amountLabel }) => (
               <Tab
                 key={key}
                 label={
@@ -160,7 +168,7 @@ const Home = () => {
                     color={color}
                     title={t(title)}
                     desc={t(desc)}
-                    amount={amount}
+                    amount={actionAmounts[key]}
                     amountLabel={amountLabel}
                   />
                 }
@@ -184,7 +192,13 @@ const Home = () => {
             }}
           >
             <Box width="full" className={classes.content}>
-              <MintrAction action={currentAction} color={activeTab.color} />
+              <MintrAction
+                action={currentAction}
+                color={activeTab.color}
+                walletBalances={walletBalances}
+                debtStatusData={debtStatusData}
+                onSuccess={onSuccess}
+              />
             </Box>
           </Fade>
           {/* <Tab>
@@ -204,8 +218,4 @@ const Home = () => {
   );
 };
 
-const mapStateToProps = state => ({
-  walletDetails: getWalletDetails(state),
-});
-
-export default connect(mapStateToProps, null)(Home);
+export default Home;

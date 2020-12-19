@@ -9,42 +9,12 @@ import { bytesFormatter, bigNumberFormatter, formatCurrency } from 'helpers/form
 import errorMapper from 'helpers/errorMapper';
 import { getCurrentGasPrice } from 'ducks/network';
 import { getWalletDetails } from 'ducks/wallet';
-import { fetchBalancesRequest } from 'ducks/balances';
-import { fetchDebtStatusRequest } from 'ducks/debtStatus';
 import { useNotifyContext } from 'contexts/NotifyContext';
 import { notifyHandler } from 'helpers/notifyHelper';
 
 import Action from './Action';
 import Confirmation from './Confirmation';
 import Complete from './Complete';
-
-const useGetIssuanceData = (walletAddress, hUSDBytes) => {
-  const [data, setData] = useState({});
-  const HZNBytes = bytesFormatter('HZN');
-  useEffect(() => {
-    const getIssuanceData = async () => {
-      try {
-        const results = await Promise.all([
-          hznJSConnector.hznJS.Synthetix.maxIssuableSynths(walletAddress, hUSDBytes),
-          hznJSConnector.hznJS.Synthetix.debtBalanceOf(walletAddress, hUSDBytes),
-          hznJSConnector.hznJS.SystemSettings.issuanceRatio(),
-          hznJSConnector.hznJS.ExchangeRates.rateForCurrency(HZNBytes),
-          hznJSConnector.hznJS.Synthetix.collateral(walletAddress),
-        ]);
-        const [maxIssuableHassets, debtBalance, issuanceRatio, hznPrice, hznBalance] = results.map(
-          bigNumberFormatter
-        );
-        const issuableHassets = Math.max(0, maxIssuableHassets - debtBalance);
-        setData({ issuableHassets, debtBalance, issuanceRatio, hznPrice, hznBalance });
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    getIssuanceData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [walletAddress]);
-  return data;
-};
 
 // TODO: replace it with BSC.
 const useGetGasEstimate = (mintAmount, issuableHassets, setFetchingGasLimit, setGasLimit) => {
@@ -85,14 +55,7 @@ const useGetGasEstimate = (mintAmount, issuableHassets, setFetchingGasLimit, set
   return error;
 };
 
-const Mint = ({
-  onDestroy,
-  walletDetails,
-  currentGasPrice,
-  fetchDebtStatusRequest,
-  fetchBalancesRequest,
-  ...props
-}) => {
+const Mint = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }) => {
   const { handleReset, handleNext, handlePrev } = useContext(SliderContext);
   const [mintAmount, setMintAmount] = useState('');
   const { currentWallet, walletType, networkName, networkId } = walletDetails;
@@ -101,11 +64,13 @@ const Mint = ({
   const [gasLimit, setGasLimit] = useState(0);
   const { notify } = useNotifyContext();
 
-  const hUSDBytes = bytesFormatter('hUSD');
-  const { issuableHassets, issuanceRatio, hznPrice, debtBalance, hznBalance } = useGetIssuanceData(
-    currentWallet,
-    hUSDBytes
-  );
+  const {
+    issuableHassets,
+    transferable: issuableAmount,
+    targetCRatio: issuanceRatio,
+    hznPrice,
+    debtBalance,
+  } = props.debtStatusData || {};
 
   const gasEstimateError = useGetGasEstimate(
     mintAmount,
@@ -134,13 +99,9 @@ const Mint = ({
         );
       }
       if (notify && transaction) {
-        const refetch = () => {
-          fetchDebtStatusRequest();
-          fetchBalancesRequest();
-        };
         const message = `Minted ${formatCurrency(mintAmount)} hUSD`;
         setTransactionInfo({ transactionHash: transaction.hash });
-        notifyHandler(notify, transaction.hash, networkId, refetch, message);
+        notifyHandler(notify, transaction.hash, networkId, onSuccess, message);
 
         handleNext(2);
       }
@@ -171,7 +132,7 @@ const Mint = ({
     gasLimit,
     gasEstimateError,
     debtBalance,
-    hznBalance,
+    issuableAmount,
     ...transactionInfo,
     ...props,
   };
@@ -186,9 +147,4 @@ const mapStateToProps = state => ({
   currentGasPrice: getCurrentGasPrice(state),
 });
 
-const mapDispatchToProps = {
-  fetchDebtStatusRequest,
-  fetchBalancesRequest,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Mint);
+export default connect(mapStateToProps, null)(Mint);
