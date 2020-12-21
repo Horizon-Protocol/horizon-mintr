@@ -23,9 +23,15 @@ import {
 let hznJSConnector = {
   initialized: false,
   signers: HorizonJs.signers,
-  setContractSettings: function (contractSettings) {
+  setContractSettings(contractSettings) {
     this.initialized = true;
-    this.hznJS = new HorizonJs(contractSettings);
+    try {
+      this.hznJS = new HorizonJs(contractSettings);
+    } catch (e) {
+      console.log(e);
+      window.alert('Please make sure your extension wallet is correctly configured!');
+      return;
+    }
     this.synths = this.hznJS.contractSettings.synths;
     this.signer = this.hznJS.contractSettings.signer;
     this.provider = this.hznJS.contractSettings.provider;

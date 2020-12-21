@@ -32,8 +32,7 @@ export const SUPPORTED_WALLETS_MAP = {
   METAMASK: 'Metamask',
   // LEDGER: 'Ledger',
 };
-
-export const SUPPORTED_WALLETS = Object.values(SUPPORTED_WALLETS_MAP);
+export const SUPPORTED_WALLETS = [SUPPORTED_WALLETS_MAP.BINANCE, SUPPORTED_WALLETS_MAP.METAMASK];
 
 const WALLET_INJECT_MAP = {
   Binance: 'BinanceChain',
@@ -50,39 +49,48 @@ export const hasAnyWalletInstalled = () => some(SUPPORTED_WALLETS, hasWalletInst
 // add REACT_APP_BLOCKNATIVE_NOTIFY_KEY=xxx to .env
 export const BLOCKNATIVE_KEY = process.env.REACT_APP_BLOCKNATIVE_NOTIFY_KEY;
 
-const defaultNetwork = { name: 'TESTNET', networkId: 97 };
+const defaultNetworkId = 97;
+const defaultNetwork = { name: SUPPORTED_NETWORKS[defaultNetworkId], networkId: defaultNetworkId };
 
-export async function getBscNetwork(wallet) {
+const getAvailableWallet = targetWallet => {
+  if (targetWallet) {
+    return {
+      wallet: targetWallet,
+      injection: window[WALLET_INJECT_MAP[targetWallet]],
+    };
+  }
+  for (const wallet of SUPPORTED_WALLETS) {
+    let injection = window[WALLET_INJECT_MAP[wallet]];
+    if (injection) {
+      return {
+        wallet,
+        injection,
+      };
+    }
+  }
+  return {};
+};
+
+export async function getBscNetwork(targetWallet) {
   if (!hasAnyWalletInstalled()) {
     return defaultNetwork;
   }
 
   try {
-    let networkId;
-    let wallet;
-    let chainId;
-    if (wallet === SUPPORTED_WALLETS_MAP.BINANCE) {
-      chainId = window.BinanceChain?.chainId;
-      if (chainId) {
-        wallet = SUPPORTED_WALLETS_MAP.BINANCE;
-      }
-    } else if (wallet === SUPPORTED_WALLETS_MAP.METAMASK) {
-      chainId = window.ethereum?.chainId;
-      if (chainId) {
-        wallet = SUPPORTED_WALLETS_MAP.METAMASK;
-      }
-    }
+    const { wallet, injection } = getAvailableWallet(targetWallet);
+    const chainId = injection?.chainId;
+    console.log('wallet', wallet, chainId);
     if (chainId) {
       console.log('chainId', chainId);
-      networkId = parseInt(chainId);
+      const networkId = parseInt(chainId);
       return { name: SUPPORTED_NETWORKS[networkId], networkId, wallet };
     } else if (window.web3?.eth?.net) {
-      console.log('web3.net');
-      networkId = await window.web3.eth.net.getId();
+      const networkId = await window.web3.eth.net.getId();
+      console.log('web3.net', networkId);
       return { name: SUPPORTED_NETWORKS[networkId], networkId: Number(networkId) };
     } else if (window.web3?.version?.network) {
-      console.log('web3.network');
-      networkId = Number(window.web3.version.network);
+      const networkId = Number(window.web3.version.network);
+      console.log('web3.network', networkId);
       return { name: SUPPORTED_NETWORKS[networkId], networkId };
     }
     return defaultNetwork;
@@ -133,14 +141,14 @@ export function bindWalletListeners(walletType, cb) {
 
   if (walletInjection) {
     walletInjection.on('accountsChanged', listener);
-    console.log('chainChanged');
     walletInjection.on('chainChanged', () => {
       document.location.reload();
     });
   }
 }
 
-export function onWalletNetworkChange(walletType) {
+// for fetching App Status request from chain.
+export function onWalletChainChange(walletType, cb) {
   let walletInjection = null;
   if (walletType === SUPPORTED_WALLETS_MAP.BINANCE && window.BinanceChain) {
     walletInjection = window.BinanceChain;
@@ -150,10 +158,7 @@ export function onWalletNetworkChange(walletType) {
   }
 
   if (walletInjection) {
-    console.log('chainChanged');
-    walletInjection.on('chainChanged', () => {
-      document.location.reload();
-    });
+    walletInjection.on('chainChanged', cb);
   }
 }
 

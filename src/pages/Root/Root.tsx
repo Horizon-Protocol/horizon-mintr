@@ -13,7 +13,7 @@ import { RootState } from 'ducks/types';
 import App from './App';
 
 import hznJSConnector, { getProvider } from 'helpers/hznJSConnector';
-import { getBscNetwork, onWalletNetworkChange } from 'helpers/networkHelper';
+import { getBscNetwork, onWalletChainChange } from 'helpers/networkHelper';
 import useInterval from 'hooks/useInterval';
 import { INTERVAL_TIMER } from 'constants/ui';
 
@@ -70,12 +70,12 @@ const Root: FC<PropsFromRedux> = ({
   useEffect(() => {
     const init = async () => {
       const { networkId, wallet } = await getBscNetwork();
+      console.log('app ready', { networkId, wallet });
       const provider = getProvider({ networkId });
-      console.log('app ready', { networkId, provider });
       hznJSConnector.setContractSettings({ networkId, provider });
 
       fetchAppStatusRequest();
-      onWalletNetworkChange(wallet);
+      onWalletChainChange(wallet, fetchAppStatusRequest);
 
       setAppReady();
     };

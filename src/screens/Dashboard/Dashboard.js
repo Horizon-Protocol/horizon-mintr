@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Chip, Grid, CircularProgress, Tooltip } from '@material-ui/core';
+import { Avatar, Box, Chip, Grid, CircularProgress, Tooltip } from '@material-ui/core';
 
 import { getWalletDetails } from 'ducks/wallet';
 // import { showModal } from 'ducks/modal';
@@ -64,7 +64,7 @@ const Dashboard = ({
   const classes = useStyles();
   const { t } = useTranslation();
 
-  const { currentWallet, networkName } = walletDetails;
+  const { walletType, currentWallet, networkName } = walletDetails;
 
   return (
     <Grid
@@ -113,7 +113,13 @@ const Dashboard = ({
       <Tooltip title={t('dashboard.buttons.refresh')} placement="top">
         <Chip
           variant="outlined"
-          avatar={loading ? <CircularProgress size={12} /> : null}
+          avatar={
+            loading ? (
+              <CircularProgress size={12} />
+            ) : (
+              <Avatar alt={walletType} src={`images/wallets/${walletType.toLowerCase()}.svg`} />
+            )
+          }
           label={networkName}
           className={classes.network}
           onClick={refresh}
