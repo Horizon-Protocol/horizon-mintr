@@ -41,11 +41,11 @@ export const getDebtStatus = async (walletAddress: string) => {
     currentCRatio,
     transferable,
     debtBalance,
-    debtBalanceBN: result[3],
+    debtBalanceBN: result[4],
     hznPrice,
     liquidationRatio: 100 / liquidationRatio,
-    liquidationDelay: Number(result[6]),
-    liquidationDeadline: Number(result[7]),
+    liquidationDelay: Number(result[7]),
+    liquidationDeadline: Number(result[8]),
   };
 };
 
