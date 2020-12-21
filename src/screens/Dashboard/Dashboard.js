@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Chip, Grid } from '@material-ui/core';
+import { Box, Chip, Grid, CircularProgress, Tooltip } from '@material-ui/core';
 
 import { getWalletDetails } from 'ducks/wallet';
 // import { showModal } from 'ducks/modal';
@@ -61,6 +62,7 @@ const Dashboard = ({
   currentTheme,
 }) => {
   const classes = useStyles();
+  const { t } = useTranslation();
 
   const { currentWallet, networkName } = walletDetails;
 
@@ -108,7 +110,15 @@ const Dashboard = ({
               <ButtonTertiaryLabel>{t('dashboard.buttons.synthetixDashboard')}</ButtonTertiaryLabel>
             </StyledExternalLink>
           </Row> */}
-      <Chip label={networkName} className={classes.network} onClick={refresh} />
+      <Tooltip title={t('dashboard.buttons.refresh')} placement="top">
+        <Chip
+          variant="outlined"
+          avatar={loading ? <CircularProgress size={12} /> : null}
+          label={networkName}
+          className={classes.network}
+          onClick={refresh}
+        />
+      </Tooltip>
     </Grid>
   );
 };
