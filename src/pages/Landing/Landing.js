@@ -3,20 +3,17 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
 import { useTranslation } from 'react-i18next';
-import { makeStyles } from '@material-ui/core/styles';
-
-import hznJSConnector, { connectToWallet } from 'helpers/hznJSConnector';
 
 import { setCurrentPage, getCurrentTheme } from 'ducks/ui';
 import { updateWalletStatus, getWalletDetails } from 'ducks/wallet';
-
+import hznJSConnector, { connectToWallet } from 'helpers/hznJSConnector';
 import {
   SUPPORTED_WALLETS,
   SUPPORTED_WALLETS_MAP,
   hasWalletInstalled,
   onWalletAccountChange,
 } from 'helpers/networkHelper';
-import { ButtonPrimary, ButtonSecondary } from 'components/Button';
+import { ButtonPrimary } from 'components/Button';
 import { H1, H2, PMega, ButtonTertiaryLabel } from 'components/Typography';
 import Logo from 'components/Logo';
 
