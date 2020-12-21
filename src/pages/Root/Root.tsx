@@ -55,16 +55,6 @@ const Root: FC<PropsFromRedux> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appIsReady, currentWallet]);
 
-  useEffect(() => {
-    if (appIsReady) {
-      fetchGasPricesRequest();
-      fetchRatesRequest();
-      fetchAppStatusRequest();
-      onWalletNetworkChange();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [appIsReady]);
-
   useInterval(() => {
     if (appIsReady && currentWallet) {
       fetchGasPricesRequest();
@@ -79,10 +69,14 @@ const Root: FC<PropsFromRedux> = ({
 
   useEffect(() => {
     const init = async () => {
-      const { networkId } = await getBscNetwork();
+      const { networkId, wallet } = await getBscNetwork();
       const provider = getProvider({ networkId });
       console.log('app ready', { networkId, provider });
       hznJSConnector.setContractSettings({ networkId, provider });
+
+      fetchAppStatusRequest();
+      onWalletNetworkChange(wallet);
+
       setAppReady();
     };
     setTimeout(init, 1000); // binance wallet initiation has delay

@@ -4,6 +4,7 @@ import { BLOCKNATIVE_KEY } from 'helpers/networkHelper';
 
 interface INotifyProvider {
   children: any;
+  currentWallet: any;
   networkId: number;
 }
 
@@ -11,18 +12,24 @@ export const NotifyContext = createContext({
   notify: null,
 });
 
-export const NotifyProvider: React.FC<INotifyProvider> = ({ children, networkId }) => {
+export const NotifyProvider: React.FC<INotifyProvider> = ({
+  children,
+  currentWallet,
+  networkId,
+}) => {
   const [notify, setNotify] = useState<any>(null);
 
   useEffect(() => {
-    setNotify(
-      Notify({
-        dappId: BLOCKNATIVE_KEY,
-        networkId: networkId,
-        darkMode: true,
-      })
-    );
-  }, [networkId]);
+    if (currentWallet) {
+      setNotify(
+        Notify({
+          dappId: BLOCKNATIVE_KEY,
+          networkId: networkId,
+          darkMode: true,
+        })
+      );
+    }
+  }, [currentWallet, networkId]);
   return (
     <NotifyContext.Provider
       value={{

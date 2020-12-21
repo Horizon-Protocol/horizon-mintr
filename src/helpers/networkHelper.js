@@ -56,19 +56,26 @@ export async function getBscNetwork(wallet) {
   if (!hasAnyWalletInstalled()) {
     return defaultNetwork;
   }
-  let networkId = 56;
 
   try {
-    let chainId = window.BinanceChain?.chainId || window.ethereum?.chainId;
+    let networkId;
+    let wallet;
+    let chainId;
     if (wallet === SUPPORTED_WALLETS_MAP.BINANCE) {
       chainId = window.BinanceChain?.chainId;
+      if (chainId) {
+        wallet = SUPPORTED_WALLETS_MAP.BINANCE;
+      }
     } else if (wallet === SUPPORTED_WALLETS_MAP.METAMASK) {
       chainId = window.ethereum?.chainId;
+      if (chainId) {
+        wallet = SUPPORTED_WALLETS_MAP.METAMASK;
+      }
     }
     if (chainId) {
       console.log('chainId', chainId);
       networkId = parseInt(chainId);
-      return { name: SUPPORTED_NETWORKS[networkId], networkId };
+      return { name: SUPPORTED_NETWORKS[networkId], networkId, wallet };
     } else if (window.web3?.eth?.net) {
       console.log('web3.net');
       networkId = await window.web3.eth.net.getId();
@@ -114,24 +121,37 @@ export const getTransactionPrice = (gasPrice, gasLimit, ethPrice) => {
   return (gasPrice * ethPrice * gasLimit) / GWEI_UNIT;
 };
 
-export function onWalletAccountChange(cb) {
+export function bindWalletListeners(walletType, cb) {
   const listener = throttle(cb, 1000);
-  if (window.BinanceChain) {
-    window.BinanceChain.on('accountsChanged', listener);
+  let walletInjection = null;
+  if (walletType === SUPPORTED_WALLETS_MAP.BINANCE && window.BinanceChain) {
+    walletInjection = window.BinanceChain;
   }
-  if (window.ethereum) {
-    window.ethereum.on('accountsChanged', listener);
+  if (walletType === SUPPORTED_WALLETS_MAP.METAMASK && window.ethereum) {
+    walletInjection = window.ethereum;
   }
-}
 
-export function onWalletNetworkChange() {
-  if (window.BinanceChain) {
-    window.BinanceChain.on('chainChanged', () => {
+  if (walletInjection) {
+    walletInjection.on('accountsChanged', listener);
+    console.log('chainChanged');
+    walletInjection.on('chainChanged', () => {
       document.location.reload();
     });
   }
-  if (window.ethereum) {
-    window.ethereum.on('chainChanged', () => {
+}
+
+export function onWalletNetworkChange(walletType) {
+  let walletInjection = null;
+  if (walletType === SUPPORTED_WALLETS_MAP.BINANCE && window.BinanceChain) {
+    walletInjection = window.BinanceChain;
+  }
+  if (walletType === SUPPORTED_WALLETS_MAP.METAMASK && window.ethereum) {
+    walletInjection = window.ethereum;
+  }
+
+  if (walletInjection) {
+    console.log('chainChanged');
+    walletInjection.on('chainChanged', () => {
       document.location.reload();
     });
   }

@@ -11,7 +11,7 @@ import {
   SUPPORTED_WALLETS,
   SUPPORTED_WALLETS_MAP,
   hasWalletInstalled,
-  onWalletAccountChange,
+  bindWalletListeners,
 } from 'helpers/networkHelper';
 import { ButtonPrimary } from 'components/Button';
 import { H1, H2, PMega, ButtonTertiaryLabel } from 'components/Typography';
@@ -34,19 +34,17 @@ const onWalletClick = ({ wallet, derivationPath, updateWalletStatus, setCurrentP
     const walletStatus = await connectToWallet({ wallet, derivationPath });
     updateWalletStatus({ ...walletStatus, availableWallets: [] });
     if (walletStatus && walletStatus.unlocked && walletStatus.currentWallet) {
-      if (walletStatus.walletType === SUPPORTED_WALLETS_MAP.METAMASK) {
-        onWalletAccountChange(async () => {
-          const address = await hznJSConnector.signer.getNextAddresses();
-          const signer = new hznJSConnector.signers[SUPPORTED_WALLETS_MAP.METAMASK]({});
-          hznJSConnector.setContractSettings({
-            networkId: walletStatus.networkId,
-            signer,
-          });
-          if (address && address[0]) {
-            updateWalletStatus({ currentWallet: address[0] });
-          }
+      bindWalletListeners(walletStatus.walletType, async () => {
+        const address = await hznJSConnector.signer.getNextAddresses();
+        const signer = new hznJSConnector.signers[SUPPORTED_WALLETS_MAP.METAMASK]({});
+        hznJSConnector.setContractSettings({
+          networkId: walletStatus.networkId,
+          signer,
         });
-      }
+        if (address && address[0]) {
+          updateWalletStatus({ currentWallet: address[0] });
+        }
+      });
       setCurrentPage(PAGES_BY_KEY.MAIN);
     } else setCurrentPage(PAGES_BY_KEY.WALLET_SELECTION);
   };

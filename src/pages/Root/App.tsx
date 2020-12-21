@@ -71,7 +71,7 @@ const App: FC<AppProps> = ({
       <ThemeProvider theme={muiTheme}>
         <CssBaseline />
         {appIsReady && (
-          <NotifyProvider networkId={networkId ? networkId : 56}>
+          <NotifyProvider currentWallet={currentWallet} networkId={networkId ? networkId : 56}>
             <GlobalEventsGate />
             <MainLayout>
               <CurrentPage
