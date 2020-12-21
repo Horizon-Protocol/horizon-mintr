@@ -6,8 +6,8 @@
         "description": "Mintr is the dApp for HZN holders. If you've never used Mintr before, read through our quick introduction first."
       },
       "whatIsHorizon": {
-        "title": "What is Synthetix?",
-        "description": "Synthetix is a decentralised synthetic asset issuance protocol built on Ethereum. These synthetic assets (Hassets) are created by staking the Synthetix Network Token (HZN), and these Hassets can be exchanged for each other directly with the Synthetix smart contracts on Kwenta.io."
+        "title": "What is Horizon?",
+        "description": "Horizon is a decentralised synthetic asset issuance protocol built on Ethereum. These synthetic assets (Hassets) are created by staking the Horizon Network Token (HZN), and these Hassets can be exchanged for each other directly with the Horizon smart contracts on Kwenta.io."
       },
       "whyStakeSnx": {
         "title": "Why stake HZN?",
@@ -155,7 +155,7 @@
         },
         "buttons": {
           "burn": "Burn now",
-          "waitingPeriod": "Burn synths unlocked in"
+          "waitingPeriod": "Burn hassets unlocked in"
         }
       },
       "confirmation": {
@@ -207,7 +207,7 @@
           "title": "Debt over time"
         },
         "table": {
-          "yourSynths": "Your synths",
+          "yourSynths": "Your hassets",
           "balance": "Balance"
         }
       }
@@ -435,22 +435,22 @@
   "ieth": {
     "title": "iETH Rewards",
     "locked": {
-      "subtitle": "First approve the iEthRewards contract to transfer your iETH synths for staking.",
+      "subtitle": "First approve the iEthRewards contract to transfer your iETH hassets for staking.",
       "transaction": "Setting iETH allowance"
     },
     "unlocked": {
-      "subtitle": "Here you can stake your iETH synths, claim HZN rewards, or exit completely.",
+      "subtitle": "Here you can stake your iETH hassets, claim HZN rewards, or exit completely.",
       "settle-info": "You need to settle before being able to stake your iETH."
     }
   },
   "ibtc": {
     "title": "iBTC Rewards",
     "locked": {
-      "subtitle": "First approve the iBtcRewards contract to transfer your iBTC synths for staking.",
+      "subtitle": "First approve the iBtcRewards contract to transfer your iBTC hassets for staking.",
       "transaction": "Setting iBTC allowance"
     },
     "unlocked": {
-      "subtitle": "Here you can stake your iBTC synths, claim HZN rewards, or exit completely.",
+      "subtitle": "Here you can stake your iBTC hassets, claim HZN rewards, or exit completely.",
       "settle-info": "You need to settle before being able to stake your iBTC."
     }
   },
@@ -585,7 +585,7 @@
     "fixCRatio": "Fix your Collateralization Ratio",
     "edit": "Edit",
     "havingTrouble": "Having trouble?",
-    "whatIsHorizon": "What is Synthetix?",
+    "whatIsHorizon": "What is Horizon?",
     "previous": "Previous",
     "next": "Next",
     "startOver": "Start over",
@@ -634,7 +634,7 @@
   "tooltip": {
     "claim": "To claim rewards, you must be within 1% of the Target Collateralization Ratio. If you are below this figure, you will be blocked from claiming rewards until you burn enough hUSD.",
     "debtBalance": "Your debt begins as the amount of hUSD you initially mint, and fluctuates according to gains or losses made by other Synth holders. Any time someone holds a Synth that appreciates in value, that gain is distributed proportionally between all the staked HZN holders’ debts. To unlock all your staked HZN, you must first pay off your debt.",
-    "synthsBalance": "Hassets are the synthetic assets in the Synthetix system, including hUSD, sBTC, iBTC, and all of the other assets available at Kwenta.io. This figure is the total value of all the Hassets held in this wallet. If you wish to convert some Hassets back into hUSD, click the TRADE button.",
+    "synthsBalance": "Hassets are the synthetic assets in the Horizon system, including hUSD, sBTC, iBTC, and all of the other assets available at Kwenta.io. This figure is the total value of all the Hassets held in this wallet. If you wish to convert some Hassets back into hUSD, click the TRADE button.",
     "track": "<0>Issued debt:</0> This displays the total of all your mints and burns over time, revealing how only your C-Ratio management has affected your debt.<1 /><2>Actual debt:</2> This displays your total debt over time.",
     "poolCompleted": "This incentive is now completed. Please collect any rewards accrued and withdraw your tokens.",
     "liquidation": "This is the ratio at which your HZN can be liquidated. Liquidation was added in SIP-15, and once your C-Ratio goes below the liquidation ratio there is currently a {{liquidationDelay}} hours delay period before you can be liquidated."

@@ -3,26 +3,27 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
 import { useTranslation } from 'react-i18next';
+import { makeStyles } from '@material-ui/core/styles';
 
-import hznJSConnector, { connectToWallet } from '../../helpers/hznJSConnector';
+import hznJSConnector, { connectToWallet } from 'helpers/hznJSConnector';
 
-import { setCurrentPage, getCurrentTheme } from '../../ducks/ui';
-import { updateWalletStatus, getWalletDetails } from '../../ducks/wallet';
+import { setCurrentPage, getCurrentTheme } from 'ducks/ui';
+import { updateWalletStatus, getWalletDetails } from 'ducks/wallet';
 
 import {
   SUPPORTED_WALLETS,
   SUPPORTED_WALLETS_MAP,
   hasWalletInstalled,
   onWalletAccountChange,
-} from '../../helpers/networkHelper';
-import { ButtonPrimary, ButtonSecondary } from '../../components/Button';
-import { H1, H2, PMega, ButtonTertiaryLabel } from '../../components/Typography';
-import Logo from '../../components/Logo';
+} from 'helpers/networkHelper';
+import { ButtonPrimary, ButtonSecondary } from 'components/Button';
+import { H1, H2, PMega, ButtonTertiaryLabel } from 'components/Typography';
+import Logo from 'components/Logo';
 
-// import { Globe } from '../../components/Icons';
-// import { LanguageDropdown } from '../../components/Dropdown';
+// import { Globe } from 'components/Icons';
+// import { LanguageDropdown } from 'components/Dropdown';
 
-import { PAGES_BY_KEY } from '../../constants/ui';
+import { PAGES_BY_KEY } from 'constants/ui';
 import { LINKS } from 'constants/links';
 // import { ExternalLink } from 'styles/common';
 
@@ -137,17 +138,16 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
           currentTheme={currentTheme}
         />
         <ButtonRow>
-          <ButtonSecondary
+          <ButtonPrimary
+            variant="outlined"
+            style={{ width: 280 }}
             onClick={() => setPageIndex(Math.max(pageIndex - 1, 0))}
-            height="56px"
-            width="280px"
           >
             {t('button.previous')}
-          </ButtonSecondary>
+          </ButtonPrimary>
           <ButtonPrimary
+            style={{ width: 280 }}
             onClick={() => setPageIndex(pageIndex === SLIDE_COUNT ? 0 : pageIndex + 1)}
-            height="56px"
-            width="280px"
           >
             {pageIndex === SLIDE_COUNT ? t('button.startOver') : t('button.next')}
           </ButtonPrimary>

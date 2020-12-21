@@ -1,4 +1,4 @@
-import React, { useEffect, FC } from 'react';
+import { useEffect, FC } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
 import { setAppReady, getAppIsReady, fetchAppStatusRequest } from 'ducks/app';
@@ -81,6 +81,7 @@ const Root: FC<PropsFromRedux> = ({
     const init = async () => {
       const { networkId } = await getBscNetwork();
       const provider = getProvider({ networkId });
+      console.log('app ready', { networkId, provider });
       hznJSConnector.setContractSettings({ networkId, provider });
       setAppReady();
     };

@@ -1,9 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
-import { ButtonPrimaryLabel, ButtonPrimaryLabelMedium } from '../Typography';
+import { Button, makeStyles } from '@material-ui/core';
+import { ButtonPrimaryLabelMedium } from '../Typography';
+
+const useStyles = makeStyles(({ typography }) => ({
+  label: {
+    fontWeight: 'inherit',
+  },
+  containedSizeLarge: {
+    fontSize: typography.fontSize * 1.15,
+    fontWeight: typography.fontWeightBold,
+  },
+  outlinedSizeLarge: {
+    fontSize: typography.fontSize * 1.15,
+    fontWeight: typography.fontWeightBold,
+  },
+  textSizeLarge: {
+    fontSize: typography.fontSize * 1.15,
+    fontWeight: typography.fontWeightBold,
+  },
+}));
 
 export const ButtonPrimary = ({ children, onClick, disabled, ...props }) => {
+  const classes = useStyles();
   return (
     <Button
       variant="contained"
@@ -12,9 +31,10 @@ export const ButtonPrimary = ({ children, onClick, disabled, ...props }) => {
       fullWidth
       onClick={onClick}
       disabled={disabled}
+      classes={classes}
       {...props}
     >
-      <ButtonPrimaryLabel>{children}</ButtonPrimaryLabel>
+      {children}
     </Button>
   );
 };
