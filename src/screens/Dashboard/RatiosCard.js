@@ -2,11 +2,14 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Card from './Card';
 
-export default function CollRatios({ loading, currentTheme, debtStatusData = {} }) {
+export default function RatiosCard({ loading, debtStatusData = {} }) {
   const { t } = useTranslation();
 
+  console.log('debtStatusData', debtStatusData);
+
   const rows = useMemo(() => {
-    const { currentCRatio, targetCRatio } = debtStatusData | {};
+    const { currentCRatio, targetCRatio } = debtStatusData || {};
+    console.log('rows', currentCRatio, targetCRatio);
     return [
       {
         name: t('dashboard.ratio.current'),
