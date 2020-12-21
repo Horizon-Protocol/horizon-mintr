@@ -24,6 +24,7 @@ type MainProps = {
 
 const useStyles = makeStyles(theme => ({
   root: {
+    flexGrow: 1,
     background: 'radial-gradient(#11263B, #120C1C);',
   },
 }));
