@@ -31,8 +31,13 @@ const useGetDebtData = (walletAddress, debtStatusData) => {
           bigNumberFormatter
         );
 
-        const { debtBalance, debtBalanceBN, issuanceRatio, maxIssuableSynths, hznPrice } =
-          debtStatusData || {};
+        const {
+          debtBalance,
+          debtBalanceBN,
+          targetCRatio: issuanceRatio,
+          issuableHassets,
+          hznPrice,
+        } = debtStatusData || {};
 
         let maxBurnAmount, maxBurnAmountBN;
         if (debtBalance > hUSDBalance) {
@@ -44,17 +49,15 @@ const useGetDebtData = (walletAddress, debtStatusData) => {
         }
 
         const escrowBalance = totalRewardEscrow + totalTokenSaleEscrow;
+
         setData({
           issuanceRatio,
           hUSDBalance,
           maxBurnAmount,
           maxBurnAmountBN,
           hznPrice,
-          burnAmountToFixCRatio: Math.max(debtBalance - maxIssuableSynths, 0),
-          debtEscrow: Math.max(
-            escrowBalance * hznPrice * issuanceRatio + debtBalance - maxIssuableSynths,
-            0
-          ),
+          burnAmountToFixCRatio: Math.max(-issuableHassets, 0),
+          debtEscrow: Math.max(escrowBalance * hznPrice * issuanceRatio - issuableHassets, 0),
         });
       } catch (e) {
         console.log(e);
@@ -261,6 +264,8 @@ const Burn = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }
     setBurnAmount: amount => {
       const amountNB = Number(amount);
       setBurnAmount(amount);
+      console.log(amountNB, debtEscrow, issuanceRatio, hznPrice);
+      console.log((amountNB - debtEscrow) / issuanceRatio / hznPrice);
       setTransferableAmount(
         amountNB ? Math.max((amountNB - debtEscrow) / issuanceRatio / hznPrice, 0) : 0
       );

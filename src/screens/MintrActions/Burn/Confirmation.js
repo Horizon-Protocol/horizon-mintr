@@ -23,8 +23,8 @@ const Confirmation = ({
   walletType,
   burnAmount,
   transferableAmount,
-  isFetchingGasLimit,
-  gasLimit,
+  // isFetchingGasLimit,
+  // gasLimit,
 }) => {
   return (
     <SlidePage>

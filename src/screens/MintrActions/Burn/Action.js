@@ -34,6 +34,8 @@ const Action = ({
   maxBurnAmount,
   burnAmount,
   setBurnAmount,
+  transferableAmount,
+  setTransferableAmount,
   isFetchingGasLimit,
   gasEstimateError,
   waitingPeriod,
@@ -107,7 +109,7 @@ const Action = ({
         <Box mb={1}>
           <Body2>{t('mintrActions.burn.action.instruction')}</Body2>
         </Box>
-        <Box mb={4}>
+        <Box mb={2}>
           {/* <ButtonRow>
               <AmountButton
                 onClick={() => {
@@ -147,6 +149,17 @@ const Action = ({
             }
           />
           <ErrorMessage message={gasEstimateError} />
+        </Box>
+        <Box mb={1}>
+          <Body2>{t('mintrActions.burn.action.transferrable.title')}</Body2>
+        </Box>
+        <Box mb={2}>
+          <Input
+            singleSynth={'HZN'}
+            onChange={e => setTransferableAmount(e.target.value)}
+            value={transferableAmount}
+            placeholder="0.00"
+          />
         </Box>
         {/* <TransactionPriceIndicator isFetchingGasLimit={isFetchingGasLimit} gasLimit={gasLimit} /> */}
         {renderSubmitButton()}
