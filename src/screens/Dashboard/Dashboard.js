@@ -44,10 +44,16 @@ const useStyles = makeStyles(({ palette }) => ({
     bottom: -16,
     color: palette.text.secondary,
     backgroundColor: '#0A171F',
-    border: '1px solid #11263B',
+    borderColor: '#11263B',
     textTransform: 'capitalize',
   },
 }));
+
+const networkIcon = {
+  width: 16,
+  height: 16,
+  marginLeft: 8,
+};
 
 const Dashboard = ({
   walletDetails,
@@ -115,13 +121,20 @@ const Dashboard = ({
           variant="outlined"
           avatar={
             loading ? (
-              <CircularProgress size={12} />
+              <CircularProgress color="secondary" size={16} style={networkIcon} />
             ) : (
-              <Avatar alt={walletType} src={`images/wallets/${walletType.toLowerCase()}.svg`} />
+              <Avatar
+                variant="square"
+                alt={walletType}
+                src={`images/wallets/${walletType.toLowerCase()}.svg`}
+                style={networkIcon}
+              />
             )
           }
           label={networkName}
-          className={classes.network}
+          classes={{
+            root: classes.network,
+          }}
           onClick={refresh}
         />
       </Tooltip>
