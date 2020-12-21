@@ -40,10 +40,12 @@ const Action = ({
   issuanceRatio,
   hznPrice,
   debtBalance,
-  hznBalance,
+  walletBalances,
   // gasLimit,
 }) => {
   const classes = useStyles({ color });
+
+  const hznBalance = walletBalances?.crypto?.HZN;
 
   return (
     <SlidePage>
