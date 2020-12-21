@@ -175,7 +175,7 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
           <Link href={LINKS.Support} target="_blank">
             <ButtonTertiaryLabel>{t('button.havingTrouble')}</ButtonTertiaryLabel>
           </Link>
-          <Link href={'https://docs.synthetix.io/litepaper/'} target="_blank">
+          <Link href={'https://horizonprotocol.com'} target="_blank">
             <ButtonTertiaryLabel>{t('button.whatIsHorizon')}</ButtonTertiaryLabel>
           </Link>
           {/* <ExternalLink
