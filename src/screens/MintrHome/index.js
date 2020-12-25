@@ -119,6 +119,7 @@ const ActionTab = ({ color, title, desc, amount, amountLabel }) => {
 };
 
 const Home = ({ walletBalances, debtStatusData, onSuccess }) => {
+  console.log(walletBalances, debtStatusData);
   const classes = useStyles();
   const { t } = useTranslation();
 
