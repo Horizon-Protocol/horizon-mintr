@@ -1,13 +1,10 @@
-import { FC, useCallback } from 'react';
+import { FC } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 
-import { getWalletBalances, fetchBalancesRequest, getIsFetchingBalances } from 'ducks/balances';
-import {
-  getDebtStatusData,
-  fetchDebtStatusRequest,
-  getIsFetchingBDebtData,
-} from 'ducks/debtStatus';
+import { getWalletBalances } from 'ducks/balances';
+import { getRates } from 'ducks/rates';
+import { getDebtStatusData } from 'ducks/debtStatus';
 
 import LiquidationBanner from 'components/BannerLiquidation';
 import Dashboard from 'screens/Dashboard';
@@ -16,10 +13,10 @@ import MintrHome from 'screens/MintrHome';
 type MainProps = {
   wallet: string;
   walletBalances: object;
+  rates: object;
   debtStatusData: object;
   loading: boolean;
-  fetchBalancesRequest: () => void;
-  fetchDebtStatusRequest: () => void;
+  refresh: () => void;
 };
 
 const useStyles = makeStyles(theme => ({
@@ -30,29 +27,28 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Main: FC<MainProps> = ({
+  refresh,
+  loading,
   wallet,
   walletBalances,
+  rates,
   debtStatusData,
-  loading,
-  fetchBalancesRequest,
-  fetchDebtStatusRequest,
 }) => {
+  console.log('walletBalances', walletBalances);
+  console.log('rates', rates);
+  console.log('debtStatusData', debtStatusData);
   const classes = useStyles();
-
-  const fetchData = useCallback(() => {
-    fetchBalancesRequest();
-    fetchDebtStatusRequest();
-  }, [fetchBalancesRequest, fetchDebtStatusRequest]);
 
   const props = {
     currentWallet: wallet,
     walletBalances,
+    rates,
     debtStatusData,
     loading,
-    refresh: fetchData,
+    refresh,
     onSuccess: () => {
       console.log('onSuccess');
-      fetchData();
+      refresh();
     },
   };
 
@@ -67,13 +63,8 @@ const Main: FC<MainProps> = ({
 
 const mapStateToProps = state => ({
   walletBalances: getWalletBalances(state),
+  rates: getRates(state),
   debtStatusData: getDebtStatusData(state),
-  loading: getIsFetchingBalances(state) || getIsFetchingBDebtData(state),
 });
 
-const mapDispatchToProps = {
-  fetchBalancesRequest,
-  fetchDebtStatusRequest,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, null)(Main);

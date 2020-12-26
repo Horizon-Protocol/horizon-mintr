@@ -61,6 +61,7 @@ export const getSNXRate = (state: RootState) =>
 export const getSUSDRate = (state: RootState) =>
   getRatesState(state).rates && getRatesState(state).rates![CRYPTO_CURRENCY_TO_KEY.sUSD];
 export const getRates = (state: RootState) => getRatesState(state).rates;
+export const getIsFetchingRates = (state: RootState) => getRatesState(state).isFetching;
 
 function* fetchRates() {
   try {

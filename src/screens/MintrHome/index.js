@@ -4,9 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Fade, Grid, Tabs, Tab, Container, Typography } from '@material-ui/core';
 
 // import { isMainNet } from 'helpers/networkHelper';
+import { formatCurrency } from 'helpers/formatters';
+import { CRYPTO_CURRENCY_TO_KEY } from 'constants/currency';
 
 import MintrAction from '../MintrActions';
-import { formatCurrency } from 'helpers/formatters';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -118,8 +119,9 @@ const ActionTab = ({ color, title, desc, amount, amountLabel }) => {
   );
 };
 
-const Home = ({ walletBalances, debtStatusData, onSuccess }) => {
+const Home = ({ walletBalances, rates, debtStatusData, onSuccess }) => {
   console.log('walletBalances:', walletBalances);
+  console.log('rates:', rates);
   console.log('debtStatusData:', debtStatusData);
   const classes = useStyles();
   const { t } = useTranslation();
@@ -143,13 +145,14 @@ const Home = ({ walletBalances, debtStatusData, onSuccess }) => {
   const activeTab = useMemo(() => tabs.find(({ key }) => key === currentAction), [currentAction]);
 
   const actionAmounts = useMemo(() => {
-    const { debtBalance, targetCRatio, hznPrice } = debtStatusData || {};
+    const hznPrice = rates?.[CRYPTO_CURRENCY_TO_KEY.HZN];
+    const { debtBalance, targetCRatio } = debtStatusData || {};
     return {
       mint: debtBalance ? debtBalance / targetCRatio / hznPrice : 0,
       burn: debtStatusData?.debtBalance,
       claim: 0,
     };
-  }, [debtStatusData]);
+  }, [rates, debtStatusData]);
 
   return (
     <Box className={classes.root}>
@@ -198,6 +201,7 @@ const Home = ({ walletBalances, debtStatusData, onSuccess }) => {
                 action={currentAction}
                 color={activeTab.color}
                 walletBalances={walletBalances}
+                rates={rates}
                 debtStatusData={debtStatusData}
                 onSuccess={onSuccess}
               />

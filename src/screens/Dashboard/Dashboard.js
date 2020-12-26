@@ -2,17 +2,24 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
-import { Avatar, Box, Chip, Grid, CircularProgress, Tooltip } from '@material-ui/core';
+import {
+  Avatar,
+  Box,
+  Chip,
+  Divider,
+  Grid,
+  CircularProgress,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
 
+import { CRYPTO_CURRENCY_TO_KEY } from 'constants/currency';
+import { formatCurrency } from 'helpers/formatters';
 import { getWalletDetails } from 'ducks/wallet';
 // import { showModal } from 'ducks/modal';
 import { getCurrentTheme } from 'ducks/ui';
-
-// import { getRates } from 'ducks/rates';
 // import { getTotalEscrowedBalance, fetchEscrowRequest, getIsFetchingEscrowData } from 'ducks/escrow';
-
 // import { MODAL_TYPES_TO_KEY } from 'constants/modal';
-// import { MicroSpinner } from 'components/Spinner';
 
 import BalanceCard from './BalanceCard';
 import RatiosCard from './RatiosCard';
@@ -21,7 +28,7 @@ const useStyles = makeStyles(({ palette }) => ({
   container: {
     minWidth: 1080,
     position: 'relative',
-    padding: '42px 0',
+    padding: '24px 0',
     borderBottom: '1px solid #11263B',
   },
   logo: {
@@ -34,9 +41,8 @@ const useStyles = makeStyles(({ palette }) => ({
     top: 16,
     display: 'flex',
   },
-  title: {
-    padding: '0 24px',
-    height: 140,
+  prices: {
+    padding: '8px 24px',
   },
   network: {
     zIndex: 1,
@@ -57,6 +63,7 @@ const networkIcon = {
 
 const Dashboard = ({
   walletDetails,
+  rates,
   debtStatusData,
   loading,
   // totalEscrowedBalances,
@@ -90,22 +97,17 @@ const Dashboard = ({
           debtData={debtStatusData}
         />
       </Box>
-      {/* <PricesContainer>
-          {['HZN', 'ETH'].map(asset => {
-            return (
-              <Asset key={asset}>
-                <CurrencyIcon src={`/images/currencies/${asset}.svg`} />
-                {isEmpty(rates) ? (
-                  <Skeleton height="22px" />
-                ) : (
-                  <CurrencyPrice>
-                    1 {asset} = ${formatCurrency(rates[asset])} USD
-                  </CurrencyPrice>
-                )}
-              </Asset>
-            );
-          })}
-        </PricesContainer> */}
+      <Grid container justify="center" className={classes.prices}>
+        <Typography variant="subtitle2">
+          1 {CRYPTO_CURRENCY_TO_KEY.HZN} = ${formatCurrency(rates?.[CRYPTO_CURRENCY_TO_KEY.HZN])}{' '}
+          USD
+        </Typography>
+        <Divider variant="middle" orientation="vertical" flexItem />
+        <Typography variant="subtitle2">
+          1 {CRYPTO_CURRENCY_TO_KEY.BNB} = ${formatCurrency(rates?.[CRYPTO_CURRENCY_TO_KEY.BNB])}{' '}
+          USD
+        </Typography>
+      </Grid>
       {/* <BarCharts debtData={debtStatusData} totalEscrow={totalEscrowedBalances} />
           <BalanceTable debtData={debtStatusData} />
           <Row margin="18px 0 0 0 ">

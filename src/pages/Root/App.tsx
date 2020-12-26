@@ -38,16 +38,18 @@ type CurrentPageProps = {
   isOnMaintenance: boolean;
   page: string;
   wallet: string;
+  loading: boolean;
+  refresh: () => void;
 };
 
-const CurrentPage: FC<CurrentPageProps> = ({ isOnMaintenance, page, wallet }) => {
+const CurrentPage: FC<CurrentPageProps> = ({ isOnMaintenance, page, wallet, refresh, loading }) => {
   if (isMobileOrTablet()) return <MobileLanding />;
   if (isOnMaintenance) return <MaintenancePage />;
   switch (page) {
     case PAGES_BY_KEY.WALLET_SELECTION:
       return <WalletSelection />;
     case PAGES_BY_KEY.MAIN:
-      return <Main wallet={wallet} />;
+      return <Main wallet={wallet} refresh={refresh} loading={loading} />;
     default:
       return <Landing />;
   }
@@ -55,10 +57,14 @@ const CurrentPage: FC<CurrentPageProps> = ({ isOnMaintenance, page, wallet }) =>
 
 type AppProps = {
   appIsReady: boolean;
+  loading: boolean;
+  refresh: () => void;
 } & PropsFromRedux;
 
 const App: FC<AppProps> = ({
   appIsReady,
+  loading,
+  refresh,
   currentTheme,
   currentPage,
   appIsOnMaintenance,
@@ -76,6 +82,8 @@ const App: FC<AppProps> = ({
             <MainLayout>
               <CurrentPage
                 isOnMaintenance={appIsOnMaintenance}
+                refresh={refresh}
+                loading={loading}
                 page={currentPage}
                 wallet={currentWallet}
               />

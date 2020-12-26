@@ -1,13 +1,14 @@
-import { useEffect, FC } from 'react';
+import { useEffect, FC, useCallback } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
 import { setAppReady, getAppIsReady, fetchAppStatusRequest } from 'ducks/app';
-import { fetchDebtStatusRequest } from 'ducks/debtStatus';
-import { fetchEscrowRequest } from 'ducks/escrow';
+
 import { getCurrentWallet } from 'ducks/wallet';
-import { fetchBalancesRequest } from 'ducks/balances';
+import { fetchBalancesRequest, getIsFetchingBalances } from 'ducks/balances';
+import { fetchRatesRequest, getIsFetchingRates } from 'ducks/rates';
+import { fetchDebtStatusRequest, getIsFetchingBDebtData } from 'ducks/debtStatus';
+import { fetchEscrowRequest } from 'ducks/escrow';
 import { fetchGasPricesRequest } from 'ducks/network';
-import { fetchRatesRequest } from 'ducks/rates';
 import { RootState } from 'ducks/types';
 
 import App from './App';
@@ -20,6 +21,8 @@ import { INTERVAL_TIMER } from 'constants/ui';
 const mapStateToProps = (state: RootState) => ({
   appIsReady: getAppIsReady(state),
   currentWallet: getCurrentWallet(state),
+  loading:
+    getIsFetchingBalances(state) || getIsFetchingRates(state) || getIsFetchingBDebtData(state),
 });
 
 const mapDispatchToProps = {
@@ -45,22 +48,32 @@ const Root: FC<PropsFromRedux> = ({
   fetchGasPricesRequest,
   fetchAppStatusRequest,
   fetchRatesRequest,
+  loading,
 }) => {
+  const fetchData = useCallback(() => {
+    fetchBalancesRequest();
+    fetchRatesRequest();
+    fetchDebtStatusRequest();
+    fetchEscrowRequest();
+    fetchGasPricesRequest();
+  }, [
+    fetchBalancesRequest,
+    fetchRatesRequest,
+    fetchDebtStatusRequest,
+    fetchEscrowRequest,
+    fetchGasPricesRequest,
+  ]);
+
   useEffect(() => {
     if (appIsReady && currentWallet) {
-      fetchDebtStatusRequest();
-      fetchEscrowRequest();
-      fetchBalancesRequest();
+      fetchData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appIsReady, currentWallet]);
 
   useInterval(() => {
     if (appIsReady && currentWallet) {
-      fetchGasPricesRequest();
-      fetchRatesRequest();
-      fetchDebtStatusRequest();
-      fetchBalancesRequest();
+      fetchData();
     }
     if (appIsReady) {
       fetchAppStatusRequest();
@@ -83,7 +96,7 @@ const Root: FC<PropsFromRedux> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <App appIsReady={appIsReady} />;
+  return <App appIsReady={appIsReady} refresh={fetchData} loading={loading} />;
 };
 
 export default connector(Root);

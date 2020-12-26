@@ -1,16 +1,17 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
+import { CRYPTO_CURRENCY_TO_KEY } from 'constants/currency';
 import hznJSConnector from 'helpers/hznJSConnector';
 import { addBufferToGasLimit } from 'helpers/networkHelper';
-import { SliderContext } from 'components/ScreenSlider';
 import { formatCurrency } from 'helpers/formatters';
 import errorMapper from 'helpers/errorMapper';
+import { notifyHandler } from 'helpers/notifyHelper';
 import { getCurrentGasPrice } from 'ducks/network';
 import { getWalletDetails } from 'ducks/wallet';
 import { useNotifyContext } from 'contexts/NotifyContext';
-import { notifyHandler } from 'helpers/notifyHelper';
+import { SliderContext } from 'components/ScreenSlider';
 
 import Action from './Action';
 import Confirmation from './Confirmation';
@@ -64,11 +65,11 @@ const Mint = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }
   const [gasLimit, setGasLimit] = useState(0);
   const { notify } = useNotifyContext();
 
+  const hznPrice = useMemo(() => props.rates?.[CRYPTO_CURRENCY_TO_KEY.HZN], [props.rates]);
   const {
     issuableHassets,
     transferable: issuableAmount,
     targetCRatio: issuanceRatio,
-    hznPrice,
     debtBalance,
   } = props.debtStatusData || {};
 

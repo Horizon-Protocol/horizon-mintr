@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { addSeconds, differenceInSeconds } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 
+import { CRYPTO_CURRENCY_TO_KEY } from 'constants/currency';
 import { SliderContext } from 'components/ScreenSlider';
 import hznJSConnector from 'helpers/hznJSConnector';
 import { addBufferToGasLimit } from 'helpers/networkHelper';
@@ -17,7 +18,7 @@ import Action from './Action';
 import Confirmation from './Confirmation';
 import Complete from './Complete';
 
-const useGetDebtData = (walletAddress, debtStatusData) => {
+const useGetDebtData = (walletAddress, rates, debtStatusData) => {
   const [data, setData] = useState({});
   useEffect(() => {
     const getDebtData = async () => {
@@ -31,13 +32,9 @@ const useGetDebtData = (walletAddress, debtStatusData) => {
           bigNumberFormatter
         );
 
-        const {
-          debtBalance,
-          debtBalanceBN,
-          targetCRatio: issuanceRatio,
-          issuableHassets,
-          hznPrice,
-        } = debtStatusData || {};
+        const hznPrice = rates?.[CRYPTO_CURRENCY_TO_KEY.HZN];
+        const { debtBalance, debtBalanceBN, targetCRatio: issuanceRatio, issuableHassets } =
+          debtStatusData || {};
 
         let maxBurnAmount, maxBurnAmountBN;
         if (debtBalance > hUSDBalance) {
@@ -65,7 +62,7 @@ const useGetDebtData = (walletAddress, debtStatusData) => {
     };
     getDebtData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [walletAddress, debtStatusData]);
+  }, [walletAddress, rates, debtStatusData]);
   return data;
 };
 
@@ -144,7 +141,7 @@ const Burn = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }
     hznPrice,
     burnAmountToFixCRatio,
     debtEscrow,
-  } = useGetDebtData(currentWallet, props.debtStatusData);
+  } = useGetDebtData(currentWallet, props.rates, props.debtStatusData);
 
   const getMaxSecsLeftInWaitingPeriod = useCallback(async () => {
     const {

@@ -7,11 +7,10 @@ const DEFAULT_SUSD_RATE = 1;
 
 export const getDebtStatus = async (walletAddress: string) => {
   const {
-    hznJS: { SystemSettings, Synthetix, ExchangeRates, Liquidations },
+    hznJS: { SystemSettings, Synthetix, Liquidations },
   } = hznJSConnector as any;
 
   const hUSDBytes = bytesFormatter('hUSD');
-  const hznBytes = bytesFormatter('HZN');
 
   const result = await Promise.all([
     Synthetix.maxIssuableSynths(walletAddress),
@@ -19,7 +18,6 @@ export const getDebtStatus = async (walletAddress: string) => {
     Synthetix.collateralisationRatio(walletAddress),
     Synthetix.transferableSynthetix(walletAddress),
     Synthetix.debtBalanceOf(walletAddress, hUSDBytes),
-    ExchangeRates.rateForCurrency(hznBytes),
     Liquidations.liquidationRatio(),
     Liquidations.liquidationDelay(),
     Liquidations.getLiquidationDeadlineForAccount(walletAddress),
@@ -31,7 +29,6 @@ export const getDebtStatus = async (walletAddress: string) => {
     currentCRatio,
     transferable,
     debtBalance,
-    hznPrice,
     liquidationRatio,
   ] = result.map(bigNumberFormatter);
 
@@ -42,10 +39,9 @@ export const getDebtStatus = async (walletAddress: string) => {
     transferable,
     debtBalance,
     debtBalanceBN: result[4],
-    hznPrice,
     liquidationRatio: 100 / liquidationRatio,
-    liquidationDelay: Number(result[7]),
-    liquidationDeadline: Number(result[8]),
+    liquidationDelay: Number(result[6]),
+    liquidationDeadline: Number(result[7]),
   };
 };
 
@@ -91,14 +87,14 @@ export const getExchangeRates = async () => {
     hznJS: { ExchangeRates },
   } = hznJSConnector as any;
 
-  const [synthsRates, snxRate, curveSUSDRate] = await Promise.all([
+  const [synthsRates, hznRate, curveSUSDRate] = await Promise.all([
     synthSummaryUtilContract.synthsRates(),
     ExchangeRates.rateForCurrency(bytesFormatter(CRYPTO_CURRENCY_TO_KEY.HZN)),
     fetchCurveSUSDRate(),
   ]);
 
   let exchangeRates = {
-    [CRYPTO_CURRENCY_TO_KEY.HZN]: snxRate / 1e18,
+    [CRYPTO_CURRENCY_TO_KEY.HZN]: hznRate / 1e18,
   };
   const [keys, rates] = synthsRates;
   keys.forEach((key: string, i: number) => {
@@ -106,6 +102,9 @@ export const getExchangeRates = async () => {
     const rate = rates[i] / 1e18;
     if (synthName === CRYPTO_CURRENCY_TO_KEY.hUSD) {
       exchangeRates[CRYPTO_CURRENCY_TO_KEY.hUSD] = curveSUSDRate;
+    } else if (synthName === CRYPTO_CURRENCY_TO_KEY.hBNB) {
+      exchangeRates[CRYPTO_CURRENCY_TO_KEY.hBNB] = rate;
+      exchangeRates[CRYPTO_CURRENCY_TO_KEY.BNB] = rate;
     } else if (synthName === CRYPTO_CURRENCY_TO_KEY.hETH) {
       exchangeRates[CRYPTO_CURRENCY_TO_KEY.hETH] = rate;
       exchangeRates[CRYPTO_CURRENCY_TO_KEY.ETH] = rate;
