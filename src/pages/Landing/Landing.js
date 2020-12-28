@@ -174,7 +174,7 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
             );
           })}
           <PMedium m={'24px'}>
-            Please make sure the wallet you choose is connected BSC network
+            Please make sure the wallet you choose is connected to BSC network
           </PMedium>
         </Wallets>
         <BottomLinks>
