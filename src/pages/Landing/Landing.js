@@ -14,7 +14,7 @@ import {
   bindWalletListeners,
 } from 'helpers/networkHelper';
 import { ButtonPrimary } from 'components/Button';
-import { H1, H2, PMega, ButtonTertiaryLabel } from 'components/Typography';
+import { H1, H2, PMega, PMedium, ButtonTertiaryLabel } from 'components/Typography';
 import Logo from 'components/Logo';
 
 // import { Globe } from 'components/Icons';
@@ -75,7 +75,8 @@ const OnBoardingCarousel = ({ pageIndex, setPageIndex, currentTheme }) => {
           <OnboardingH1>{t('onboarding.slides.whatIsHorizon.title')}</OnboardingH1>
           <OnboardingPMega>{t('onboarding.slides.whatIsHorizon.description')}</OnboardingPMega>
           <OnboardingIllustration
-            src={`/images/onboarding/what-is-horizon-${currentTheme ? 'dark' : 'light'}.png`}
+            style={{ marginTop: 24 }}
+            src="/images/onboarding/what-is-horizon.png"
           />
         </CarouselSlide>
 
@@ -83,7 +84,11 @@ const OnBoardingCarousel = ({ pageIndex, setPageIndex, currentTheme }) => {
           <OnboardingH1>{t('onboarding.slides.whyStakeSnx.title')}</OnboardingH1>
           <OnboardingPMega>{t('onboarding.slides.whyStakeSnx.description')}</OnboardingPMega>
           <OnboardingIllustration
-            src={`/images/onboarding/why-stake-${currentTheme ? 'dark' : 'light'}.png`}
+            style={{
+              marginTop: 24,
+              width: 120,
+            }}
+            src="/images/onboarding/why-stake.png"
           />
         </CarouselSlide>
 
@@ -168,6 +173,9 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
               </Button>
             );
           })}
+          <PMedium m={'24px'}>
+            Please make sure the wallet you choose is connected BSC network
+          </PMedium>
         </Wallets>
         <BottomLinks>
           {/* <Link href={LINKS.Support} target="_blank">
@@ -195,7 +203,7 @@ const LandingPageContainer = styled.div`
 const OnboardingContainer = styled.div`
   width: 100%;
   padding: 42px;
-  background-color: ${props => props.theme.colorStyles.panels};
+  /* background-color: ${props => props.theme.colorStyles.panels}; */
   border-right: 1px solid ${props => props.theme.colorStyles.borders};
 `;
 
@@ -241,7 +249,6 @@ const WalletConnectContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  background-color: ${props => props.theme.colorStyles.background};
 `;
 
 const Wallets = styled.div`
@@ -260,14 +267,15 @@ const Button = styled.button`
   display: flex;
   justify-content: left;
   align-items: center;
-  background-color: ${props => props.theme.colorStyles.panelButton};
+  background-color: #222d3d;
   border: 1px solid ${props => props.theme.colorStyles.borders};
+  border-radius: 8px;
 
   opacity: ${props => (props.disabled ? '0.4' : 1)};
   cursor: pointer;
   transition: all 0.1s ease;
   :hover {
-    background-color: ${props => props.theme.colorStyles.panelButtonHover};
+    background-color: #344660;
   }
 `;
 

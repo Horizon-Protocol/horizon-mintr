@@ -8,7 +8,7 @@ const MainLayout = styled(FlexDiv)`
   min-width: 1200px;
   min-height: 100vh;
   position: relative;
-  background: ${({ theme }) => theme.colorStyles.background};
+  background: radial-gradient(#11263b, #120c1c);
 `;
 
 export default MainLayout;

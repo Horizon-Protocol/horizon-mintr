@@ -53,22 +53,34 @@ const defaultNetworkId = 97;
 const defaultNetwork = { name: SUPPORTED_NETWORKS[defaultNetworkId], networkId: defaultNetworkId };
 
 const getAvailableWallet = targetWallet => {
+  let res = {};
   if (targetWallet) {
-    return {
-      wallet: targetWallet,
-      injection: window[WALLET_INJECT_MAP[targetWallet]],
-    };
-  }
-  for (const wallet of SUPPORTED_WALLETS) {
-    let injection = window[WALLET_INJECT_MAP[wallet]];
-    if (injection) {
-      return {
-        wallet,
-        injection,
+    const chainId = window[WALLET_INJECT_MAP[targetWallet]]?.chainId;
+    const networkId = parseInt(chainId);
+    if (SUPPORTED_NETWORKS[networkId]) {
+      res = {
+        wallet: targetWallet,
+        networkId,
       };
     }
+  } else {
+    for (const wallet of [SUPPORTED_WALLETS_MAP.METAMASK, SUPPORTED_WALLETS_MAP.BINANCE]) {
+      const injection = window[WALLET_INJECT_MAP[wallet]];
+      const chainId = injection?.chainId;
+      const networkId = parseInt(chainId);
+      if (SUPPORTED_NETWORKS[networkId]) {
+        res = {
+          wallet,
+          networkId,
+        };
+        break;
+      }
+    }
   }
-  return {};
+  if (targetWallet && !res.networkId) {
+    window.alert(`${targetWallet} Wallet is not connected to BSC network!`);
+  }
+  return res;
 };
 
 export async function getBscNetwork(targetWallet) {
@@ -77,21 +89,23 @@ export async function getBscNetwork(targetWallet) {
   }
 
   try {
-    const { wallet, injection } = getAvailableWallet(targetWallet);
-    const chainId = injection?.chainId;
-    console.log('wallet', wallet, chainId);
-    if (chainId) {
-      console.log('chainId', chainId);
-      const networkId = parseInt(chainId);
+    const { wallet, networkId } = getAvailableWallet(targetWallet);
+    console.log('wallet', wallet, networkId);
+    if (networkId) {
+      console.log('networkId', networkId);
       return { name: SUPPORTED_NETWORKS[networkId], networkId, wallet };
     } else if (window.web3?.eth?.net) {
       const networkId = await window.web3.eth.net.getId();
       console.log('web3.net', networkId);
-      return { name: SUPPORTED_NETWORKS[networkId], networkId: Number(networkId) };
+      if (SUPPORTED_NETWORKS[networkId]) {
+        return { name: SUPPORTED_NETWORKS[networkId], networkId: Number(networkId) };
+      }
     } else if (window.web3?.version?.network) {
       const networkId = Number(window.web3.version.network);
       console.log('web3.network', networkId);
-      return { name: SUPPORTED_NETWORKS[networkId], networkId };
+      if (SUPPORTED_NETWORKS[networkId]) {
+        return { name: SUPPORTED_NETWORKS[networkId], networkId };
+      }
     }
     return defaultNetwork;
   } catch (e) {
