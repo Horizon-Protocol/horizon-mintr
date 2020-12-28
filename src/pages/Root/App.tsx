@@ -6,7 +6,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import GlobalEventsGate from 'gates/GlobalEventsGate';
 import { RootState } from 'ducks/types';
 import { getAppIsOnMaintenance } from 'ducks/app';
-import { isDarkTheme, lightTheme, darkTheme } from 'styles/themes';
+import { /* isDarkTheme, lightTheme, */ darkTheme } from 'styles/themes';
 import muiTheme from 'styles/muiThemes';
 import { PAGES_BY_KEY } from 'constants/ui';
 import { isMobileOrTablet } from 'helpers/browserHelper';
@@ -71,7 +71,8 @@ const App: FC<AppProps> = ({
   currentWallet,
   walletDetails: { networkId },
 }) => {
-  const themeStyle = isDarkTheme(currentTheme) ? darkTheme : lightTheme;
+  // const themeStyle = isDarkTheme(currentTheme) ? darkTheme : lightTheme;
+  const themeStyle = darkTheme;
   return (
     <StyledThemeProvider theme={themeStyle}>
       <ThemeProvider theme={muiTheme}>

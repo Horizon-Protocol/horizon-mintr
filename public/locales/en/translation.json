@@ -2,8 +2,8 @@
   "onboarding": {
     "slides": {
       "welcome": {
-        "title": "Welcome to Mintr!",
-        "description": "Mintr is the dApp for HZN holders. If you've never used Mintr before, read through our quick introduction first."
+        "title": "Welcome to Genesis!",
+        "description": "Genesis is the dApp for HZN holders. If you've never used Genesis before, read through our quick introduction first."
       },
       "whatIsHorizon": {
         "title": "What is Horizon?",
@@ -28,7 +28,7 @@
     "walletSelection": {
       "success": {
         "title": "Select Wallet",
-        "subtitle": "Please select the wallet you would like to use with Mintr"
+        "subtitle": "Please select the wallet you would like to use with Genesis"
       },
       "loading": {
         "connectInstructions": "Please follow the prompts on your device to unlock your wallet.",
@@ -36,7 +36,7 @@
       },
       "error": {
         "title": "Error",
-        "subtitle": "Mintr couldn't access your wallet.",
+        "subtitle": "Genesis couldn't access your wallet.",
         "retry": "Retry"
       },
       "addWallet": {
@@ -624,11 +624,11 @@
     "speed": "Estimated transaction speed:"
   },
   "maintenance": {
-    "title": "Mintr is currently unavailable due to upgrades.",
+    "title": "Genesis is currently unavailable due to upgrades.",
     "subtitle": "Sorry for the inconvenience, it will be back shortly."
   },
   "mobileLanding": {
-    "title": "Mintr is currently unavailable for mobile and tablet.",
+    "title": "Genesis is currently unavailable for mobile and tablet.",
     "subtitle": "We hope to have a mobile version available in the next few months."
   },
   "tooltip": {
