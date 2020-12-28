@@ -21,7 +21,7 @@ import Logo from 'components/Logo';
 // import { LanguageDropdown } from 'components/Dropdown';
 
 import { PAGES_BY_KEY } from 'constants/ui';
-import { LINKS } from 'constants/links';
+// import { LINKS } from 'constants/links';
 // import { ExternalLink } from 'styles/common';
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -75,7 +75,7 @@ const OnBoardingCarousel = ({ pageIndex, setPageIndex, currentTheme }) => {
           <OnboardingH1>{t('onboarding.slides.whatIsHorizon.title')}</OnboardingH1>
           <OnboardingPMega>{t('onboarding.slides.whatIsHorizon.description')}</OnboardingPMega>
           <OnboardingIllustration
-            src={`/images/onboarding/what-is-synthetix-${currentTheme ? 'dark' : 'light'}.png`}
+            src={`/images/onboarding/what-is-horizon-${currentTheme ? 'dark' : 'light'}.png`}
           />
         </CarouselSlide>
 
@@ -170,9 +170,9 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
           })}
         </Wallets>
         <BottomLinks>
-          <Link href={LINKS.Support} target="_blank">
+          {/* <Link href={LINKS.Support} target="_blank">
             <ButtonTertiaryLabel>{t('button.havingTrouble')}</ButtonTertiaryLabel>
-          </Link>
+          </Link> */}
           <Link href={'https://horizonprotocol.com'} target="_blank">
             <ButtonTertiaryLabel>{t('button.whatIsHorizon')}</ButtonTertiaryLabel>
           </Link>
