@@ -74,10 +74,7 @@ const OnBoardingCarousel = ({ pageIndex, setPageIndex, currentTheme }) => {
         <CarouselSlide>
           <OnboardingH1>{t('onboarding.slides.whatIsHorizon.title')}</OnboardingH1>
           <OnboardingPMega>{t('onboarding.slides.whatIsHorizon.description')}</OnboardingPMega>
-          <OnboardingIllustration
-            style={{ marginTop: 24 }}
-            src="/images/onboarding/what-is-horizon.png"
-          />
+          <OnboardingIllustration src="/images/onboarding/what-is-horizon.png" />
         </CarouselSlide>
 
         <CarouselSlide>
