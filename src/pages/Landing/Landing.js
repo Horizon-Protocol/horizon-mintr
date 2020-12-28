@@ -80,13 +80,7 @@ const OnBoardingCarousel = ({ pageIndex, setPageIndex, currentTheme }) => {
         <CarouselSlide>
           <OnboardingH1>{t('onboarding.slides.whyStakeSnx.title')}</OnboardingH1>
           <OnboardingPMega>{t('onboarding.slides.whyStakeSnx.description')}</OnboardingPMega>
-          <OnboardingIllustration
-            style={{
-              marginTop: 24,
-              width: 120,
-            }}
-            src="/images/onboarding/why-stake.png"
-          />
+          <OnboardingIllustration src="/images/onboarding/why-stake.png" />
         </CarouselSlide>
 
         <CarouselSlide>
