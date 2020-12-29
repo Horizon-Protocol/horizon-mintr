@@ -147,7 +147,7 @@
     "burn": {
       "action": {
         "title": "Burn",
-        "subtitle": "Burn hUSD to unlock your staked HZN. This increases your Collateralization Ratio and reduces your debt, allowing you to transfer your non-escrowed HZN.",
+        "subtitle": "Burn hUSD to unlock your staked HZN. This increases your Collateralization Ratio and reduces your debt, allowing you to transfer your HZN.",
         "instruction": "Enter an amount to burn:",
         "transferrable": {
           "title": "Transferable HZN being unlocked:",

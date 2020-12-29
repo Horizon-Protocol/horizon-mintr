@@ -124,7 +124,7 @@ export const getBalances = async (walletAddress: string) => {
   const [
     synthBalanceResults,
     totalSynthsBalanceResults,
-    snxBalanceResults,
+    hznBalanceResults,
     ethBalanceResults,
   ] = await Promise.all([
     synthSummaryUtilContract.synthsBalances(walletAddress),
@@ -148,12 +148,12 @@ export const getBalances = async (walletAddress: string) => {
     })
     .filter((synth: any) => synth.balance);
 
-  const sUSDBalance = synths.find((synth: any) => synth.name === CRYPTO_CURRENCY_TO_KEY.hUSD);
+  const hUSDBalance = synths.find((synth: any) => synth.name === CRYPTO_CURRENCY_TO_KEY.hUSD);
   const cryptoToArray = [
     {
       name: CRYPTO_CURRENCY_TO_KEY.HZN,
-      balance: bigNumberFormatter(snxBalanceResults),
-      balanceBN: snxBalanceResults,
+      balance: bigNumberFormatter(hznBalanceResults),
+      balanceBN: hznBalanceResults,
     },
     {
       name: CRYPTO_CURRENCY_TO_KEY.ETH,
@@ -164,9 +164,9 @@ export const getBalances = async (walletAddress: string) => {
   const all = synths.concat(cryptoToArray);
   return {
     crypto: {
-      [CRYPTO_CURRENCY_TO_KEY.HZN]: bigNumberFormatter(snxBalanceResults),
+      [CRYPTO_CURRENCY_TO_KEY.HZN]: bigNumberFormatter(hznBalanceResults),
       [CRYPTO_CURRENCY_TO_KEY.ETH]: bigNumberFormatter(ethBalanceResults),
-      [CRYPTO_CURRENCY_TO_KEY.hUSD]: sUSDBalance ? sUSDBalance.balance : 0,
+      [CRYPTO_CURRENCY_TO_KEY.hUSD]: hUSDBalance ? hUSDBalance.balance : 0,
     },
     synths,
     totalSynths: bigNumberFormatter(totalSynthsBalanceResults),
