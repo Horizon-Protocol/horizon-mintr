@@ -11,6 +11,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Get Commit Time
+        id: get-commit-time
+        run: echo "::set-output name=commitTime::$(git show -s --format=%ci)"
       - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
@@ -30,6 +33,7 @@ jobs:
       - name: Build Bundle
         run: npm run build
         env:
+          REACT_APP_COMMIT_TIME: ${{ steps.get-commit-time.outputs.commitTime }}
           REACT_APP_BLOCKNATIVE_NOTIFY_KEY: ${{ secrets.BLOCKNATIVE_KEY }}
 
       - name: Upload to S3

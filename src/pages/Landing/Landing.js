@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
 import { useTranslation } from 'react-i18next';
+import { Link } from '@material-ui/core';
 
 import { setCurrentPage, getCurrentTheme } from 'ducks/ui';
 import { updateWalletStatus, getWalletDetails } from 'ducks/wallet';
@@ -22,7 +23,6 @@ import Logo from 'components/Logo';
 
 import { PAGES_BY_KEY } from 'constants/ui';
 // import { LINKS } from 'constants/links';
-// import { ExternalLink } from 'styles/common';
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import './carousel.css';
@@ -169,17 +169,19 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
           </PMedium>
         </Wallets>
         <BottomLinks>
-          {/* <Link href={LINKS.Support} target="_blank">
+          {/* <ButtonLink href={LINKS.Support} target="_blank">
             <ButtonTertiaryLabel>{t('button.havingTrouble')}</ButtonTertiaryLabel>
-          </Link> */}
-          <Link href={'https://horizonprotocol.com'} target="_blank">
+          </ButtonLink> */}
+          <ButtonLink href={'https://horizonprotocol.com'} target="_blank">
             <ButtonTertiaryLabel>{t('button.whatIsHorizon')}</ButtonTertiaryLabel>
+          </ButtonLink>
+          <Link
+            href="https://github.com/PhoenixGlobal/horizon-mintr"
+            target="_blank"
+            variant="caption"
+          >
+            Last Update: {process.env.REACT_APP_COMMIT_TIME || 'now'}
           </Link>
-          {/* <ExternalLink
-						href={`https://github.com/PhoenixGlobal/horizon-mintr/releases/tag/v${process.env.REACT_APP_VERSION}`}
-					>
-						<VersionLabel>v{process.env.REACT_APP_VERSION}</VersionLabel>
-					</ExternalLink> */}
         </BottomLinks>
       </WalletConnectContainer>
     </LandingPageContainer>
@@ -282,7 +284,7 @@ const Icon = styled.img`
   margin-right: 24px;
 `;
 
-const Link = styled.a`
+const ButtonLink = styled.a`
   background-color: ${props => props.theme.colorStyles.buttonTertiaryBgFocus};
   border: 1px solid ${props => props.theme.colorStyles.borders};
   text-transform: uppercase;
