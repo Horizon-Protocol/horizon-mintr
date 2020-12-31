@@ -82,7 +82,7 @@ const Action = ({
     } else {
       return (
         <ButtonPrimary
-          disabled={isFetchingGasLimit || gasEstimateError || sUSDBalance === 0}
+          disabled={!burnAmount || isFetchingGasLimit || gasEstimateError || sUSDBalance === 0}
           onClick={onBurn}
           margin="auto"
         >

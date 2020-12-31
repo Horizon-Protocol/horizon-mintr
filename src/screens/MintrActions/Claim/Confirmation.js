@@ -22,8 +22,8 @@ const Confirmation = ({
   goBack,
   walletType,
   feesAvailable,
-  isFetchingGasLimit,
-  gasLimit,
+  // isFetchingGasLimit,
+  // gasLimit,
 }) => {
   return (
     <SlidePage>
@@ -42,23 +42,21 @@ const Confirmation = ({
             </Trans>
           </IntroDesc>
         </Intro>
-        <Grid container spacing={1}>
-          <Grid item xs={6}>
+        <Grid container justify="center" spacing={1}>
+          {/* <Grid item xs={6}>
             <AmountCard
               label={t('mintrActions.claim.confirmation.actionDescription')}
               value={`${
-                feesAvailable && feesAvailable[0] ? formatCurrency(feesAvailable[0]) : 0
+                feesAvailable?.[0] ? formatCurrency(feesAvailable[0]) : 0
               } hUSD`}
               small
               color={color}
             />
-          </Grid>
+          </Grid> */}
           <Grid item xs={6}>
             <AmountCard
               label={t('mintrActions.claim.confirmation.actionDescription')}
-              value={`${
-                feesAvailable && feesAvailable[1] ? formatCurrency(feesAvailable[1]) : 0
-              } HZN`}
+              value={`${feesAvailable?.[1] ? formatCurrency(feesAvailable[1]) : 0} HZN`}
               small
               color={color}
             />

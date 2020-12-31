@@ -59,6 +59,8 @@ const Action = ({
 }) => {
   const classes = useStyles({ color });
   const statusClasses = useStatuStyles({ color });
+  const anyFeesAvailable = feesAvailable?.some(v => !!v);
+
   return (
     <SlidePage>
       <Container>
@@ -72,19 +74,19 @@ const Action = ({
           <IntroTitle>{t('mintrActions.claim.action.title')}</IntroTitle>
           <IntroDesc>{t('mintrActions.claim.action.subtitle')}</IntroDesc>
         </Intro>
-        {/* <Box>
-          <DataHeaderLarge>{t('mintrActions.claim.action.tradingRewards')}</DataHeaderLarge>
-          <Amount>
-            {feesAvailable && feesAvailable[0] ? formatCurrency(feesAvailable[0]) : 0} sUSD
-          </Amount>
-        </Box> */}
-        <Box mb={4} className={classes.available}>
-          <Body2>{t('mintrActions.claim.action.stakingRewards')}</Body2>
+        <Box mb={3} className={classes.available}>
+          <Body2>{t('mintrActions.claim.action.tradingRewards')}</Body2>
           <Typography classes={{ root: classes.amount }}>
-            {feesAvailable && feesAvailable[1] ? formatCurrency(feesAvailable[1]) : 0} HZN
+            {feesAvailable?.[0] ? formatCurrency(feesAvailable[0]) : 0} hUSD
           </Typography>
         </Box>
-        <Box mb={4}>
+        {/* <Box mb={3} className={classes.available}>
+          <Body2>{t('mintrActions.claim.action.stakingRewards')}</Body2>
+          <Typography classes={{ root: classes.amount }}>
+            {feesAvailable?.[1] ? formatCurrency(feesAvailable[1]) : 0} HZN
+          </Typography>
+        </Box> */}
+        <Box mb={3}>
           <Body2 className={classes.timeLeft}>{t('mintrActions.claim.action.timeLeft')}</Body2>
           <Typography variant="h5">{closeIn}</Typography>
         </Box>
@@ -114,7 +116,9 @@ const Action = ({
             style={{ margin: '0' }}
           /> */}
           <ButtonPrimary
-            disabled={!feesAreClaimable || isFetchingGasLimit || gasEstimateError}
+            disabled={
+              !feesAreClaimable || !anyFeesAvailable || isFetchingGasLimit || gasEstimateError
+            }
             onClick={onClaim}
             margin="auto"
           >

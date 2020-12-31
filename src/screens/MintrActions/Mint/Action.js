@@ -105,7 +105,7 @@ const Action = ({
           style={{ margin: '0' }}
         /> */}
         <ButtonPrimary
-          disabled={!!(isFetchingGasLimit || gasEstimateError)}
+          disabled={!mintAmount || !!(isFetchingGasLimit || gasEstimateError)}
           onClick={onMint}
           margin="auto"
         >
