@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@material-ui/core';
+import parseISO from 'date-fns/parseISO';
+import format from 'date-fns/format';
 
 import { setCurrentPage, getCurrentTheme } from 'ducks/ui';
 import { updateWalletStatus, getWalletDetails } from 'ducks/wallet';
@@ -26,6 +28,9 @@ import { PAGES_BY_KEY } from 'constants/ui';
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import './carousel.css';
+
+const COMMIT_TIME = process.env.REACT_APP_COMMIT_TIME;
+const commitDate = format(COMMIT_TIME ? parseISO(COMMIT_TIME) : new Date(), 'Pp');
 
 const SLIDE_COUNT = 4;
 
@@ -180,7 +185,7 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
             target="_blank"
             variant="caption"
           >
-            Last Update: {process.env.REACT_APP_COMMIT_TIME || 'now'}
+            Last Update: {commitDate}
           </Link>
         </BottomLinks>
       </WalletConnectContainer>
