@@ -1,7 +1,15 @@
+/*
+ *
+ * READ
+ * 合约来自仓库
+ * https://github.com/PhoenixGlobal/horizon-utility/blob/master/contracts/SynthSummaryUtil.sol
+ * 需要在更新部署后手动修改为最新的合约地址
+ *
+ */
 const synthSummary = {
   addresses: {
     56: '0xf87A0587Fe48Ca05dd68a514Ce387C0d4d3AE31C',
-    97: '0xFD85f61C0F4dd2664f00B5594dE303838AE43E87',
+    97: '0x4E37eC1Ca219e37f9d218CbaBb2CC36a1F0EE84F',
   },
   abi: [
     {
