@@ -24,11 +24,11 @@ const useGetDebtData = (walletAddress, rates, debtStatusData) => {
     const getDebtData = async () => {
       try {
         const results = await Promise.all([
-          hznJSConnector.hznJS.hUSD.balanceOf(walletAddress),
+          hznJSConnector.hznJS.zUSD.balanceOf(walletAddress),
           hznJSConnector.hznJS.RewardEscrow.totalEscrowedAccountBalance(walletAddress),
           hznJSConnector.hznJS.SynthetixEscrow.balanceOf(walletAddress),
         ]);
-        const [hUSDBalance, totalRewardEscrow, totalTokenSaleEscrow] = results.map(
+        const [zUSDBalance, totalRewardEscrow, totalTokenSaleEscrow] = results.map(
           bigNumberFormatter
         );
 
@@ -37,8 +37,8 @@ const useGetDebtData = (walletAddress, rates, debtStatusData) => {
           debtStatusData || {};
 
         let maxBurnAmount, maxBurnAmountBN;
-        if (debtBalance > hUSDBalance) {
-          maxBurnAmount = hUSDBalance;
+        if (debtBalance > zUSDBalance) {
+          maxBurnAmount = zUSDBalance;
           maxBurnAmountBN = results[0];
         } else {
           maxBurnAmount = debtBalance;
@@ -49,7 +49,7 @@ const useGetDebtData = (walletAddress, rates, debtStatusData) => {
 
         setData({
           issuanceRatio,
-          hUSDBalance,
+          zUSDBalance,
           maxBurnAmount,
           maxBurnAmountBN,
           hznPrice,
@@ -69,7 +69,7 @@ const useGetDebtData = (walletAddress, rates, debtStatusData) => {
 const useGetGasEstimate = (
   burnAmount,
   maxBurnAmount,
-  hUSDBalance,
+  zUSDBalance,
   waitingPeriod,
   issuanceDelay,
   setFetchingGasLimit,
@@ -86,9 +86,9 @@ const useGetGasEstimate = (
 
       try {
         if (!parseFloat(burnAmount)) throw new Error('input.error.invalidAmount');
-        if (waitingPeriod) throw new Error('Waiting period for hUSD is still ongoing');
+        if (waitingPeriod) throw new Error('Waiting period for zUSD is still ongoing');
         if (issuanceDelay) throw new Error('Waiting period to burn is still ongoing');
-        if (burnAmount > hUSDBalance || maxBurnAmount === 0) {
+        if (burnAmount > zUSDBalance || maxBurnAmount === 0) {
           throw new Error('input.error.notEnoughToBurn');
         }
         // setFetchingGasLimit(true);
@@ -136,7 +136,7 @@ const Burn = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }
   const {
     maxBurnAmount,
     maxBurnAmountBN,
-    hUSDBalance,
+    zUSDBalance,
     issuanceRatio,
     hznPrice,
     burnAmountToFixCRatio,
@@ -150,7 +150,7 @@ const Burn = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }
     try {
       const maxSecsLeftInWaitingPeriod = await Exchanger.maxSecsLeftInWaitingPeriod(
         currentWallet,
-        bytesFormatter('hUSD')
+        bytesFormatter('zUSD')
       );
       setWaitingPeriod(Number(maxSecsLeftInWaitingPeriod));
     } catch (e) {
@@ -192,7 +192,7 @@ const Burn = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }
   const gasEstimateError = useGetGasEstimate(
     burnAmount,
     maxBurnAmount,
-    hUSDBalance,
+    zUSDBalance,
     waitingPeriod,
     issuanceDelay,
     setFetchingGasLimit,
@@ -204,8 +204,8 @@ const Burn = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }
       hznJS: { Synthetix, Issuer },
     } = hznJSConnector;
     try {
-      if (await Synthetix.isWaitingPeriod(bytesFormatter('hUSD')))
-        throw new Error('Waiting period for hUSD is still ongoing');
+      if (await Synthetix.isWaitingPeriod(bytesFormatter('zUSD')))
+        throw new Error('Waiting period for zUSD is still ongoing');
 
       if (!burnToTarget && !(await Issuer.canBurnSynths(currentWallet)))
         throw new Error('Waiting period to burn is still ongoing');
@@ -234,7 +234,7 @@ const Burn = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }
       if (notify && transaction) {
         const message = `Burnt ${formatCurrency(
           burnToTarget ? burnAmountToFixCRatio : burnAmount
-        )} hUSD`;
+        )} zUSD`;
         setTransactionInfo({ transactionHash: transaction.hash });
         notifyHandler(notify, transaction.hash, networkId, onSuccess, message);
         handleNext(2);
@@ -283,7 +283,7 @@ const Burn = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }
     burnAmountToFixCRatio,
     waitingPeriod,
     issuanceDelay,
-    hUSDBalance,
+    zUSDBalance,
     onWaitingPeriodCheck: getMaxSecsLeftInWaitingPeriod,
     onIssuanceDelayCheck: getIssuanceDelay,
     ...props,

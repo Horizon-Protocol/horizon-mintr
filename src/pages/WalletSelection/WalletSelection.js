@@ -66,7 +66,7 @@ const useGetWallets = (paginatorIndex, derivationPath, availableWallets, updateW
         const getBalanceForWallet = async wallet => {
           return {
             snxBalance: await hznJSConnector.hznJS.Synthetix.collateral(wallet.address),
-            sUSDBalance: await hznJSConnector.hznJS.hUSD.balanceOf(wallet.address),
+            sUSDBalance: await hznJSConnector.hznJS.zUSD.balanceOf(wallet.address),
             ethBalance: await hznJSConnector.provider.getBalance(wallet.address),
           };
         };
@@ -212,7 +212,7 @@ const WalletConnection = ({
                   <List cellSpacing={0}>
                     <ListHead>
                       <ListHeaderRow>
-                        {['Address', 'HZN', 'hUSD', 'ETH', ''].map((headerElement, i) => {
+                        {['Address', 'HZN', 'zUSD', 'ETH', ''].map((headerElement, i) => {
                           return (
                             <ListHeaderCell
                               style={{ textAlign: i > 0 ? 'right' : 'left' }}

@@ -1,4 +1,3 @@
-
 # Horizon Mintr
 
 This is the code for the new Horizon Mintr dApp
@@ -7,11 +6,11 @@ For translator instructions, [go here](#translator-instructions).
 
 The dApp communicates with the Horizon contracts, allowing users to perform the following actions:
 
-- Mint (aka Issue) `hUSD` by locking `HZN`
-- Claim rewards of both `HZN` (inflation) and `hUSD` (exchange fees) every week
-- Burn `hUSD` to unlock `HZN`
+- Mint (aka Issue) `zUSD` by locking `HZN`
+- Claim rewards of both `HZN` (inflation) and `zUSD` (exchange fees) every week
+- Burn `zUSD` to unlock `HZN`
 - Transfer `HZN` to other accounts
-- Deposit (or withdrawl) `hUSD` into the `Depot` contract, to go in the queue for exchanging with `ETH` at current market price
+- Deposit (or withdrawl) `zUSD` into the `Depot` contract, to go in the queue for exchanging with `ETH` at current market price
 
 Mintr v2 supports the following wallet providers:
 

@@ -31,7 +31,7 @@ const Success = ({ t, color, onDestroy, feesAvailable, networkName, transactionH
         <Grid item xs={6}>
           <AmountCard
             label={t('mintrActions.claim.confirmation.actionDescription')}
-            value={`${feesAvailable?.[0] ? formatCurrency(feesAvailable[0]) : 0} hUSD`}
+            value={`${feesAvailable?.[0] ? formatCurrency(feesAvailable[0]) : 0} zUSD`}
             color={color}
             small
           />

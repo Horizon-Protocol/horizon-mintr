@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useTranslation, Trans } from 'react-i18next';
 import orderBy from 'lodash/orderBy';
 import last from 'lodash/last';
-import hznData from '@phoenix-global/horizon-data';
+import hznData from '@horizon-protocol/horizon-data';
 import hznJSConnector from 'helpers/hznJSConnector';
 
 import Tooltip from 'components/Tooltip';

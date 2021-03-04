@@ -91,7 +91,7 @@ const tabs = [
     desc: 'home.actions.burn.description',
     title: 'home.actions.burn.title',
     color: '#FFA539',
-    amountLabel: 'hUSD Debt',
+    amountLabel: 'zUSD Debt',
   },
   {
     key: 'claim',

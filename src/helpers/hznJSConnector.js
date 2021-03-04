@@ -1,4 +1,4 @@
-import { HorizonJs } from '@phoenix-global/horizon-js';
+import { HorizonJs } from '@horizon-protocol/horizon-js';
 import { getBscNetwork, BSC_JSON_RPC_URLS, SUPPORTED_WALLETS_MAP } from './networkHelper';
 import { ethers, providers } from 'ethers';
 import {
