@@ -63,7 +63,7 @@ const Action = ({
           </ButtonPrimary>
           <Body2>
             There is a waiting period after minting before you can burn. Please wait{' '}
-            {secondsToTime(issuanceDelay)} before attempting to burn hUSD.
+            {secondsToTime(issuanceDelay)} before attempting to burn zUSD.
           </Body2>
         </>
       );
@@ -75,7 +75,7 @@ const Action = ({
           </ButtonPrimary>
           <Body2>
             There is a waiting period after completing a trade. Please wait{' '}
-            {secondsToTime(waitingPeriod)} before attempting to burn hUSD.
+            {secondsToTime(waitingPeriod)} before attempting to burn zUSD.
           </Body2>
         </>
       );
@@ -102,7 +102,7 @@ const Action = ({
         </Intro>
         <Box mb={2}>
           <Chip
-            label={`${formatCurrency(maxBurnAmount)} hUSD Available`}
+            label={`${formatCurrency(maxBurnAmount)} zUSD Available`}
             className={classes.available}
           />
         </Box>
@@ -136,7 +136,7 @@ const Action = ({
             </ButtonRow> */}
           {/* <Typography>${formatCurrency(burnAmountToFixCRatio)}</Typography> */}
           <Input
-            singleSynth={'hUSD'}
+            singleSynth={'zUSD'}
             onChange={e => setBurnAmount(e.target.value)}
             value={burnAmount}
             placeholder="0.00"

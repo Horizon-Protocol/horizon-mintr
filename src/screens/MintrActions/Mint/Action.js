@@ -66,7 +66,7 @@ const Action = ({
         </Box>
         <Box>
           <Input
-            singleSynth={'hUSD'}
+            singleSynth={'zUSD'}
             onChange={e => setMintAmount(e.target.value)}
             value={mintAmount}
             placeholder="0.00"

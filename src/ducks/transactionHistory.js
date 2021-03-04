@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import hznData from '@phoenix-global/horizon-data';
+import hznData from '@horizon-protocol/horizon-data';
 import flatten from 'lodash/flatten';
 import orderBy from 'lodash/orderBy';
 

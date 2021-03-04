@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import hznData from '@phoenix-global/horizon-data';
+import hznData from '@horizon-protocol/horizon-data';
 
 import { TRANSACTION_EVENTS_MAP } from '../constants/transactionHistory';
 

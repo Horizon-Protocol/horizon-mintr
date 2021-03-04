@@ -9,8 +9,8 @@ import { formatCurrency, shortenAddress } from 'helpers/formatters';
 
 import Card from './Card';
 
-// const TABLE_COLUMNS = ['HZN', 'hUSD', 'BNB', 'Hassets', 'Debt'];
-// const TABLE_COLUMNS = ['HZN', 'hUSD'];
+// const TABLE_COLUMNS = ['HZN', 'zUSD', 'BNB', 'Hassets', 'Debt'];
+// const TABLE_COLUMNS = ['HZN', 'zUSD'];
 // const AGGREGATED_COLUMNS = ['Hassets', 'Debt'];
 
 // const getBalance = (column, walletBalances, debtData) => {
@@ -79,8 +79,8 @@ const BalanceCard = ({ loading, currentWallet, walletBalances, debtData }) => {
         value: formatCurrency(debtData?.transferable),
       },
       {
-        name: 'hUSD Balance',
-        value: formatCurrency(walletBalances?.crypto?.hUSD),
+        name: 'zUSD Balance',
+        value: formatCurrency(walletBalances?.crypto?.zUSD),
       },
     ],
     [debtData, walletBalances]

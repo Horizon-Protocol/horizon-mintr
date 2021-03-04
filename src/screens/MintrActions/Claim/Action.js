@@ -77,7 +77,7 @@ const Action = ({
         <Box mb={3} className={classes.available}>
           <Body2>{t('mintrActions.claim.action.tradingRewards')}</Body2>
           <Typography classes={{ root: classes.amount }}>
-            {feesAvailable?.[0] ? formatCurrency(feesAvailable[0]) : 0} hUSD
+            {feesAvailable?.[0] ? formatCurrency(feesAvailable[0]) : 0} zUSD
           </Typography>
         </Box>
         {/* <Box mb={3} className={classes.available}>

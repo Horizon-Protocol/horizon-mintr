@@ -48,7 +48,7 @@ const Confirmation = ({
               label={t('mintrActions.claim.confirmation.actionDescription')}
               value={`${
                 feesAvailable?.[0] ? formatCurrency(feesAvailable[0]) : 0
-              } hUSD`}
+              } zUSD`}
               small
               color={color}
             />

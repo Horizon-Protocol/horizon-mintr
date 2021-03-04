@@ -39,7 +39,7 @@ const Success = ({
         <Grid item xs={6}>
           <AmountCard
             label={t('mintrActions.mint.confirmation.actionDescription')}
-            value={`${formatCurrency(mintAmount)} hUSD`}
+            value={`${formatCurrency(mintAmount)} zUSD`}
             color={color}
             small
           />

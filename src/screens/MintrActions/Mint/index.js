@@ -100,7 +100,7 @@ const Mint = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }
         );
       }
       if (notify && transaction) {
-        const message = `Minted ${formatCurrency(mintAmount)} hUSD`;
+        const message = `Minted ${formatCurrency(mintAmount)} zUSD`;
         setTransactionInfo({ transactionHash: transaction.hash });
         notifyHandler(notify, transaction.hash, networkId, onSuccess, message);
 

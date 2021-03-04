@@ -19,7 +19,7 @@
       },
       "risks": {
         "title": "What are the risks?",
-        "description": "All HZN stakers create a ‘debt’ when they stake.  Their debt begins as the amount of hUSD they initially mint, and fluctuates according to gains or losses made by other hAsset holders.  Any time anyone holds a hAsset that appreciates in value, that gain is distributed proportionally between the staked HZN holders’ debts. A staker must pay off their debt before they can unlock their staked HZN."
+        "description": "All HZN stakers create a ‘debt’ when they stake.  Their debt begins as the amount of zUSD they initially mint, and fluctuates according to gains or losses made by other hAsset holders.  Any time anyone holds a hAsset that appreciates in value, that gain is distributed proportionally between the staked HZN holders’ debts. A staker must pay off their debt before they can unlock their staked HZN."
       }
     },
     "walletConnection": {
@@ -100,11 +100,11 @@
     "actions": {
       "mint": {
         "title": "Mint",
-        "description": "Mint hUSD by staking HZN"
+        "description": "Mint zUSD by staking HZN"
       },
       "burn": {
         "title": "Burn",
-        "description": "Burn hUSD to unstake HZN"
+        "description": "Burn zUSD to unstake HZN"
       },
       "claim": {
         "title": "Claim",
@@ -112,7 +112,7 @@
       },
       "trade": {
         "title": "Trade",
-        "description": "Trade any hAsset to hUSD"
+        "description": "Trade any hAsset to zUSD"
       },
       "transfer": {
         "title": "Transfer",
@@ -128,7 +128,7 @@
     "mint": {
       "action": {
         "title": "Mint",
-        "subtitle": "Mint hUSD by staking your HZN. This gives you a Collateralization Ratio and a debt, allowing you to earn staking rewards.",
+        "subtitle": "Mint zUSD by staking your HZN. This gives you a Collateralization Ratio and a debt, allowing you to earn staking rewards.",
         "instruction": "Enter an amount to mint:",
         "staking": "Staking",
         "estimateCRatio": "Estimated C-Ratio",
@@ -147,7 +147,7 @@
     "burn": {
       "action": {
         "title": "Burn",
-        "subtitle": "Burn hUSD to unlock your staked HZN. This increases your Collateralization Ratio and reduces your debt, allowing you to transfer your HZN.",
+        "subtitle": "Burn zUSD to unlock your staked HZN. This increases your Collateralization Ratio and reduces your debt, allowing you to transfer your HZN.",
         "instruction": "Enter an amount to burn:",
         "transferrable": {
           "title": "Transferable HZN being unlocked:",
@@ -169,7 +169,7 @@
     "claim": {
       "action": {
         "title": "Claim",
-        "subtitle": "If you have staked your HZN and minted hUSD, you are eligible to collect HZN Staking rewards.",
+        "subtitle": "If you have staked your HZN and minted zUSD, you are eligible to collect HZN Staking rewards.",
         "timeLeft": "Time left to claim",
         "table": {
           "title": "Claimable periods:",
@@ -215,7 +215,7 @@
     "trade": {
       "action": {
         "title": "Trade",
-        "subtitle": "Trade your hAssets for hUSD. For the full dApp, which allows you to trade between any hAssets, use Horizon Dex.",
+        "subtitle": "Trade your hAssets for zUSD. For the full dApp, which allows you to trade between any hAssets, use Horizon Dex.",
         "buttons": {
           "trade": "Trade now",
           "exchange": "Open Horizon Dex"
@@ -252,7 +252,7 @@
   "depot": {
     "intro": {
       "title": "Available for sale:",
-      "subtitle": "Deposit hUSD into a queue to be sold for ETH. You can withdraw your hUSD at any time while waiting. Note: minimum deposit is 50 hUSD."
+      "subtitle": "Deposit zUSD into a queue to be sold for ETH. You can withdraw your zUSD at any time while waiting. Note: minimum deposit is 50 zUSD."
     },
     "table": {
       "title": "Recent activity:",
@@ -314,7 +314,7 @@
     },
     "staking": {
       "title": "Vest your HZN staking rewards in escrow",
-      "subtitle": "If you have staked your HZN and minted hUSD, you are eligible to receive HZN staking rewards, which you can vest here after they have been escrowed for 12 months.",
+      "subtitle": "If you have staked your HZN and minted zUSD, you are eligible to receive HZN staking rewards, which you can vest here after they have been escrowed for 12 months.",
       "total": "Total escrowed:",
       "vested": "Total vested:",
       "available": "Total available:",
@@ -362,7 +362,7 @@
         "title": "UNIPOOL sXAU"
       },
       "curvepool": {
-        "title": "CURVEPOOL hUSD"
+        "title": "CURVEPOOL zUSD"
       },
       "ieth": {
         "title": "iETH"
@@ -455,7 +455,7 @@
     }
   },
   "curvepool": {
-    "title": "Curve Finance hUSD LP Token Rewards",
+    "title": "Curve Finance zUSD LP Token Rewards",
     "locked": {
       "subtitle": "First approve the Curvepool contract to transfer your Curve LP tokens for staking.",
       "transaction": "Setting Curve LP token allowance"
@@ -574,8 +574,8 @@
       "error": "An error occurred..."
     },
     "curve": {
-      "heading": "Earn rewards with your hUSD at Curve",
-      "description": "Deposit your hUSD to receive CRV and HZN rewards",
+      "heading": "Earn rewards with your zUSD at Curve",
+      "description": "Deposit your zUSD to receive CRV and HZN rewards",
       "action": "Visit"
     }
   },
@@ -607,10 +607,10 @@
       "placeholder": "e.g. 0x3b18a4..."
     },
     "error": {
-      "notEnoughToMint": "You cannot currently mint that much hUSD",
+      "notEnoughToMint": "You cannot currently mint that much zUSD",
       "gasEstimate": "Error while getting gas estimate",
       "invalidAmount": "Invalid amount",
-      "notEnoughToBurn": "You do not have that much hUSD to burn.",
+      "notEnoughToBurn": "You do not have that much zUSD to burn.",
       "balanceTooLow": "Your balance is too low",
       "lowerThanMinDeposit": "Amount lower than minimum deposit"
     }
@@ -632,9 +632,9 @@
     "subtitle": "We hope to have a mobile version available in the next few months."
   },
   "tooltip": {
-    "claim": "To claim rewards, you must be within 1% of the Target Collateralization Ratio. If you are below this figure, you will be blocked from claiming rewards until you burn enough hUSD.",
-    "debtBalance": "Your debt begins as the amount of hUSD you initially mint, and fluctuates according to gains or losses made by other hAsset holders. Any time someone holds a hAsset that appreciates in value, that gain is distributed proportionally between all the staked HZN holders’ debts. To unlock all your staked HZN, you must first pay off your debt.",
-    "synthsBalance": "hAssets are the synthetic assets in the Horizon system, including hUSD, sBTC, iBTC, and all of the other assets available at exchange. This figure is the total value of all the hAssets held in this wallet. If you wish to convert some hAssets back into hUSD, click the TRADE button.",
+    "claim": "To claim rewards, you must be within 1% of the Target Collateralization Ratio. If you are below this figure, you will be blocked from claiming rewards until you burn enough zUSD.",
+    "debtBalance": "Your debt begins as the amount of zUSD you initially mint, and fluctuates according to gains or losses made by other hAsset holders. Any time someone holds a hAsset that appreciates in value, that gain is distributed proportionally between all the staked HZN holders’ debts. To unlock all your staked HZN, you must first pay off your debt.",
+    "synthsBalance": "hAssets are the synthetic assets in the Horizon system, including zUSD, sBTC, iBTC, and all of the other assets available at exchange. This figure is the total value of all the hAssets held in this wallet. If you wish to convert some hAssets back into zUSD, click the TRADE button.",
     "track": "<0>Issued debt:</0> This displays the total of all your mints and burns over time, revealing how only your C-Ratio management has affected your debt.<1 /><2>Actual debt:</2> This displays your total debt over time.",
     "poolCompleted": "This incentive is now completed. Please collect any rewards accrued and withdraw your tokens.",
     "liquidation": "This is the ratio at which your HZN can be liquidated. Liquidation was added in SIP-15, and once your C-Ratio goes below the liquidation ratio there is currently a {{liquidationDelay}} hours delay period before you can be liquidated."

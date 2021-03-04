@@ -47,7 +47,7 @@ const Confirmation = ({
           <Grid item xs={6}>
             <AmountCard
               label={t('mintrActions.burn.confirmation.actionDescription')}
-              value={`${formatCurrency(burnAmount)} hUSD`}
+              value={`${formatCurrency(burnAmount)} zUSD`}
               small
               color={color}
             />

@@ -181,7 +181,7 @@ const Landing = ({ currentTheme, walletDetails, updateWalletStatus, setCurrentPa
             <ButtonTertiaryLabel>{t('button.whatIsHorizon')}</ButtonTertiaryLabel>
           </ButtonLink>
           <Link
-            href="https://github.com/PhoenixGlobal/horizon-mintr"
+            href="https://github.com/Horizon-Protocol/horizon-mintr"
             target="_blank"
             variant="caption"
           >
