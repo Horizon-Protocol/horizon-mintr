@@ -9,7 +9,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@horizon-protocol/horizon-data": "2.1.41",
-    "@horizon-protocol/horizon-js": "3.0.9",
+    "@horizon-protocol/horizon-js": "3.0.11",
     "@reduxjs/toolkit": "^1.5.0",
     "@rehooks/component-size": "^1.0.3",
     "axios": "^0.21.0",

@@ -9,15 +9,15 @@ import { formatCurrency, shortenAddress } from 'helpers/formatters';
 
 import Card from './Card';
 
-// const TABLE_COLUMNS = ['HZN', 'zUSD', 'BNB', 'Hassets', 'Debt'];
+// const TABLE_COLUMNS = ['HZN', 'zUSD', 'BNB', 'Zassets', 'Debt'];
 // const TABLE_COLUMNS = ['HZN', 'zUSD'];
-// const AGGREGATED_COLUMNS = ['Hassets', 'Debt'];
+// const AGGREGATED_COLUMNS = ['Zassets', 'Debt'];
 
 // const getBalance = (column, walletBalances, debtData) => {
 //   if (!AGGREGATED_COLUMNS.includes(column)) {
 //     return { balance: walletBalances[column] };
-//   } else if (column === 'Hassets') {
-//     return { ...walletBalances.totalSynths, tooltip: 'hassets' };
+//   } else if (column === 'Zassets') {
+//     return { ...walletBalances.totalSynths, tooltip: 'zassets' };
 //   } else {
 //     return {
 //       balance: debtData.debtBalance,

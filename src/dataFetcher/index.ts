@@ -24,7 +24,7 @@ export const getDebtStatus = async (walletAddress: string) => {
   ]);
 
   const [
-    maxIssuableSynths,
+    maxIssuableZassets,
     targetCRatio,
     currentCRatio,
     transferable,
@@ -33,7 +33,7 @@ export const getDebtStatus = async (walletAddress: string) => {
   ] = result.map(bigNumberFormatter);
 
   return {
-    issuableHassets: maxIssuableSynths - debtBalance,
+    issuableZassets: maxIssuableZassets - debtBalance,
     targetCRatio,
     currentCRatio,
     transferable,
@@ -96,8 +96,6 @@ export const getExchangeRates = async () => {
   let exchangeRates = {
     [CRYPTO_CURRENCY_TO_KEY.HZN]: hznRate / 1e18,
   };
-  console.log('=====synthsRates', synthsRates);
-  console.log('=====exchangeRates', exchangeRates);
 
   const [keys, rates] = synthsRates;
   keys.forEach((key: string, i: number) => {

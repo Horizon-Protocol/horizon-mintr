@@ -18,7 +18,7 @@ import Confirmation from './Confirmation';
 import Complete from './Complete';
 
 // TODO: replace it with BSC.
-const useGetGasEstimate = (mintAmount, issuableHassets, setFetchingGasLimit, setGasLimit) => {
+const useGetGasEstimate = (mintAmount, issuableZassets, setFetchingGasLimit, setGasLimit) => {
   const { t } = useTranslation();
   const [error, setError] = useState(null);
   useEffect(() => {
@@ -32,9 +32,9 @@ const useGetGasEstimate = (mintAmount, issuableHassets, setFetchingGasLimit, set
         // 	hznJS: { Synthetix },
         // } = hznJSConnector;
         if (!parseFloat(mintAmount)) throw new Error('input.error.invalidAmount');
-        if (mintAmount <= 0 || mintAmount > issuableHassets)
+        if (mintAmount <= 0 || mintAmount > issuableZassets)
           throw new Error('input.error.notEnoughToMint');
-        // if (mintAmount === issuableHassets) {
+        // if (mintAmount === issuableZassets) {
         // 	gasEstimate = await Synthetix.contract.estimate.issueMaxSynths();
         // } else {
         // 	gasEstimate = await Synthetix.contract.estimate.issueSynths(
@@ -67,7 +67,7 @@ const Mint = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }
 
   const hznPrice = useMemo(() => props.rates?.[CRYPTO_CURRENCY_TO_KEY.HZN], [props.rates]);
   const {
-    issuableHassets,
+    issuableZassets,
     transferable: issuableAmount,
     targetCRatio: issuanceRatio,
     debtBalance,
@@ -75,7 +75,7 @@ const Mint = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }
 
   const gasEstimateError = useGetGasEstimate(
     mintAmount,
-    issuableHassets,
+    issuableZassets,
     setFetchingGasLimit,
     setGasLimit
   );
@@ -91,7 +91,7 @@ const Mint = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }
       } = hznJSConnector;
       handleNext(1);
       let transaction;
-      if (mintAmount === issuableHassets) {
+      if (mintAmount === issuableZassets) {
         transaction = await Synthetix.issueMaxSynths(transactionSettings);
       } else {
         transaction = await Synthetix.issueSynths(
@@ -121,7 +121,7 @@ const Mint = ({ onDestroy, walletDetails, currentGasPrice, onSuccess, ...props }
   const commonProps = {
     onDestroy: onDestroy || handleReset,
     onMint,
-    issuableHassets,
+    issuableZassets,
     goBack: handlePrev,
     walletType,
     networkName,

@@ -9,7 +9,7 @@
 const synthSummary = {
   addresses: {
     56: '0xf87A0587Fe48Ca05dd68a514Ce387C0d4d3AE31C',
-    97: '0xDf9bc3760e0873B7162dbB072667f567791ebc6c',
+    97: '0x19165a78Abd8ec4a2eAC02d98d527b698Bb9c526',
   },
   abi: [
     {

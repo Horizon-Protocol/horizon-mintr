@@ -31,7 +31,7 @@ const Action = ({
   t,
   color,
   onMint,
-  issuableHassets,
+  issuableZassets,
   issuableAmount,
   mintAmount,
   setMintAmount,
@@ -73,7 +73,7 @@ const Action = ({
             rightComponent={
               <ButtonMax
                 onClick={() => {
-                  setMintAmount(Big(issuableHassets).toFixed());
+                  setMintAmount(Big(issuableZassets).toFixed());
                 }}
               />
             }

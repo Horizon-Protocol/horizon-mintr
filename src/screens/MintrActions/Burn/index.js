@@ -33,7 +33,7 @@ const useGetDebtData = (walletAddress, rates, debtStatusData) => {
         );
 
         const hznPrice = rates?.[CRYPTO_CURRENCY_TO_KEY.HZN];
-        const { debtBalance, debtBalanceBN, targetCRatio: issuanceRatio, issuableHassets } =
+        const { debtBalance, debtBalanceBN, targetCRatio: issuanceRatio, issuableZassets } =
           debtStatusData || {};
 
         let maxBurnAmount, maxBurnAmountBN;
@@ -53,8 +53,8 @@ const useGetDebtData = (walletAddress, rates, debtStatusData) => {
           maxBurnAmount,
           maxBurnAmountBN,
           hznPrice,
-          burnAmountToFixCRatio: Math.max(-issuableHassets, 0),
-          debtEscrow: Math.max(escrowBalance * hznPrice * issuanceRatio - issuableHassets, 0),
+          burnAmountToFixCRatio: Math.max(-issuableZassets, 0),
+          debtEscrow: Math.max(escrowBalance * hznPrice * issuanceRatio - issuableZassets, 0),
         });
       } catch (e) {
         console.log(e);
