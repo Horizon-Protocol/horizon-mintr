@@ -15,6 +15,7 @@ import { Container, Intro, IntroTitle, IntroDesc, ActionImage, Body2 } from '../
 
 const useStyles = makeStyles(({ shape }) => ({
   available: {
+    width: 250,
     padding: 12,
     backgroundColor: '#0A171F',
     border: '1px solid #11263B',
@@ -74,19 +75,19 @@ const Action = ({
           <IntroTitle>{t('mintrActions.claim.action.title')}</IntroTitle>
           <IntroDesc>{t('mintrActions.claim.action.subtitle')}</IntroDesc>
         </Intro>
-        <Box mb={3} className={classes.available}>
+        {/* <Box mb={1} className={classes.available}>
           <Body2>{t('mintrActions.claim.action.tradingRewards')}</Body2>
           <Typography classes={{ root: classes.amount }}>
             {feesAvailable?.[0] ? formatCurrency(feesAvailable[0]) : 0} zUSD
           </Typography>
-        </Box>
-        {/* <Box mb={3} className={classes.available}>
+        </Box> */}
+        <Box mb={2} className={classes.available}>
           <Body2>{t('mintrActions.claim.action.stakingRewards')}</Body2>
           <Typography classes={{ root: classes.amount }}>
             {feesAvailable?.[1] ? formatCurrency(feesAvailable[1]) : 0} HZN
           </Typography>
-        </Box> */}
-        <Box mb={3}>
+        </Box>
+        <Box mb={2}>
           <Body2 className={classes.timeLeft}>{t('mintrActions.claim.action.timeLeft')}</Body2>
           <Typography variant="h5">{closeIn}</Typography>
         </Box>
